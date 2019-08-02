@@ -1,6 +1,0 @@
-DeltaPosTarget = 400
-DeltaNegTarget = 300
-StorageBetaTarget = 2000
-BandwidthBetaTarget = 1000
-QTarget = 64
-GammaTarget = 40000
