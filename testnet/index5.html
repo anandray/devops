@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Wolk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="Wolk Trustless HTTP Blockchains" />
+<meta name="robots" content="index, follow" />
+<style>
+th { font-size: 10pt;}
+.h { font-size: 8pt; }
+.hn { font-size: 8pt; text-align: right; white-space: nowrap; }
+.s0 { background-color: #FFEEEE; }
+.s1 { background-color: #EEFFEE; }
+.s2 { background-color: #EEEEFF; }
+.s3 { background-color: #FFEEFF; }
+.s4 { background-color: #FFFFEE; }
+.s5 { background-color: #FFCCFF; }
+.infosum { float: left; background: #FFAAAA; margin: 2px; }
+.networkid { float: left; background: #FFEEFF; margin: 2px; }
+.storage { background-color: #EEEEEE; }
+.secondsago { white-space: nowrap; }
+.problem {  color: red; }
+.minter { background-color: #00FF00; padding: 1px; margin: 1px; border: 1px solid black;}
+</style>
+<script src="https://testnet.wolk.com/nodes5.js"></script>
+<script>
+function resetgc(hostname, project, zone) {
+    alert("gcloud compute instances reset " + hostname + " --project " + project + " --zone " + zone);
+    return true;
+}
+
+function resetaws(instanceid, region) {
+    alert("aws ec2 reboot-instances --instance-ids " + instanceid + " --region " + region);
+    return true;
+}
+
+function resetalibaba(instanceid, region) {
+    alert("aliyuncli ecs RebootInstance --RegionId " + region + " --InstanceId " + instanceid);
+    return true;
+}
+
+function resetazure(instanceid, region) {
+    alert("az vm restart -g " + region + " --ids" + instanceid);
+    return true;
+}
+
+function reset(j) {
+  var n = registry[j];
+  if ( n.cloudprovider == "gc" ) {
+      return resetgc(n.hostname, n.project, n.datacenter);
+  }
+  if ( n.cloudprovider == "aws" ) {
+      return resetaws(n.id, n.datacenter);
+  }
+  if ( n.cloudprovider == "alibaba" ) {
+      return resetalibaba(n.id, n.datacenter);
+  }
+  if ( n.cloudprovider == "azure" ) {
+      return resetazure(n.id, n.datacenter);
+  }
+  alert("Not implemented")
+}
+
+function terminate() {
+  var n = registry[j];
+  if ( n.cloudprovider == "gc" ) {
+      return terminategc(n.id, n.project, n.datacenter);
+  }
+  if ( n.cloudprovider == "aws" ) {
+      return terminateaws(n.id, n.datacenter);
+  }
+  if ( n.cloudprovider == "alibaba" ) {
+      return terminatealibaba(n.id, n.datacenter);
+  }
+  if ( n.cloudprovider == "azure" ) {
+      return terminateazure(n.id, n.datacenter);
+  }
+  alert("Not implemented")
+}
+
+
+function terminategc(hostname, project, zone) {
+    alert("gcloud -q compute instances delete " + hostname + " --zone=" + zone + " --project " + project);
+    return true;
+}
+
+function terminateaws(instanceid, region) {
+    alert("aws ec2 terminate-instances --instance-ids " + instanceid + " --region " + region);
+    return true;
+}
+
+function terminateazure(instanceid, region) {
+    alert("not implemented"); // TODO
+    return true;
+}
+
+function terminatealibaba(instanceid, region) {
+    alert("not implemented"); // TODO
+    return true;
+}
+
+function getlatest(stage) {
+    for (var i = 0; i < registry.length; i++) {
+        updateinfo(stage, i, registry[i]);
+    }
+}
+
+function bytes_to_mb(b) {
+    return (b/(1024*1024)).toFixed(0) + "MB";
+}
+function getBlockchainInfo(stage) {
+  var port = 80 + stage;
+  if ( stage == 0 )  port = 443;
+  var scheme = "https";
+  var info = {
+    port: port,
+    explorerURL: scheme + "://c0.wolk.com:" + port + "/app/explorer/home.html"
+  }
+  return info
+}
+
+function updateinfo(stage, i, r) {
+    var nodenumber = r.nodenumber;
+    var port = 80 + stage;
+    if ( stage == 0 )  port = 443;
+    var scheme = "https";
+    var domain = "wolk.com";
+    if ( r.consensus == 0 ) {
+	domain = "wolk.com";
+    } else {
+	domain = "wolk.com";
+    }
+    var url = scheme + "://" + r.dns + "." + domain + ":" + port + "/wolk/info";
+
+    var bl_id = "bl-" + stage + "-" + i;
+    var peers_id = "peers-" + stage + "-" + i;
+    var mem_id = "mem-" + stage + "-" + i;
+    var cache_id = "cache-" + stage + "-" + i;
+    var gor_id = "gor-" + stage + "-" + i;
+    var buildinfosum_id = "bis-" + stage + "-" + i;
+    var networkid_id = "networkid-" + stage + "-" + i;
+    var dns = r.dns + "." + domain;
+    fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(info) {
+
+            if ( info.peers != undefined ) {
+                document.getElementById(peers_id).innerHTML = info.peers;
+            }
+            var base = scheme + "://" + dns + ":" + port
+      	    var str = "";
+      	    var restart = false;
+            if ( info.blockNumber != undefined ) {
+                var blockurl = base + "/wolk/block/" + info.blockNumber;
+                str = "<a href='" + blockurl + "'>" + info.blockNumber + "</a>";
+                if ( info.isPreemptive != undefined ) {
+                  str += "<BR>" + ( info.isPreemptive ? "preemptive" : "" )
+                }
+                if ( info.consensusAlgorithm != undefined ) {
+                  str += "&nbsp;" + info.consensusAlgorithm
+            		  var minterStr = "";
+            		  var minter = 0;
+            		  var isMinter = false;
+            		  if ( info.consensusAlgorithm == "roundrobinpoa" ) {
+            			minter = ( info.blockNumber + 1 ) % 8 ;
+            		  } else if ( info.consensusAlgorithm == "poa" ) {
+            		  }
+            		  if ( ( minter == nodenumber ) && ( r.consensus > 0 ) ) {
+            			     minterStr = "<span class='minter'>Minter</span>";
+            		  }
+            		  str += "&nbsp;<B>" + ( minter ) + minterStr + "</B>";
+                }
+                if ( info.lastBlockMintedSecondsAgo != undefined ) {
+                  if ( info.lastBlockMintedSecondsAgo > 60 ) {
+                    if ( info.lastBlockMintedSecondsAgo > 999 ) {
+                      info.lastBlockMintedSecondsAgo = 999;
+                    }
+                    restart = true;
+                    cl = "problem";
+                    str += "<BR><span class='secondsago " + cl + "'>" + info.lastBlockMintedSecondsAgo + " secs ago</span>"
+                  } else {
+                    cl = "";
+                    str += "<BR><span class='secondsago'>" + info.lastBlockMintedSecondsAgo + " secs ago</span>"
+                  }
+                }
+                document.getElementById(bl_id).innerHTML = str;
+            }
+      	    if (restart) {
+      	      str += "&nbsp;<a href='javascript:restartwolk(" + stage + ", \"" + dns + "\")'>restart</a>";
+      	    }
+            document.getElementById(bl_id).innerHTML = str;
+            if ( info.alloc != undefined ) {
+              var strm = "Alloc:" + bytes_to_mb(info.alloc) + "<BR>Sys:" + bytes_to_mb(info.sys);
+              if ( info.numConnections != undefined ) {
+                strm += "<BR>NumConn:" + info.numConnections;
+              }
+              document.getElementById(mem_id).innerHTML = strm;
+            }
+            if ( info.numGoroutine != undefined ) {
+                var pprofurl = base + "/pprof/goroutine/2"
+                document.getElementById(gor_id).innerHTML = "<a href='" + pprofurl + "'>" + info.numGoroutine + "</a>";
+            }
+            if ( info.chunkCacheSize != undefined ) {
+      	        var str = "Chunk:" + info.chunkCacheSize + "<BR>" + "StateDB:" + info.stateDBCacheSize;
+                if ( info.pendingTxCount != undefined ) {
+      	           str += "<BR>PendingTX:" + info.pendingTxCount;
+      	        }
+                if ( ( info.fetchChainLength != undefined ) && ( info.fetchChainLength > 0 ) ) {
+      	           str += "<BR><u>FChainLength:</u>" + info.fetchChainLength;
+      	        }
+                if ( ( info.insertChainLength != undefined ) && ( info.insertChainLength > 1 ) ) {
+      	           str += "<BR><u>IChainLength:</u>" + info.insertChainLength;
+      	        }
+                document.getElementById(cache_id).innerHTML = str;
+            }
+            if ( info.buildInfoSum != undefined ) {
+              console.log('buildinfosum_id', info.buildInfoSum);
+              var sum = info.buildInfoSum;
+              if ( sum.length > 4 ) {
+                sum = sum.substr(0, 4);
+              }
+              document.getElementById(buildinfosum_id).innerHTML = "<code><span style='background: #" + sum + "'>"+ sum + "</span></code>";
+            }
+            if ( info.networkID != undefined ) {
+              var networkID = info.networkID % 10000;
+              console.log('networkID', networkID);
+              document.getElementById(networkid_id).innerHTML = "<code><span style='background: #CC" + networkID + "'>" + networkID + "</span></code>";
+            }
+        })
+        .catch(function(err) {
+            document.getElementById(peers_id).innerHTML = "<a href='javascript:restartwolk(" + stage + ", \"" + dns + "\")'>unk</a>";
+        });
+}
+
+function restartwolk(stage, dns) {
+	alert("restartwolk " + dns + " " + stage);
+}
+
+function updatestages(nstages) {
+    document.getElementById("testnettable").innerHTML = testnet();
+    for (var i=0; i<nstages; i++) {
+      getlatest(i);
+    }
+}
+var nstages = 4;
+var cactiurls = [
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-5&host_id=2&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-13&host_id=3&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-14&host_id=4&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-15&host_id=5&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-16&host_id=6&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-17&host_id=7&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-18&host_id=8&site_id=-1&host_template_id=-1&hgd=",
+"https://cacti.wolk.com/cacti/graph_view.php?action=tree&node=tbranch-19&host_id=9&site_id=-1&host_template_id=-1&hgd="
+];
+
+function testnet() {
+   var str = "<table width='100%'>";
+   str += "<tr bgcolor='#EECCCC'>";
+   str += "<th colspan=3>Node Info</th>";
+   for (var i=1; i<nstages; i++) {
+     var info = getBlockchainInfo(i);
+     str += "<th colspan=5>Stage " + i + " - Port:" + info.port + " [<a href='" + info.explorerURL + "' target='_new'>Explorer</a>] </th>";
+   }
+   str += "</tr>";
+   str += "<tr bgcolor='#EECCCC'>";
+   str += "<th width=300>Cloudstore Host</th>";
+   str += "<th width=50>Node</th>";
+   str += "<th width=100>Public IP</th>";
+   for (var i=1; i<nstages; i++) {
+     str += "<th width=75><a href='javascript:getlatest(" + i + ");'>BN" + i + "</a></th>";
+     str += "<th width=75>Bld/Peers" + i + "</th>";
+     str += "<th width=75>Mem" + i + "</th>";
+     str += "<th width=75>NID/GoR" + i + "</th>";
+     str += "<th width=75>Cache" + i + "</th>";
+   }
+   str += "</tr>";
+   for (var j=0; j<registry.length; j++) {
+     var r = registry[j];
+     var publicip = r.publicip;
+
+     var cl = "storage";
+     var domain = "wolk.com";
+     if ( r.consensus > 0 ) {
+       cl = "consensus";
+     } else {
+       domain = "wolk.com";
+     }
+     var nodename = r.dns + "." + domain;
+     str += "<tr class='h " + cl + "'>";
+     str += "<td class='h'>" + nodename + "<span style='float:right'><a href='javascript:reset(" + j + ");'>reset</a>&nbsp;</span>";
+     if ( ( cactiurls[r.nodenumber] != undefined ) && ( r.consensus == 1 ) ) {
+       str += "<span style='float:right'><a href='" + cactiurls[r.nodenumber] + " target='_new'>cacti</a>&nbsp;</span>";
+     }
+     str += "</td>";
+     str += "<td class='h'>" + r.nodenumber;
+     str += "<br/>" +  r.cloudprovider + "</div>";
+     str += "</td><td><code>" + publicip + "</code>";
+     str += "<div>" +  r.project + "</div>";
+     str += "<div>" +  r.datacenter + "</div>";
+     str += "</td>";
+     for (var i=1; i<nstages; i++) {
+      var port = 80 + i;
+      if ( i == 0 ) port = 443;
+      str += "<td class='hn s" + i + "'><span id='bl-" + i + "-" + j + "'></span></td>";
+      str += "<td class='hn s" + i + "'><span id='peers-" + i + "-" + j + "'>0</span><div class='infosum' id='bis-" + i + "-" + j + "'></div></td>";
+      str += "<td class='hn s" + i + "'><span id='mem-" + i + "-" + j + "'></span></td>";
+      str += "<td class='hn s" + i + "'><span class='networkid' id='networkid-" + i + "-" + j + "'></span><span id='gor-" + i + "-" + j + "'></span></td>";
+      str += "<td class='hn s" + i + "'><span id='cache-" + i + "-" + j + "'></span></td>";
+    }
+    str += "</tr>";
+  }
+  str += "</table>";
+  return str;
+}
+</script>
+</table>
+
+</script>
+<style>
+.prob { color: red; }
+</style>
+</head>
+<body onload="updatestages(nstages);">
+<h3>got wolk://? Testnets</h3>
+<div id="testnettable">
+</div>
+</body>
+</html>

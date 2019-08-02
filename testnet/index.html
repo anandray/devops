@@ -110,11 +110,11 @@ function bytes_to_mb(b) {
 }
 function getBlockchainInfo(stage) {
   var port = 80 + stage;
-  if ( stage == 0 )  port = 443;
-  var scheme = "https";
+  if (stage==0) port = 443;
   var info = {
     port: port,
-    explorerURL: scheme + "://c0.wolk.com:" + port + "/app/explorer/home.html"
+    explorerURL: "https://c0.wolk.com:" + port + "/app/explorer/home.html",
+    consensusURL: "https://testnet.wolk.com/algorand.html?stage=" + stage
   }
   return info
 }
@@ -124,7 +124,13 @@ function updateinfo(stage, i, r) {
     var port = 80 + stage;
     if ( stage == 0 )  port = 443;
     var scheme = "https";
-    var url = scheme + "://" + r.dns + ".wolk.com:" + port + "/wolk/info";
+    var domain = "wolk.com";
+    if ( r.consensus == 0 ) {
+	domain = "wolk.com";
+    } else {
+	domain = "wolk.com";
+    }
+    var url = scheme + "://" + r.dns + "." + domain + ":" + port + "/wolk/info";
 
     var bl_id = "bl-" + stage + "-" + i;
     var peers_id = "peers-" + stage + "-" + i;
@@ -133,15 +139,14 @@ function updateinfo(stage, i, r) {
     var gor_id = "gor-" + stage + "-" + i;
     var buildinfosum_id = "bis-" + stage + "-" + i;
     var networkid_id = "networkid-" + stage + "-" + i;
-    var dns = r.dns + ".wolk.com";
+    var dns = r.dns + "." + domain;
     fetch(url)
         .then(function(response) {
             return response.json();
         })
         .then(function(info) {
-
             if ( info.peers != undefined ) {
-                document.getElementById(peers_id).innerHTML = info.peers;
+                document.getElementById(peers_id).innerHTML = "<a target='_new' href=\"" + url + "\">" + info.peers + "</a>";
             }
             var base = scheme + "://" + dns + ":" + port
       	    var str = "";
@@ -154,17 +159,6 @@ function updateinfo(stage, i, r) {
                 }
                 if ( info.consensusAlgorithm != undefined ) {
                   str += "&nbsp;" + info.consensusAlgorithm
-            		  var minterStr = "";
-            		  var minter = 0;
-            		  var isMinter = false;
-            		  if ( info.consensusAlgorithm == "roundrobinpoa" ) {
-            			minter = ( info.blockNumber + 1 ) % 8 ;
-            		  } else if ( info.consensusAlgorithm == "poa" ) {
-            		  }
-            		  if ( ( minter == nodenumber ) && ( r.consensus > 0 ) ) {
-            			     minterStr = "<span class='minter'>Minter</span>";
-            		  }
-            		  str += "&nbsp;<B>" + ( minter ) + minterStr + "</B>";
                 }
                 if ( info.lastBlockMintedSecondsAgo != undefined ) {
                   if ( info.lastBlockMintedSecondsAgo > 60 ) {
@@ -210,7 +204,7 @@ function updateinfo(stage, i, r) {
                 document.getElementById(cache_id).innerHTML = str;
             }
             if ( info.buildInfoSum != undefined ) {
-              console.log('buildinfosum_id', info.buildInfoSum);
+
               var sum = info.buildInfoSum;
               if ( sum.length > 4 ) {
                 sum = sum.substr(0, 4);
@@ -219,7 +213,7 @@ function updateinfo(stage, i, r) {
             }
             if ( info.networkID != undefined ) {
               var networkID = info.networkID % 10000;
-              console.log('networkID', networkID);
+
               document.getElementById(networkid_id).innerHTML = "<code><span style='background: #CC" + networkID + "'>" + networkID + "</span></code>";
             }
         })
@@ -256,7 +250,7 @@ function testnet() {
    str += "<th colspan=3>Node Info</th>";
    for (var i=0; i<nstages; i++) {
      var info = getBlockchainInfo(i);
-     str += "<th colspan=5>Stage " + i + " - Port:" + info.port + " [<a href='" + info.explorerURL + "' target='_new'>Explorer</a>] </th>";
+     str += "<th colspan=5><a href='" + info.explorerURL + "' target='_new'>Stage " + i + " - Port:" + info.port + "</a> [<a href='" + info.consensusURL + "' target='_new'>Real-Time Consensus</a>] </th>";
    }
    str += "</tr>";
    str += "<tr bgcolor='#EECCCC'>";
@@ -275,11 +269,14 @@ function testnet() {
      var r = registry[j];
      var publicip = r.publicip;
 
-     var nodename = r.dns + ".wolk.com";
      var cl = "storage";
+     var domain = "wolk.com";
      if ( r.consensus > 0 ) {
        cl = "consensus";
+     } else {
+       domain = "wolk.com";
      }
+     var nodename = r.dns + "." + domain;
      str += "<tr class='h " + cl + "'>";
      str += "<td class='h'>" + nodename + "<span style='float:right'><a href='javascript:reset(" + j + ");'>reset</a>&nbsp;</span>";
      if ( ( cactiurls[r.nodenumber] != undefined ) && ( r.consensus == 1 ) ) {

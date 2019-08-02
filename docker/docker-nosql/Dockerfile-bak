@@ -1,0 +1,7 @@
+FROM centos
+COPY nosql /root/nosql
+COPY nosql-start.sh /
+COPY genesis.json /root/nosql/qdata/dd/
+
+ENTRYPOINT ["/nosql-start.sh"]
+CMD []

@@ -57,24 +57,33 @@
     }
 
     .final {
-      background-color: #AAFFAA;
       padding: 5px;
       margin: 5px;
-      border: 2px solid black;
+      border: 3px solid black;
+    }
+
+    .orphan {
+      padding: 5px;
+      margin: 5px;
+      border: 4px solid red;
     }
 
     .tentative {
-      background-color: #FFFFAA;
       padding: 5px;
       margin: 5px;
-      border: 1px dashed grey;
+      border: 1px dashed black;
     }
 
         .notfound {
-          background-color: #AAAAAA;
           padding: 5px;
           margin: 5px;
           border: 1px dashed grey;
+        }
+
+        .empty {
+          padding: 5px;
+          margin: 5px;
+          border: 3px dashed red;
         }
 
 
@@ -110,26 +119,63 @@
     }
   </style>
   <script>
-  var currentstage = 0;
+  var registry = [];
+  var activePort = 81;
+  var currentstage = 1;
   var maxblocknumber = 1;
     function resetgc(hostname, project, zone) {
-      alert("gcloud compute instances reset " + hostname + " --project " + project + " --zone " + zone);
+      var gctxt = "gcloud compute instances reset " + hostname + " --project " + project + " --zone " + zone;
+      var result = copyToClipboard(gctxt);
+      alert("Command Copied to Clipboard:\n" + gctxt);
       return true;
     }
 
     function resetaws(instanceid, region) {
-      alert("aws ec2 reboot-instances --instance-ids " + instanceid + " --region " + region);
+      var awstxt = "aws ec2 reboot-instances --instance-ids " + instanceid + " --region " + region;
+      var result = copyToClipboard(awstxt);
+      alert("Command Copied to Clipboard:\n" + awstxt);
       return true;
     }
 
     function resetalibaba(instanceid, region) {
-      alert("aliyuncli ecs RebootInstance --RegionId " + region + " --InstanceId " + instanceid);
+      var alibabatxt = "aliyuncli ecs RebootInstance --RegionId " + region + " --InstanceId " + instanceid;
+      var result = copyToClipboard(alibabatxt);
+      alert("Command Copied to Clipboard:\n" + alibabatxt);
       return true;
     }
 
     function resetazure(instanceid, region) {
-      alert("az vm restart -g " + region + " --ids" + instanceid);
+      var azuretxt = "az vm restart -g " + region + " --ids" + instanceid;
+      var result = copyToClipboard(azure);
+      alert("Command Copied to Clipboard:\n" + azuretxt);
       return true;
+    }
+
+    function copySSH(hostname) {
+      var sshtxt = "ssh root@" + hostname;
+      var result = copyToClipboard(sshtxt);
+      return true;
+    }
+
+    function copyToClipboard(text) {
+        if (window.clipboardData && window.clipboardData.setData) {
+            // IE specific code path to prevent textarea being shown while dialog is visible.
+            return clipboardData.setData("Text", text); 
+        } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+            var textarea = document.createElement("textarea");
+            textarea.textContent = text;
+            textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+            } catch (ex) {
+                console.warn("Copy to clipboard failed.", ex);
+                return false;
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
     }
 
     function reset(j) {
@@ -188,6 +234,7 @@
     }
 
     function getlatest() {
+  console.log("getlatest", activePort)
       for (var i = 0; i < registry.length; i++) {
         updateinfo(i, registry[i]);
       }
@@ -202,7 +249,7 @@
       var scheme = "https";
       var info = {
         port: port,
-        explorerURL: scheme + "://algorand-0bcj.wolk.com:" + port + "/app/explorer/home.html"
+        explorerURL: scheme + "://c0.wolk.com:" + port + "/app/explorer/home.html"
       }
       return info
     }
@@ -212,11 +259,16 @@
     function updateregistry(stage) {
       currentstage = stage;
       maxblocknumber = 1;
-      var url = "https://algorand." + domain + "/nodes" + stage + ".js";
+      activePort = 80 + stage; 
+      if ( activePort == 80 ) {
+	  activePort = 443;
+      }
+      var url = "https://testnet.wolk.com/algorand.js";
       var options = {
         mode: 'no-cors'
       };
       var myRequest = new Request(url, options);
+      showstagelist();
       fetch(myRequest)
         .then(function(response) {
           return response.json();
@@ -231,65 +283,49 @@
       return( i > 0 ? "YES" : "NO");
     }
 
-    function step_to_string(step) {
-      switch ( step ) {
-    	case 1000:
-    		return "PROPOSE"
-    	case 1001:
-    		return "REDUCTION_ONE"
-    	case 1002:
-    		return "REDUCTION_TWO"
-    	case 1003:
-    		return "FINAL"
-    	default:
-        return step
-      }
-    }
-
     function isvoting(dns, isvoting) {
-      url = "https://" + dns + "." + domain + "/wolk/isvoting/" + isvoting;
+      url = "https://" + dns + "." + domain + ":" + activePort + "/wolk/isvoting/" + isvoting;
       fetch(url);
     }
     function ismalicious(dns, ismalicious) {
-      var url = "https://" + dns + "." + domain + "/wolk/malicious/" + ismalicious;
+      var url = "https://" + dns + "." + domain + ":" + activePort + "/wolk/malicious/" + ismalicious;
       fetch(url);
     }
     function networklatency(dns, latency) {
-      var url = "https://" + dns + "." + domain + "/wolk/latency/" + latency;
+      var url = "https://" + dns + "." + domain + ":" + activePort + "/wolk/latency/" + latency;
       fetch(url);
     }
 
     function setisvoting(dns, isvoting) {
-      url = "https://" + dns + "." + domain + "/wolk/isvoting/" + isvoting;
+      url = "https://" + dns + "." + domain + ":" + activePort + "/wolk/isvoting/" + isvoting;
       fetch(url);
       return url;
     }
     function setismalicious(dns, ismalicious) {
-//      var url = "https://" + dns + "." + domain + "/wolk/malicious/" + ismalicious;
       var latency = 5+Math.floor(Math.random() * 5);
-      var url = "https://" + dns + "." + domain + "/wolk/latency/" + latency;
+      var url = "https://" + dns + "." + domain + ":" + activePort + "/wolk/latency/" + latency;
       fetch(url);
       return url;
     }
     function setnetworklatency(dns, latency) {
-      var url = "https://" + dns + "." + domain + "/wolk/latency/" + latency;
+      var url = "https://" + dns + "." + domain + ":" + activePort + "/wolk/latency/" + latency;
       fetch(url);
       return url;
     }
 
     function updateinfo(i, r) {
-      var stage = 0;
-      var port = 443;
+
       var scheme = "https";
-      var url = scheme + "://" + r.dns + "." + domain + ":" + port + "/wolk/info";
+      var url = scheme + "://" + r.dns + "." + domain + ":" + activePort + "/wolk/info";
 
       var bl_id = "bl-" + i;
+      var lfr_id = "lfr-" + i;
       var cs_id = "cs-" + i;
       var isv_id = "isv-" + i;
       var mal_id = "mal-" + i;
       var lat_id = "lat-" + i;
       var step_id = "step-" + i;
-      var cv_id = "cv-" + i;
+
       var ev_id = "ev-" + i;
       var tw_id = "tw-" + i;
       var peers_id = "peers-" + i;
@@ -308,11 +344,10 @@
           return response.json();
         })
         .then(function(info) {
-
           if (info.peers != undefined) {
             document.getElementById(peers_id).innerHTML = info.peers;
           }
-          var base = scheme + "://" + dns + ":" + port
+          var base = scheme + "://" + dns + ":" + activePort
           var str = "";
           var restart = false;
           if (info.blockNumber != undefined) {
@@ -344,6 +379,25 @@
             }
             document.getElementById(bl_id).innerHTML = str;
           }
+	  if ( info.lastFinalizedRound != undefined ) {
+            var bgc = "FFFFFF";
+	    var tentativeLen = 999;
+	    var blkclass = "orphan";
+	    var blkstr = "<sup>"+ " -" + "</sup>"; 
+            if ( info.lastFinalizedHash != undefined ){
+	       blkclass = "final";
+	       tentativeLen = info.blockNumber - info.lastFinalizedRound;
+	       if (tentativeLen > 0) {
+                   blkclass = "tentative";
+		   blkstr = "<sup>"+ " +" +tentativeLen + "</sup>";
+	       }
+               bgc = info.lastFinalizedHash.substring(2, 10);
+            }
+	    
+            var blockurl = base + "/wolk/block/" + info.lastFinalizedRound;
+	    innerHTMLstr = "<span class='" + blkclass + "' style='background: #" + bgc +  "'><code><a href='" + blockurl + "' target='_new'>" + info.lastFinalizedRound + "</a>" + blkstr + "</code></span>";
+            document.getElementById(lfr_id).innerHTML = innerHTMLstr;
+	  }
           if (info.consensusStatus != undefined) {
             var str = info.consensusStatus;
             if (info.consensusStatusUpdatedSecondsAgo != undefined) {
@@ -357,7 +411,7 @@
             document.getElementById(cs_id).innerHTML = str;
           }
           if (restart) {
-            str += "&nbsp;<a href='javascript:restartalgo(\"" + dns + "\")'>restart</a>";
+            str += "&nbsp;<a href='javascript:restartbin(\"" + dns + "\")'>restart</a>";
           }
           if (info.alloc != undefined) {
             var strm = "Alloc:" + bytes_to_mb(info.alloc) + "<BR>Sys:" + bytes_to_mb(info.sys);
@@ -366,19 +420,6 @@
             }
             document.getElementById(mem_id).innerHTML = strm;
           }
-
-          var cstr = ""
-          if (info.reserved != undefined && info.proposal != undefined) {
-            cstr =  "<code>" + info.proposal.blockHash.substr(0, 8) + "</code> " + info.reserved;
-            if (info.hasBlock) {
-              cstr += "!";
-            } else {
-              cstr += "&nbsp;NOT RECEIVED";
-            }
-          } else {
-            cstr = "unknown";
-          }
-          document.getElementById(consensus_id).innerHTML = cstr;
 
           if (info.expectedTentative != undefined  && info.expectedFinal != undefined ) {
             cstr = "<h3>" + info.expectedTentative + " / " + info.expectedFinal + "</h3>"
@@ -393,11 +434,7 @@
             cstr = "<code>" + step_to_string(info.step) + "</code>"
             document.getElementById(step_id).innerHTML = cstr;
           }
-
-          if (info.countVotes != undefined) {
-            cstr = "<h2>" + info.countVotes + "</h2>"
-            document.getElementById(cv_id).innerHTML = cstr;
-          }
+/*
           if (info.isVoting != undefined) {
             var isv = ( 1 - info.isVoting );
             var cls = ( info.isVoting > 0 ) ? "green" : "red";
@@ -415,38 +452,64 @@
             document.getElementById(lat_id).innerHTML = "<a class='" + cls + "' href='javascript:networklatency(\"" + r.dns + "\"," + inc + ");'>" + info.networkLatency + "</a>";
           }
 
-
+*/
           if (info.certs != undefined) {
             var bn = info.blockNumber;
+            var covered = [ false, false, false, false, false, false, false, false, false, false ];
+	    var prevHash = "";
+
             for (var c = 0; c < info.certs.length; c++) {
-              var certstr = "_";
-              var cert_id = "cert-" + c + "-" + i;
+              var certstr = "";
               var cert = info.certs[info.certs.length - 1 - c];
               var cbn = cert.BlockNumber;
               var diff = (maxblocknumber - cbn);
+	      var link = "";
               certclass = "red";
               if ((diff >= 0) && (diff < 10)) {
-                if (cert.Step == 1003 || cert.CountVotes >= info.expectedFinal) {
+		var cert_id = "cert-" + diff + "-" + i;
+
+                if (cert.CountVotes >= info.expectedFinal) {
                   certclass = "final";
-                  certstr = "F";
-                } else if (cert.Step == 404) {
-                  certclass = "notfound";
-                  certstr = "";
-                } else if (cert.Step > 0) {
-                  certclass = "tentative";
-                  certstr = "t";
                 } else {
-                  certclass = "red";
-                  certstr = ".";
+                  certclass = "tentative";
                 }
+
+		if ( cert.BlockHash == prevHash ) {
+		  link = "--";
+		} else if ( diff > 0 ) {
+		  link = "🔧";
+		  certclass = "orphan";
+	        }
+		prevHash = cert.ParentHash;
+		
                 var cv = ( cert.CountVotes != undefined ) ? cert.CountVotes : "";
                 certstr += "<sub>" + cv + "</sub>";
-              }
-              var elem = document.getElementById(cert_id)
-              if (elem != undefined && certclass != "red") {
-                elem.innerHTML = "<span class='" + certclass  + "'><code>" + cert.BlockNumber +  certstr + "</code></span>";
+		if ( cert.Empty != undefined && cert.Empty ) {
+		     certclass = "empty";
+		     certstr += "<sup>e</sup>";
+		}
+		var elem = document.getElementById(cert_id)
+                if (elem != undefined && certclass != "red") {
+                  var bgc = "FFFFFF";
+                  if ( cert.BlockHash != undefined ) {
+		      bgc = cert.BlockHash.substring(2, 10);
+		  }
+		  var u = base + "/wolk/block/" + cert.BlockNumber;
+                  elem.innerHTML = link + "<span class='" + certclass  + "' style='background: #" + bgc +  "'><code><a href='" + u + "' target='_new'>" + cert.BlockNumber + "</a>" + certstr + "</code></span>";
+		  covered[diff] = true;
+                }
               }
             }
+
+	    for ( var diff = 0 ; diff < 10; diff++ ) {
+		 if ( covered[diff] == false ) {
+			  var cert_id = "cert-" + diff + "-" + i;
+				    var elem = document.getElementById(cert_id)
+				    elem.innerHTML = "";
+		 }
+    	    }
+
+
           }
 
           if (info.numGoroutine != undefined) {
@@ -457,12 +520,6 @@
             var str = "StateDB:" + info.stateDBCacheSize;
             if (info.pendingTxCount != undefined) {
               str += "<BR>PendingTX:" + info.pendingTxCount;
-            }
-            if ((info.fetchChainLength != undefined) && (info.fetchChainLength > 0)) {
-              str += "<BR><u>FChainLength:</u>" + info.fetchChainLength;
-            }
-            if ((info.insertChainLength != undefined) && (info.insertChainLength > 1)) {
-              str += "<BR><u>IChainLength:</u>" + info.insertChainLength;
             }
             document.getElementById(cache_id).innerHTML = str;
           }
@@ -479,17 +536,18 @@
           }
         })
         .catch(function(err) {
-          document.getElementById(peers_id).innerHTML = "<a href='javascript:restartalgo(\"" + dns + "\")'>unk</a>";
+          document.getElementById(peers_id).innerHTML = "<a href='javascript:restartbin(\"" + dns + "\")'>unk</a>";
+			    console.log(err)
         });
     }
 
-    function restartalgo(dns) {
-      alert("restartalgo " + dns);
+    function restartbin(dns) {
+      alert("restartwolk " + dns + " " + currentstage);
     }
 
-    function updatestages(nstages) {
+    function updatestages() {
       document.getElementById("testnettable").innerHTML = testnet();
-      getlatest(0);
+      getlatest();
     }
 
     var ncerts = 10;
@@ -499,14 +557,15 @@
       str += "<th width=150>Cloudstore Host</th>";
       str += "<th width=50>Node</th>";
       str += "<th width=100>Public IP</th>";
-      str += "<th width=75><a href='javascript:getlatest(0);'>BN</a></th>";
-      str += "<th width=75>Proposal</th>";
-      str += "<th width=40>Voting</th>";
-      str += "<th width=40>Malicious</th>";
-      str += "<th width=40>Latency</th>";
+      str += "<th width=75><a href='javascript:getlatest();'>BN</a></th>";
+
+//      str += "<th width=40>Voting</th>";
+ //     str += "<th width=40>Malicious</th>";
+  //    str += "<th width=40>Latency</th>";
+      str += "<th width=50>LFR</th>";
       str += "<th width=275>Status</th>";
       str += "<th width=100>Step</th>";
-      str += "<th width=60>Votes</th>";
+
       str += "<th width=80>Exp#</th>";
       str += "<th width=60>Tokens</th>";
       for (var i = 0; i < ncerts; i++) {
@@ -526,27 +585,28 @@
         if (r.consensus > 0) {
           cl = "consensus";
         }
-        var infourl = "https://" + nodename + "/wolk/info";
-        var consensusurl = "https://" + nodename + "/wolk/consensus";
+	var nodeName = nodename
+        var infourl = "https://" + nodename + ":" + activePort + "/wolk/info";
+        var consensusurl = "https://" + nodename + ":" + activePort + "/wolk/consensus";
         str += "<tr class='h " + cl + "'>";
-        str += "<td class='h'><a href='" + infourl + "' target='_new'>" + nodename + "</a><span style='float:right'><a href='javascript:reset(" + j + ");'>reset</a>&nbsp;</span>";
+	var sshcmd = "javascript:copySSH(\'" + nodename + "\');";
+        str += "<td class='h'><a href='" + infourl + "' target='_new'>" + nodename + "</a><span style='float:right'><a href='javascript:reset(" + j + ");'>reset</a>&nbsp;<a href=\"" + sshcmd + "\">ssh</a>&nbsp;</span>";
         str += "</td>";
-        str += "<td class='h'>" + j;
-        str += "<br/>" + r.cloudprovider + "</div>";
-        str += "</td><td><code>" + publicip + "</code>";
-        str += "<div>" + r.project + "</div>";
+        str += "<td class='h'>" + j + "</td><td><code>" + publicip + "</code>";
+        str += "<div>" + r.cloudprovider + "</div>";
         str += "<div>" + r.datacenter + "</div>";
         str += "</td>";
         var i = 0;
-        var port = 443;
+
         str += "<td class='hn s0'><span id='bl-" + j + "'></span></td>";
-        str += "<td class='hn s0'><div id='con-" + j + "'></div><a href='" + consensusurl + "' target='_new'>consensus</a></td>";
-        str += "<td class='hn s0'><span id='isv-" + j + "'></span></td>";
-        str += "<td class='hn s0'><span id='mal-" + j + "'></span></td>";
-        str += "<td class='hn s0'><span id='lat-" + j + "'></span></td>";
+
+//        str += "<td class='hn s0'><span id='isv-" + j + "'></span></td>";
+ //       str += "<td class='hn s0'><span id='mal-" + j + "'></span></td>";
+ //       str += "<td class='hn s0'><span id='lat-" + j + "'></span></td>";
+        str += "<td class='hn s0'><span id='lfr-" + j + "'></span></td>";
         str += "<td class='hn s0'><span id='cs-" + j + "'></span></td>";
         str += "<td class='hn s0'><span id='step-" + j + "'></span></td>";
-        str += "<td class='hn s0'><span id='cv-" + j + "'></span></td>";
+
         str += "<td class='hn s0'><span id='ev-" + j + "'></span></td>";
         str += "<td class='hn s0'><span id='tw-" + j + "'></span></td>";
         for (var c = 0; c < ncerts; c++) {
@@ -566,142 +626,42 @@
       return maxblocknumber;
     }
 
-    var lastround_chaosmonkey = 1;
-
-    function runchaosmonkey()
-    {
-      var e = document.getElementById("strategy");
-      var strategy = parseInt(e.options[e.selectedIndex].value, 10);
-      if  ( strategy == 4 || strategy == 5 ) {
-      }
-      var round = getround();
-      if ( ( round == undefined ) || ( round == lastround_chaosmonkey ) ) {
-        return;
-      }
-      lastround_chaosmonkey = round;
-      console.log("strategy", strategy, "round", round)
-      switch ( strategy ) {
-        case 1:
-          runchaosmonkey1(round)
-          break;
-        case 2:
-          runchaosmonkey2(round)
-          break;
-        case 3:
-          runchaosmonkey3(round)
-          break;
-        case 4:
-          runchaosmonkey4(round)
-          break;
-        case 5:
-          runchaosmonkey5(round)
-          break;
-      }
-    }
-
-    function runchaosmonkey4(round)
-    {
-      // TODO: turn off half nodes for 2 mins, turn on
-    }
-
-
-    function runchaosmonkey3(round)
-    {
-      for (var i=0; i < registry.length; i++) {
-        cmlog(round, setnetworklatency(registry[i].dns, 5+Math.floor(Math.random() * 20)));
-      }
-    }
-
-    function runchaosmonkey2(round)
-    {
-      for (var i=0; i < registry.length; i++) {
-        if ( i % 2 == 0 ) {
-          cmlog(round, setnetworklatency(registry[i].dns, 5+Math.floor(Math.random() * 20)));
-        }
-      }
-    }
-
-    function runchaosmonkey1(round)
-    {
-      var N = 10;
-      var idx = round % N;
-      switch ( idx ) {
-        case 0: // add 10-30s latency for 1/8 nodes
-          for (var i=0; i < registry.length; i++) {
-            if ( i % 8 == 5 ) {
-              cmlog(round, setnetworklatency(registry[i].dns, 10+Math.floor(Math.random() * 20)));
-            }
-          }
-          break;
-        case 1: // do nothing
-          break;
-        case 2: // turn off voting for 7th node
-          cmlog(round, setisvoting(registry[7].dns, 0));
-          break;
-        case 3: // turn on voting for 7th node
-          cmlog(round, setisvoting(registry[7].dns, 1));
-          break;
-        case 4: // turn on ismalicious for 6th node
-          cmlog(round, setismalicious(registry[6].dns, 1));
-          break;
-        case 5: // turn off ismalicious for 6th node
-          cmlog(round, setismalicious(registry[6].dns, 0));
-          break;
-        case 6: // turn off voting for first 2 nodes
-          for (var i=0; i < 2; i++) {
-            cmlog(round, setisvoting(registry[i].dns, 0));
-          }
-          break;
-        case 7: // turn on voting for first 2 nodes
-          for (var i=0; i < 2; i++) {
-            cmlog(round, setisvoting(registry[i].dns, 1));
-          }
-          break;
-        case 8: // turn on ismalicious for first 2 nodes
-          for (var i=0; i < 2; i++) {
-              cmlog(round, setismalicious(registry[i].dns, 1));
-          }
-          break;
-        case 9: // turn off ismalicious for first 2 nodes
-          for (var i=0; i < 2; i++) {
-            cmlog(round, setismalicious(registry[i].dns, 0));
-          }
-          break;
-      }
-    }
-
-    var logs = [];
-    logs[0] = [];
-    logs[1] = [];
-    logs[2] = [];
-    logs[3] = [];
-    logs[4] = [];
-
-    function cmlog(round, url) {
-      var d = new Date();
-      var t = d.toLocaleTimeString();
-      var cmlog_id = "cmlog";
-      var elem = document.getElementById(cmlog_id)
-      if ( elem != undefined ) {
-        var str =  round + "\t" + t + "\t" + url;
-        logs[currentstage].push(str);
-        if ( logs[currentstage].length > 25 ) {
-          logs[currentstage].shift();
-        }
-        elem.value = logs[currentstage].join("\n");
-      }
-    }
-
+    function step_to_string(step) {
+       switch ( step ) {
+       case 0: return "Proposal"; 
+       case 1: return "Reduction"; 
+       case 2: return "Soft"; 
+       case 3: return "Cert"; 
+       case 4: return "Next"; 
+       case 6: return "Empty"; 
+       }	   
+       return s;
+    }			   
     function refreshDisplay() {
       setTimeout(function() {
-        getlatest(0);
+        getlatest();
         document.getElementById('blocknumber_id').innerHTML = "<font size='+3'>" + maxblocknumber + "</font>";
-        runchaosmonkey(2);
         refreshDisplay();
-      }, 500);
+      }, 2500);
     }
     refreshDisplay();
-  </script>
+
+function showstagelist() {
+  var str = "[";
+  for (var i = 0; i <= 4; i++) {
+      if ( i > 0 ) {
+        str += "&nbsp;|&nbsp;";
+      }
+      if ( i == currentstage ) {
+	   str += "<B>stage " + i + "</B>";
+      } else {
+	   str += "<a href='javascript:updateregistry(" + i + ")'>stage " + i + "</a>";
+      }
+  }
+  str += "]";
+  document.getElementById("stagelist").innerHTML = str;
+}
+</script>
   </table>
   <style>
     .prob {
@@ -709,66 +669,9 @@
     }
   </style>
 </head>
-<body onload="updateregistry(0)">
+<body onload="updateregistry(1)">
   <span id="blocknumber_id"></span>
-  <h3>got wolk://? Testnets</h3>
-  [<script>
-    for (var i = 0; i < 4; i++) {
-      document.write("<a href='javascript:updateregistry(" + i + ")'>algorand" + i + "</a>&nbsp;|&nbsp;")
-    }
-  </script><a href="/graph.html" target="_new">graph</a>]
-
-  <div id="testnettable">
-  </div>
-  <div id="chaosmonkeysection">
-  <b>Chaos Monkey:</b>
-  <select id="strategy">
-    <option value="0" SELECTED>no monkey</option>
-    <option value="1">chaosmonkey1</option>
-    <option value="2">chaosmonkey2</option>
-    <option value="3">chaosmonkey3</option>
-    <option value="4">chaosmonkey4</option>
-    <option value="5">chaosmonkey5</option>
-  </select>
-  <br/>
-  <span style="float: right; width:25%">
-  <h5>chaosmonkey1: (based on last digit of round)</h5>
-  <code>
-    case 0: // add 10-30s latency for 1/8 nodes<br/>
-    case 1: // do nothing<br/>
-    case 2: // turn off voting for 7th node<br/>
-    case 3: // turn on voting for 7th node<br/>
-    case 4: // turn on ismalicious for 6th node<br/>
-    case 5: // turn off ismalicious for 6th node<br/>
-    case 6: // turn off voting for first 2 nodes<br/>
-    case 7: // turn on voting for first 2 nodes<br/>
-    case 8: // turn on ismalicious for first 2 nodes<br/>
-    case 9: // turn off ismalicious for first 2 nodes<br/>
-  </code>
-
-  <h5>chaosmonkey2:</h5>
-  <code>
-    even rounds: delay even nodes<br/>
-  </code>
-
-  <h5>chaosmonkey3:</h5>
-  <code>
-    add random latency to ALL nodes<br/>
-  </code>
-
-  <h5>chaosmonkey4:</h5>
-  <code>
-    turn off voting for half nodes for 2 minutes, then turn them on for 2 minutes<br/>
-  </code>
-
-  <h5>chaosmonkey5:</h5>
-  <code>
-    turn off voting for half nodes for 30 minutes, then turn them on for 30 minutes<br/>
-  </code>
-
-  </span>
-  <textarea rows=30 style="width:70%" id="cmlog"></textarea>
-  </div>
+  <h3>got wolk://? Testnets</h3><div id='stagelist'></div>
+  <div id="testnettable"></div>
 </body>
-
 </html>

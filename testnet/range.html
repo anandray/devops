@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+<h2>Apache</h2>
+URL: <code>https://testnet.wolk.com/sourabh/videos/gilroy.mp4</code><br/>
+<video controls autoplay width=400>
+  <source src="gilroy.mp4" type="video/mp4">
+</video>
+
+<hr/>
+<h2>Cloudstore</h2>
+
+URL: <code>https://c0.wolk.com:84/sourabh/videos/gilroy.mp4</code><br/>
+
+<video controls autoplay width=400>
+  <source src="https://c0.wolk.com:84/sourabh/videos/gilroy.mp4" type="video/mp4">
+</video>
+
+<p>
+<b>Setup:</b><br>
+<textarea rows=12 cols=256>
+[root@d5 testnet]# /root/go/src/github.com/wolkdb/wolkjs/wcloud createaccount --httpport=84 --server=c0.wolk.com --waitfortx sourabh
+Account Already Exists Setting as DEFAULT: /root/.wolk/sourabh
+Creating account [sourabh] on blockchain: should only be INTERNAL operation
+txhash: 99c3a1c27afce58841c67d266483f608a82bd9b2a0ae24299be06185048820d6
+
+[root@d5 testnet]# /root/go/src/github.com/wolkdb/wolkjs/wcloud mkdir --httpport=84 --server=c0.wolk.com wolk://sourabh/videos
+{"txhash":"444b7fabac87a8b284c53bf51d96301dbc59db315c12930425dbfee6c77f85fa"}
+
+[root@d5 testnet]# /root/go/src/github.com/wolkdb/wolkjs/wcloud put --httpport=84 --server=c0.wolk.com gilroy.mp4 wolk://sourabh/videos/gilroy.mp4
+{"txhash":"828cd159fe6ad2c780cf10f48b9cffb9e671a2cda0790596eefb2b104bdcfa69"}
+</textarea>
+
+</body>
+</html>

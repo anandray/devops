@@ -1,0 +1,64 @@
+
+ 
+
+
+$ cd /var/www/vhosts/docker/wolk/
+
+$ docker build -t wolk1/wolk/v1.0 .
+$ docker images
+
+$ docker run --rm -it wolk1/wolk/v1.0
+
+-exit shell 
+$ exit 13
+ 
+ 
+-ssh to  container
+$ docker container ls -a
+$ docker attach dd9af59fee96        CONTAINER ID 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+gsutil cat gs://startup_scripts_us/scripts/swarm/swarm-start-firsttime.sh
+gsutil cat gs://startup_scripts_us/scripts/geth/geth-start.sh
+gsutil cat  gs://startup_scripts_us/scripts/swarm/generate-genesis.json.sh 
+gsutil cat  gs://startup_scripts_us/scripts/swarm/swarm-start-with-changed-ip.sh 
+
+
+
+
+
+docker run --rm -it -p 8500:8500 wolk1/wolk/v1.0
+ 
+ 
+ 
+nohup swarm \
+       --bzzaccount 49b2b559b085b0b567e7a79ee426914d0e9b7a20 \
+       --swap \
+       --swap-api /var/www/vhosts/data/geth.ipc \
+       --datadir /var/www/vhosts/data \
+       --verbosity 6 \
+       --ens-api /var/www/vhosts/data/geth.ipc \
+       --bzznetworkid 55333 \
+       2>> /var/www/vhosts/data/swarm.log < <(echo -n "mdotm") &
+ 
+ 
+ 
+[root@e79bbc9058da /]# curl -X POST http://35.194.21.218:8500/bzzr: -d 'yaron abc123'
+3d762759baad7c013d31339a6ce9be135edb4aeffd84aa58680a23d125ec3ee7[root@e79bbc9058da /]#
+[root@e79bbc9058da /]#
+[root@e79bbc9058da /]# curl http://0.0.0.0:8500/bzz:/3d762759baad7c013d31339a6ce9be135edb4aeffd84aa58680a23d125ec3ee7
+<a href="/bzz:/3d762759baad7c013d31339a6ce9be135edb4aeffd84aa58680a23d125ec3ee7/">Moved Permanently</a>.
+
+[root@e79bbc9058da /]# curl http://0.0.0.0:8500/bzzr:/3d762759baad7c013d31339a6ce9be135edb4aeffd84aa58680a23d125ec3ee7
+yaron abc[root@e79bbc9058da /]#
+[root@e79bbc9058da /]#
+[root@e79bbc9058da /]# curl -X POST http://127.0.0.1:8500/bzzr: -d 'yaron abcd'
+0aebb6aece586e836ae89fc1c9cd37609205d603a58cddc9141760ffd8dd8b59[root@e79bbc9058da /]#
+[root@e79bbc9058da /]# curl http://127.0.0.1:8500/bzzr:/0aebb6aece586e836ae89fc1c9cd37609205d603a58cddc9141760ffd8dd8b59
+yaron abcd[root@e79bbc9058da /]#  

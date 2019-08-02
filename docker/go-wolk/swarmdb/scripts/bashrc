@@ -1,0 +1,55 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+alias gethstart='vi /usr/local/swarmdb/scripts/geth-start.sh'
+alias startup='vi /usr/local/swarmdb/scripts/startup.sh'
+alias adminpeers='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc --exec admin.peers'
+alias remoteAddress='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc --exec admin.peers | grep re
+moteAddress'
+alias peercount='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc --exec net.peerCount'
+alias nodeinfo='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc --exec admin.nodeInfo'
+alias blocknumber='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc --exec eth.blockNumber'
+alias eth.getbalance='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc --exec eth.getBalance\(eth.
+coinbase\)'
+alias geth.account='/var/www/vhosts/go-wolk/build/bin/geth --datadir /usr/local/swarmdb/data account list 2> /dev/null | awk '{p
+rint$3}' | cut -d "{" -f2 | cut -d "}" -f1'
+alias gethinit='/var/www/vhosts/go-wolk/build/bin/geth --datadir /usr/local/swarmdb/data init /usr/local/swarmdb/data/genesis.js
+on'
+alias removedb='/var/www/vhosts/go-wolk/build/bin/geth removedb --datadir /usr/local/swarmdb/data'
+alias geth.attach='/var/www/vhosts/go-wolk/build/bin/geth attach /usr/local/swarmdb/data/geth.ipc'
+alias bashrc='vi ~/.bashrc'
+alias sourcebashrc='source ~/.bashrc'
+alias watch='watch '
+
+eth=`ifconfig eth0 | grep inet | awk '{print$2}'`
+acct=`/var/www/vhosts/go-wolk/build/bin/geth --datadir /usr/local/swarmdb/data account list 2> /dev/null | awk '{print$3}' | cut
+ -d "{" -f2 | cut -d "}" -f1`
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/var/www/vhosts/go-wolk/build/bin
+
+export GOPATH=/var/www/vhosts/go-wolk/build/_workspace/src/github.com/ethereum/go-ethereum/swarmdb
+export GOPATH=$GOPATH:/var/www/vhosts/go-wolk/build/_workspace
+export GOPATH=$GOPATH:/var/www/vhosts/go-wolk/swarmdb
+export GOROOT=/usr/local/go
+
+if [ -d /usr/local/swarmdb/data ]; then
+export DATADIR=/usr/local/swarmdb/data
+fi
+
+if [ -d /usr/local/swarmdb/data ]; then
+cd /usr/local/swarmdb/data
+fi
+
+set -o ignoreeof
