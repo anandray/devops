@@ -1,6 +1,0 @@
-MAILTO=''
-SHELL=/bin/bash
-BASH_ENV=/root/.bashrc
-
-*/1 * * * * /root/scripts/geth-start-dev.sh &>> /var/log/geth-start-dev.log
-*/1 * * * * /root/scripts/swarm-start-dev.sh &>> /var/log/swarm-start-dev.log

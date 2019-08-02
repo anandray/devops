@@ -1,5 +1,0 @@
-MAILTO=''
-SHELL=/bin/bash
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/swarmdb/scripts/:/usr/local/swarmdb/bin
-
-* * * * * sh /root/scripts/docker-image-deployment.sh &>> /var/log/docker-image-deployment.log

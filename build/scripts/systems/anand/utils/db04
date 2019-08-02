@@ -1,3 +1,0 @@
-#!/bin/sh
-mysql -A -h db04 -udb  -p1wasb0rn2 mdotm
-

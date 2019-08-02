@@ -1,4 +1,0 @@
-root     20777  0.0  0.0 106108  1136 ?        Ss   09:15   0:00 /bin/sh -c /usr/local/share/google/google-cloud-sdk/bin/gcloud compute instances list | grep www60- | grep -v chat | awk '{print"rsync -avz /root/scripts/admin_htaccess",$1":/var/www/vhosts/mdotm.com/httpdocs/.htaccess 2>&1 &"}' > /root/scripts/rsync_admin_htaccess.sh && sh /root/scripts/rsync_admin_htaccess.sh > /dev/null 2>&1
-root     20796  0.0  0.0 105964   916 ?        S    09:15   0:00 awk {print"rsync -avz /root/scripts/admin_htaccess",$1":/var/www/vhosts/mdotm.com/httpdocs/.htaccess 2>&1 &"}
-root     20960  2.0  0.1 302856  9364 ?        Ds   09:15   0:00 /usr/sbin/httpd
-root     20970  0.0  0.0 103320   856 ?        S    09:15   0:00 grep httpd

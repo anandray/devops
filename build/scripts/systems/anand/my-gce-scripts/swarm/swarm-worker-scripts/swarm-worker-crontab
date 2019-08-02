@@ -1,6 +1,0 @@
-MAILTO=''
-SHELL=/bin/bash
-BASH_ENV=/root/.bashrc
-
-*/1 * * * * /root/scripts/geth-start-worker.sh &>> /var/log/geth-start-worker.log
-*/1 * * * * /root/scripts/swarm-start-worker.sh &>> /var/log/swarm-start-worker.sh

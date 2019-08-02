@@ -1,5 +1,0 @@
-gcloud compute --project=wolk-asia-northeast-2206 instances create instance-1 --zone=us-east1-b --machine-type=custom-2-3072 --subnet=default --network-tier=PREMIUM --metadata=startup-script-url=gs://startup_scripts_us/scripts/cloudstore/startup-script-cloudstore-repo.sh --maintenance-policy=MIGRATE --service-account=797758993809-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/cloud-platform --tags=http-server,https-server --image=wolk-gc-us-east --image-project=wolk-us-east --boot-disk-size=20GB --boot-disk-type=pd-standard --boot-disk-device-name=instance-1
-
-gcloud compute --project=wolk-asia-northeast-2206 firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
-
-gcloud compute --project=wolk-asia-northeast-2206 firewall-rules create default-allow-https --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:443 --source-ranges=0.0.0.0/0 --target-tags=https-server

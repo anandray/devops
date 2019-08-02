@@ -1,3 +1,0 @@
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export GOROOT=/usr/local/go
-export PATH=$PATH:$GOROOT/bin

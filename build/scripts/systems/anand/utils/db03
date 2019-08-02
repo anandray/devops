@@ -1,3 +1,0 @@
-#!/bin/sh
-mysql -A -h db03 -udb  -p1wasb0rn2 ccdata
-

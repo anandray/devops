@@ -1,1 +1,0 @@
-/bin/sed -i 's/\#\*\/1 \* \* \* \* \/usr\/bin\/flock \-w 0 \/var\/run\/startup-script-us-new-failsafe.lock \/bin\/sh \/root\/scripts\/startup-script-us-new-failsafe.sh/\*\/1 \* \* \* \* \/usr\/bin\/flock \-w 0 \/var\/run\/startup-script-us-new-failsafe.lock \/bin\/sh \/root\/scripts\/startup-script-us-new-failsafe.sh/g' /var/spool/cron/root
