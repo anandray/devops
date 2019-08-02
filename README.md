@@ -1,13 +1,12 @@
 # Wolk Dev Ops
 
 ## Local Development 
-* [Wolk Local Development - Go, Github Desktop and Atom](https://docs.google.com/document/d/1fllGqnDC1HS5N85amvGkW7HXTtvncRQvW3B7ixkJqiU/edit)
+* [Wolk Local Development - Go, Github Desktop and Atom](https://docs.google.com/document/d/1LRcjYV_Qu0-c5g3p_ka1WqhYY48-bRjss2RgP5GSoZc/edit)
 
 ## Kubernetes / Docker
  
 * [Docker / Kubernetes Cheat Sheet](https://docs.google.com/document/d/1ZsQ3_WgvIHf92e2sPcVXuEfseoQ3mZISdmKQ2xiF9jU/edit)
-* [Docker / Kubernetes across Cloud Providers](https://docs.google.com/document/d/1LRcjYV_Qu0-c5g3p_ka1WqhYY48-bRjss2RgP5GSoZc/edit)
-* [Kubernetes Notes](https://docs.google.com/document/d/14lwSSygwcL5NJecyTUbLq1YjnyxxfrStxO4UBQPFuB8/edit)
+* [Kubernetes across Cloud Providers](https://docs.google.com/document/d/14lwSSygwcL5NJecyTUbLq1YjnyxxfrStxO4UBQPFuB8/edit)
 
 ## Ceph
 * [ceph-repair/recovery](https://docs.google.com/document/d/1XB2nTf8bXn8o8adbk8wBUacByvbor5Ppnm2l7QjgpSE/edit)
