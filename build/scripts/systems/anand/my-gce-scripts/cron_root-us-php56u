@@ -1,0 +1,33 @@
+MAILTO=''
+SHELL=/bin/bash
+BASH_ENV=/root/scripts/cron_env.bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/www/vhosts/mdotm.com/scripts/utils:/usr/local/share/google/google-cloud-sdk:/usr/local/share/google/google-cloud-sdk/bin:/usr/local/go/bin:/var/www/vhosts/crosschannel.com/go/bin/
+JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk.x86_64/
+BOTO_CONFIG="/var/www/vhosts/mdotm.com/httpdocs/gce/dataproc/.config/gcloud/legacy_credentials/anand@crosschannel.com/.boto"
+YEAR=`date +%Y`
+
+0 * * * * ssh `hostname` rm -rf /var/log/httpd/*$YEAR* &> /dev/null
+0 * * * * tail -n1000 /var/log/messages &> /var/log/messages
+0 */2 * * * /usr/sbin/logrotate -f /etc/logrotate.d/httpd &> /dev/null
+0 * * * * rm -rf /var/log/httpd/*_log-* /var/log/httpd/*log.* /var/log/*$YEAR* /var/log/btmp.* /var/log/wtmp.* &> /dev/null
+0 * * * * sh /var/www/vhosts/mdotm.com/scripts/systems/year-log-rm.sh &> /var/log/year-log-rm.log
+
+*/8 * * * * ssh `hostname` php /var/www/vhosts/mdotm.com/cron/www/checkServer.php `hostname` &> /dev/null
+*/15 * * * * /usr/bin/flock -w 0 /var/run/loadAll.lock /usr/bin/php /var/www/vhosts/mdotm.com/cron/www/loadAll.php &> /var/log/loadAll.log
+#*/20 * * * * /usr/bin/php /var/www/vhosts/mdotm.com/cron/www/tvloadAll.php &> /var/log/tvloadAll.log
+
+*/5 * * * * /bin/sh /var/www/vhosts/mdotm.com/scripts/systems/apachechk.sh &> /dev/null
+
+*/1 * * * * ssh `hostname` /bin/sh /root/scripts/hbasechk-us.sh &>> /var/log/hbasechk.log
+*/1 * * * * /bin/sh /root/scripts/git_clone.sh &> /var/log/git_clone.log
+*/1 * * * * /bin/sh /root/scripts/ssh_keys_chk.sh &> /var/log/ssh_keys_chk.log
+#*/30 * * * * sh /root/scripts/ntpdate.sh &> /dev/null
+*/30 * * * * sh /root/scripts/python_version_change.sh &> /dev/null
+0 1,13 * * * sudo gsutil -m cp -r gs://startup_scripts_us/scripts/GeoIP /usr/share &> /dev/null
+*/1 * * * * /bin/sh /root/scripts/nrpechk.sh &> /var/log/nrpechk.log
+*/1 * * * * /bin/sh /var/www/vhosts/mdotm.com/scripts/systems/syslogchk.sh &> /var/log/syslogchk.log
+*/1 * * * * /usr/bin/flock -w 0 /var/run/startup-script-us-new-failsafe-php56u.lock /bin/sh /root/scripts/startup-script-us-new-failsafe-php56u.sh &>> /var/log/startup-script-us-new-failsafe-php56u.log
+
+# git auto update
+*/1 * * * * sh /var/www/vhosts/mdotm.com/scripts/systems/git-merge-mdotm.com.sh &> /var/log/git-merge-mdotm.com.log
+*/1 * * * * sh /var/www/vhosts/crosschannel.com/scripts/systems/git-merge-crosschannel.com.sh &> /var/log/git-merge-crosschannel.com.log

@@ -1,0 +1,10 @@
+ssh ars-swarm-20171006-3xf1 sh /root/nrpe_install.sh 2>&1 &
+ssh ars-swarm-20171006-9gwx sh /root/nrpe_install.sh 2>&1 &
+ssh ars-swarm-20171006-k8pw sh /root/nrpe_install.sh 2>&1 &
+ssh bruce-swarm-10031720-kt6w sh /root/nrpe_install.sh 2>&1 &
+ssh demo-swarm-wolk-com-80kh sh /root/nrpe_install.sh 2>&1 &
+ssh swarm-mayumi-08181200-0tw5 sh /root/nrpe_install.sh 2>&1 &
+ssh swarm-mayumi-08181200-qb3x sh /root/nrpe_install.sh 2>&1 &
+ssh swarm-michael-10031740-3f69 sh /root/nrpe_install.sh 2>&1 &
+ssh swarm-michael-10031740-f42r sh /root/nrpe_install.sh 2>&1 &
+ssh swarm-michael-10031740-j34p sh /root/nrpe_install.sh 2>&1 &

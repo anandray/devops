@@ -1,0 +1,18 @@
+docker build --force-rm  -t wolkinc/cloudstore .
+docker ps
+
+# Attach to the Docker Container shell:
+docker exec -it <container_id> /bin/bash
+# Exit the Docker Container shell without killing the container with ctrl + d (or simply type exit and Enter)
+
+# To clean/delete a container:
+docker stop <container_id>;docker rm -f <container_id>
+# Obtain docker image id and delete (once the container/s have been deleted):
+docker images; docker rmi <image_id>
+
+# To pull docker from docker hub:
+docker pull wolkinc/cloudstore
+
+To create container off of the image wolkinc/cloudstore:
+docker run --name=cloudstore --rm -dit -p xxxx:80 wolkinc/cloudstore
+

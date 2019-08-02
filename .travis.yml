@@ -1,0 +1,37 @@
+notifications:
+  slack: wolk:Vou1TqEBSYIquEcy76Ni63u1
+#    on_success: always
+#    on_failure: always
+
+language: go
+go:
+  - "1.12.1"
+
+sudo: required
+
+#os: linux
+
+# Only clone the most recent commit.
+git:
+  depth: 1
+  quiet: true
+  submodules: true
+
+# safelist
+branches:
+  only:
+  - master
+
+# Skip the install step. Don't `go get` dependencies. Only build with the code in vendor/
+install: true
+
+jobs:
+  include:
+    - stage: "Cloudstore Wolk Test"
+      script: ~/gopath/src/github.com/wolkdb/cloudstore/build/scripts/travis-ssl-certs.sh; ~/gopath/src/github.com/wolkdb/cloudstore/build/scripts/sqlite3-travis-wget.sh && make wolktest -C ~/gopath/src/github.com/wolkdb/cloudstore
+
+    - stage: "Cloudstore Cloud Test"
+      script: ~/gopath/src/github.com/wolkdb/cloudstore/build/scripts/travis-google-amazon-credentials.sh; make cloudtest -C ~/gopath/src/github.com/wolkdb/cloudstore/
+
+    - stage: "Compile Wolk"
+      script: make wolk -C ~/gopath/src/github.com/wolkdb/cloudstore

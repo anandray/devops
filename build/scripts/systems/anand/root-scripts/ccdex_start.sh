@@ -1,0 +1,10 @@
+ssh -q www-ccdex-201704171400-0l2h hostname && ssh -q www-ccdex-201704171400-0l2h sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-0qvs hostname && ssh -q www-ccdex-201704171400-0qvs sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-9vm8 hostname && ssh -q www-ccdex-201704171400-9vm8 sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-b1rm hostname && ssh -q www-ccdex-201704171400-b1rm sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-cf1h hostname && ssh -q www-ccdex-201704171400-cf1h sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-gn6s hostname && ssh -q www-ccdex-201704171400-gn6s sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-hhzr hostname && ssh -q www-ccdex-201704171400-hhzr sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-k91w hostname && ssh -q www-ccdex-201704171400-k91w sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-nmg0 hostname && ssh -q www-ccdex-201704171400-nmg0 sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1
+ssh -q www-ccdex-201704171400-w0l0 hostname && ssh -q www-ccdex-201704171400-w0l0 sh /var/www/vhosts/mdotm.com/scripts/systems/ccdexchk.sh 2>&1

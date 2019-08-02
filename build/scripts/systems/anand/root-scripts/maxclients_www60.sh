@@ -1,0 +1,10 @@
+ssh -q www60-12061656-101f hostname && ssh -q www60-12061656-101f ps aux | grep -c httpd
+ssh -q www60-12061656-3dt9 hostname && ssh -q www60-12061656-3dt9 ps aux | grep -c httpd
+ssh -q www60-12061656-499h hostname && ssh -q www60-12061656-499h ps aux | grep -c httpd
+ssh -q www60-12061656-4lm9 hostname && ssh -q www60-12061656-4lm9 ps aux | grep -c httpd
+ssh -q www60-12061656-b6pv hostname && ssh -q www60-12061656-b6pv ps aux | grep -c httpd
+ssh -q www60-12061656-dl8w hostname && ssh -q www60-12061656-dl8w ps aux | grep -c httpd
+ssh -q www60-12061656-jlnm hostname && ssh -q www60-12061656-jlnm ps aux | grep -c httpd
+ssh -q www60-12061656-ps5w hostname && ssh -q www60-12061656-ps5w ps aux | grep -c httpd
+ssh -q www60-12061656-pvjf hostname && ssh -q www60-12061656-pvjf ps aux | grep -c httpd
+ssh -q www60-12061656-z0m2 hostname && ssh -q www60-12061656-z0m2 ps aux | grep -c httpd

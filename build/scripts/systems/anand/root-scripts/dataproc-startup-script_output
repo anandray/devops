@@ -1,0 +1,1184 @@
++ exec
+++ logger -s -t google-dataproc-startup
+google-dataproc-startup: + BACKGROUND_PROCESSES=()
+google-dataproc-startup: + cd /tmp
+google-dataproc-startup: + loginfo 'Starting Dataproc startup script'
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:36 UTC 2016: Starting Dataproc startup script'
+google-dataproc-startup: Mon Jul 11 21:51:36 UTC 2016: Starting Dataproc startup script
+google-dataproc-startup: + source /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/bdutil_env.sh
+google-dataproc-startup: ++ INSTALL_GCS_CONNECTOR=1
+google-dataproc-startup: ++ INSTALL_BIGQUERY_CONNECTOR=1
+google-dataproc-startup: ++ ENABLE_HDFS=1
+google-dataproc-startup: ++ ENABLE_HDFS_PERMISSIONS=false
+google-dataproc-startup: ++ ENABLE_NFS_GCS_FILE_CACHE=1
+google-dataproc-startup: ++ GCS_ADMIN=gcsadmin
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_USER=hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOG_DIRECTORY=/var/log/hadoop-hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,DRFA
+google-dataproc-startup: ++ BDCONFIG=https://storage.googleapis.com/hadoop-tools/bdconfig/bdconfig-0.28.1.tar.gz
+google-dataproc-startup: ++ HADOOP_INSTALL_DIR=/usr/lib/hadoop
+google-dataproc-startup: ++ HADOOP_CONF_DIR=/etc/hadoop/conf
+google-dataproc-startup: ++ HADOOP_MASTER_MAPREDUCE_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ HDFS_MASTER_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,RFA
+google-dataproc-startup: ++ NODEMANAGER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ NUM_WORKERS=10
+google-dataproc-startup: ++ WORKERS=()
+google-dataproc-startup: ++ CORES_PER_MAP_TASK=1.0
+google-dataproc-startup: ++ CORES_PER_REDUCE_TASK=2.0
+google-dataproc-startup: ++ CORES_PER_APP_MASTER=2.0
+google-dataproc-startup: ++ GCS_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-1.4.5-hadoop2.jar
+google-dataproc-startup: ++ BIGQUERY_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/bigquery/bigquery-connector-0.7.5-hadoop2.jar
+google-dataproc-startup: ++ HDFS_DATA_DIRS_PERM=700
+google-dataproc-startup: ++ BDUTIL_POLL_INTERVAL_SECONDS=1
+google-dataproc-startup: ++ ALPN_BOOT_CLASSPATH_FLAG=-Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar
+google-dataproc-startup: ++ SPARK_WORKER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_EXECUTOR_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_DAEMON_MEMORY_FRACTION=0.15
+google-dataproc-startup: ++ SPARK_MODE=yarn-client
+google-dataproc-startup: ++ SPARK_EXECUTORS_PER_VM=2
+google-dataproc-startup: ++ SPARK_EVENTLOG_DIR=/user/spark/eventlog
+google-dataproc-startup: ++ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ MYSQL_PASSWD=root-password
+google-dataproc-startup: ++ HIVE_PASSWD=hive-password
+google-dataproc-startup: + source /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/bdutil_helpers.sh
+google-dataproc-startup: ++ readonly APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: ++ APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: ++ hostname -s
+google-dataproc-startup: ++ sed -r 's/-(m|w-[0-9]*)$//'
+google-dataproc-startup: + PREFIX=ha6
+google-dataproc-startup: ++ /usr/share/google/get_metadata_value attributes/dataproc-master
+google-dataproc-startup: + MASTER_HOSTNAME=ha6-m
+google-dataproc-startup: ++ /usr/share/google/get_metadata_value ../project/project-id
+google-dataproc-startup: + PROJECT=crosschannel-1307
+google-dataproc-startup: ++ /usr/share/google/get_metadata_value attributes/dataproc-bucket
+google-dataproc-startup: + CONFIGBUCKET=dataproc-c0ea2ea0-5783-466c-9b2e-127978b53680-us
+google-dataproc-startup: ++ /usr/share/google/get_metadata_value attributes/dataproc-role
+google-dataproc-startup: + ROLE=Master
+google-dataproc-startup: ++ /usr/share/google/get_metadata_value attributes/dataproc-cluster-name
+google-dataproc-startup: + CLUSTER_NAME=ha6
+google-dataproc-startup: ++ /usr/share/google/get_metadata_value attributes/dataproc-worker-count
+google-dataproc-startup: + WORKER_COUNT=2
+google-dataproc-startup: + CLUSTER_PROPERTIES_DIR=/tmp/cluster/properties
+google-dataproc-startup: + HADOOP_CONF_DIR=/etc/hadoop/conf
+google-dataproc-startup: + HIVE_CONF_DIR=/etc/hive/conf
+google-dataproc-startup: + PIG_CONF_DIR=/etc/pig/conf
+google-dataproc-startup: + SPARK_CONF_DIR=/etc/spark/conf
+google-dataproc-startup: + HADOOP_PORTS=(8088 50010 50020 50070 50090)
+google-dataproc-startup: + [[ Master == \M\a\s\t\e\r ]]
+google-dataproc-startup: + SERVICES='hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode     hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager     hive-server2 hive-metastore spark-history-server     nfs-kernel-server mysql-server'
+google-dataproc-startup: + SERVICES='hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode     hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager     hive-server2 hive-metastore spark-history-server      mysql-server'
+google-dataproc-startup: + SERVICES='hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode     hadoop-mapreduce-historyserver hadoop-yarn-resourcemanager     hive-server2 hive-metastore spark-history-server      mysql'
+google-dataproc-startup: + PACKAGES_TO_UNINSTALL='hadoop-hdfs-datanode hadoop-yarn-nodemanager'
+google-dataproc-startup: + loginfo 'Uninstalling un-needed daemons'
+google-dataproc-startup: + sudo -u hdfs hdfs namenode -genclusterid
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Uninstalling un-needed daemons'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Uninstalling un-needed daemons
+google-dataproc-startup: + run_in_background apt-get remove -y --purge hadoop-hdfs-datanode hadoop-yarn-nodemanager
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + loginfo 'Generating helper scripts'
+google-dataproc-startup: + apt-get remove -y --purge hadoop-hdfs-datanode hadoop-yarn-nodemanager
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Generating helper scripts'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Generating helper scripts
+google-dataproc-startup: + cat
+google-dataproc-startup: ++ cat /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/bdutil_env.sh
+google-dataproc-startup: ++ cat /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/bdutil_helpers.sh
+google-dataproc-startup: + cat
+google-dataproc-startup: ++ cat /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/mount_disks.sh
+google-dataproc-startup: + cat
+google-dataproc-startup: ++ cat /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/setup_master_nfs.sh /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/setup_client_nfs.sh
+google-dataproc-startup: + cat
+google-dataproc-startup: ++ cat /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/configure_hadoop.sh /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/configure_hdfs.sh /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/configure_connectors.sh /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/configure_spark.sh
+google-dataproc-startup: + cp /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/bq-mapred-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/capacity-scheduler-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/core-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/distcp-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/gcs-core-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/hdfs-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/hive-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/mapred-template.xml /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/conf/yarn-template.xml /tmp
+google-dataproc-startup: + cp /usr/local/share/google/dataproc/bdutil-dataproc-20160627-RC2/configure_mrv2_mem.py /tmp
+google-dataproc-startup: + chmod +x configure_mrv2_mem.py
+google-dataproc-startup: + loginfo 'Running helper scripts'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Running helper scripts'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Running helper scripts
+google-dataproc-startup: + bash mount_disks.sh
+google-dataproc-startup: ++ INSTALL_GCS_CONNECTOR=1
+google-dataproc-startup: ++ INSTALL_BIGQUERY_CONNECTOR=1
+google-dataproc-startup: ++ ENABLE_HDFS=1
+google-dataproc-startup: ++ ENABLE_HDFS_PERMISSIONS=false
+google-dataproc-startup: ++ ENABLE_NFS_GCS_FILE_CACHE=1
+google-dataproc-startup: ++ GCS_ADMIN=gcsadmin
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_USER=hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOG_DIRECTORY=/var/log/hadoop-hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,DRFA
+google-dataproc-startup: ++ BDCONFIG=https://storage.googleapis.com/hadoop-tools/bdconfig/bdconfig-0.28.1.tar.gz
+google-dataproc-startup: ++ HADOOP_INSTALL_DIR=/usr/lib/hadoop
+google-dataproc-startup: ++ HADOOP_CONF_DIR=/etc/hadoop/conf
+google-dataproc-startup: ++ HADOOP_MASTER_MAPREDUCE_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ HDFS_MASTER_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,RFA
+google-dataproc-startup: ++ NODEMANAGER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ NUM_WORKERS=10
+google-dataproc-startup: ++ WORKERS=()
+google-dataproc-startup: ++ CORES_PER_MAP_TASK=1.0
+google-dataproc-startup: ++ CORES_PER_REDUCE_TASK=2.0
+google-dataproc-startup: ++ CORES_PER_APP_MASTER=2.0
+google-dataproc-startup: ++ GCS_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-1.4.5-hadoop2.jar
+google-dataproc-startup: ++ BIGQUERY_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/bigquery/bigquery-connector-0.7.5-hadoop2.jar
+google-dataproc-startup: ++ HDFS_DATA_DIRS_PERM=700
+google-dataproc-startup: ++ BDUTIL_POLL_INTERVAL_SECONDS=1
+google-dataproc-startup: ++ ALPN_BOOT_CLASSPATH_FLAG=-Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar
+google-dataproc-startup: ++ SPARK_WORKER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_EXECUTOR_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_DAEMON_MEMORY_FRACTION=0.15
+google-dataproc-startup: ++ SPARK_MODE=yarn-client
+google-dataproc-startup: ++ SPARK_EXECUTORS_PER_VM=2
+google-dataproc-startup: ++ SPARK_EVENTLOG_DIR=/user/spark/eventlog
+google-dataproc-startup: ++ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ MYSQL_PASSWD=root-password
+google-dataproc-startup: ++ HIVE_PASSWD=hive-password
+google-dataproc-startup: ++ PROJECT=crosschannel-1307
+google-dataproc-startup: ++ CONFIGBUCKET=dataproc-c0ea2ea0-5783-466c-9b2e-127978b53680-us
+google-dataproc-startup: ++ PREFIX=ha6
+google-dataproc-startup: ++ MASTER_HOSTNAME=ha6-m
+google-dataproc-startup: ++ NUM_WORKERS=2
+google-dataproc-startup: ++ set +a
+google-dataproc-startup: ++ readonly APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: ++ APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: Reading package lists...+ set -e
+google-dataproc-startup: + loginfo 'Running mount_disks.sh'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Running mount_disks.sh'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Running mount_disks.sh
+google-dataproc-startup: + PATH+=:/usr/share/google
+google-dataproc-startup: ++ get_metadata_value disks/
+google-dataproc-startup: + DISK_PATHS=0/
+google-dataproc-startup: + MOUNTED_DISKS=()
+google-dataproc-startup: + for DISK_PATH in '${DISK_PATHS}'
+google-dataproc-startup: ++ get_metadata_value disks/0/device-name
+google-dataproc-startup: 
+google-dataproc-startup: Building dependency tree...+ DISK_NAME=persistent-disk-0
+google-dataproc-startup: ++ get_metadata_value disks/0/index
+google-dataproc-startup: + DISK_INDEX=0
+google-dataproc-startup: ++ get_metadata_value disks/0/type
+google-dataproc-startup: + DISK_TYPE=PERSISTENT
+google-dataproc-startup: + [[ 0 == \0 ]]
+google-dataproc-startup: + echo 'Boot disk is persistent-disk-0; will not attempt to mount it.'
+google-dataproc-startup: Boot disk is persistent-disk-0; will not attempt to mount it.
+google-dataproc-startup: + continue
+google-dataproc-startup: + ((  0  ))
+google-dataproc-startup: + run_in_background bash setup_nfs.sh
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + bash configuration_script.sh
+google-dataproc-startup: + bash setup_nfs.sh
+google-dataproc-startup: ++ INSTALL_GCS_CONNECTOR=1
+google-dataproc-startup: ++ INSTALL_BIGQUERY_CONNECTOR=1
+google-dataproc-startup: ++ ENABLE_HDFS=1
+google-dataproc-startup: ++ ENABLE_HDFS_PERMISSIONS=false
+google-dataproc-startup: ++ ENABLE_NFS_GCS_FILE_CACHE=1
+google-dataproc-startup: ++ GCS_ADMIN=gcsadmin
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_USER=hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOG_DIRECTORY=/var/log/hadoop-hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,DRFA
+google-dataproc-startup: ++ BDCONFIG=https://storage.googleapis.com/hadoop-tools/bdconfig/bdconfig-0.28.1.tar.gz
+google-dataproc-startup: ++ HADOOP_INSTALL_DIR=/usr/lib/hadoop
+google-dataproc-startup: ++ HADOOP_CONF_DIR=/etc/hadoop/conf
+google-dataproc-startup: ++ HADOOP_MASTER_MAPREDUCE_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ HDFS_MASTER_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,RFA
+google-dataproc-startup: ++ NODEMANAGER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ NUM_WORKERS=10
+google-dataproc-startup: ++ INSTALL_GCS_CONNECTOR=1
+google-dataproc-startup: ++ INSTALL_BIGQUERY_CONNECTOR=1
+google-dataproc-startup: ++ ENABLE_HDFS=1
+google-dataproc-startup: ++ ENABLE_HDFS_PERMISSIONS=false
+google-dataproc-startup: ++ ENABLE_NFS_GCS_FILE_CACHE=1
+google-dataproc-startup: ++ GCS_ADMIN=gcsadmin
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_USER=hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOG_DIRECTORY=/var/log/hadoop-hdfs
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,DRFA
+google-dataproc-startup: ++ BDCONFIG=https://storage.googleapis.com/hadoop-tools/bdconfig/bdconfig-0.28.1.tar.gz
+google-dataproc-startup: ++ HADOOP_INSTALL_DIR=/usr/lib/hadoop
+google-dataproc-startup: ++ HADOOP_CONF_DIR=/etc/hadoop/conf
+google-dataproc-startup: ++ HADOOP_MASTER_MAPREDUCE_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ HDFS_MASTER_MEMORY_FRACTION=0.4
+google-dataproc-startup: ++ GCS_CACHE_CLEANER_LOGGER=INFO,RFA
+google-dataproc-startup: ++ NODEMANAGER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ NUM_WORKERS=10
+google-dataproc-startup: ++ WORKERS=()
+google-dataproc-startup: ++ CORES_PER_MAP_TASK=1.0
+google-dataproc-startup: ++ CORES_PER_REDUCE_TASK=2.0
+google-dataproc-startup: ++ CORES_PER_APP_MASTER=2.0
+google-dataproc-startup: ++ GCS_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-1.4.5-hadoop2.jar
+google-dataproc-startup: ++ BIGQUERY_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/bigquery/bigquery-connector-0.7.5-hadoop2.jar
+google-dataproc-startup: ++ HDFS_DATA_DIRS_PERM=700
+google-dataproc-startup: ++ BDUTIL_POLL_INTERVAL_SECONDS=1
+google-dataproc-startup: ++ ALPN_BOOT_CLASSPATH_FLAG=-Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar
+google-dataproc-startup: ++ SPARK_WORKER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_EXECUTOR_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_DAEMON_MEMORY_FRACTION=0.15
+google-dataproc-startup: ++ SPARK_MODE=yarn-client
+google-dataproc-startup: ++ SPARK_EXECUTORS_PER_VM=2
+google-dataproc-startup: ++ SPARK_EVENTLOG_DIR=/user/spark/eventlog
+google-dataproc-startup: ++ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ MYSQL_PASSWD=root-password
+google-dataproc-startup: ++ HIVE_PASSWD=hive-password
+google-dataproc-startup: ++ PROJECT=crosschannel-1307
+google-dataproc-startup: ++ CONFIGBUCKET=dataproc-c0ea2ea0-5783-466c-9b2e-127978b53680-us
+google-dataproc-startup: ++ PREFIX=ha6
+google-dataproc-startup: ++ MASTER_HOSTNAME=ha6-m
+google-dataproc-startup: ++ NUM_WORKERS=2
+google-dataproc-startup: ++ set +a
+google-dataproc-startup: ++ readonly APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: ++ APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: ++ WORKERS=()
+google-dataproc-startup: ++ CORES_PER_MAP_TASK=1.0
+google-dataproc-startup: ++ CORES_PER_REDUCE_TASK=2.0
+google-dataproc-startup: ++ CORES_PER_APP_MASTER=2.0
+google-dataproc-startup: ++ GCS_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-1.4.5-hadoop2.jar
+google-dataproc-startup: ++ BIGQUERY_CONNECTOR_JAR=https://storage.googleapis.com/hadoop-lib/bigquery/bigquery-connector-0.7.5-hadoop2.jar
+google-dataproc-startup: ++ HDFS_DATA_DIRS_PERM=700
+google-dataproc-startup: ++ BDUTIL_POLL_INTERVAL_SECONDS=1
+google-dataproc-startup: ++ ALPN_BOOT_CLASSPATH_FLAG=-Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar
+google-dataproc-startup: ++ SPARK_WORKER_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_EXECUTOR_MEMORY_FRACTION=0.8
+google-dataproc-startup: ++ SPARK_DAEMON_MEMORY_FRACTION=0.15
+google-dataproc-startup: ++ SPARK_MODE=yarn-client
+google-dataproc-startup: ++ SPARK_EXECUTORS_PER_VM=2
+google-dataproc-startup: ++ SPARK_EVENTLOG_DIR=/user/spark/eventlog
+google-dataproc-startup: ++ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+google-dataproc-startup: ++ MYSQL_PASSWD=root-password
+google-dataproc-startup: ++ HIVE_PASSWD=hive-password
+google-dataproc-startup: ++ PROJECT=crosschannel-1307
+google-dataproc-startup: ++ CONFIGBUCKET=dataproc-c0ea2ea0-5783-466c-9b2e-127978b53680-us
+google-dataproc-startup: ++ PREFIX=ha6
+google-dataproc-startup: ++ MASTER_HOSTNAME=ha6-m
+google-dataproc-startup: ++ NUM_WORKERS=2
+google-dataproc-startup: ++ set +a
+google-dataproc-startup: + set -e
+google-dataproc-startup: + loginfo 'Running configure_hadoop.sh'
+google-dataproc-startup: ++ readonly APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: ++ APT_SENTINEL=apt.lastupdate
+google-dataproc-startup: + set -e
+google-dataproc-startup: + loginfo 'Running setup_master_nfs.sh'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Running setup_master_nfs.sh'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Running setup_master_nfs.sh
+google-dataproc-startup: ++ hostname
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Running configure_hadoop.sh'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Running configure_hadoop.sh
+google-dataproc-startup: + export HADOOP_TMP_DIR=/hadoop/tmp
+google-dataproc-startup: + HADOOP_TMP_DIR=/hadoop/tmp
+google-dataproc-startup: + mkdir -p /hadoop/tmp
+google-dataproc-startup: + [[ ha6-m == \h\a\6\-\m ]]
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + setup_gcs_admin
+google-dataproc-startup: + '[' -z gcsadmin ']'
+google-dataproc-startup: + id -u gcsadmin
+google-dataproc-startup: + export DEFAULT_NUM_MAPS=20
+google-dataproc-startup: + DEFAULT_NUM_MAPS=20
+google-dataproc-startup: + export DEFAULT_NUM_REDUCES=8
+google-dataproc-startup: + DEFAULT_NUM_REDUCES=8
+google-dataproc-startup: ++ grep -c processor /proc/cpuinfo
+google-dataproc-startup: + export NUM_CORES=4
+google-dataproc-startup: + NUM_CORES=4
+google-dataproc-startup: ++ python -c 'print int(4 //     1.0)'
+google-dataproc-startup: ++ get_nfs_export_point
+google-dataproc-startup: ++ echo /export/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + NFS_EXPORT_POINT=/export/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + META_CACHE_DIRECTORY=/hadoop/gcs_connector_metadata_cache
+google-dataproc-startup: + mkdir -p /export/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + export MAP_SLOTS=4
+google-dataproc-startup: + MAP_SLOTS=4
+google-dataproc-startup: ++ python -c 'print int(4 //     2.0)'
+google-dataproc-startup: + mkdir -p /hadoop/gcs_connector_metadata_cache
+google-dataproc-startup: + chown gcsadmin:gcsadmin /export/hadoop_gcs_connector_metadata_cache /hadoop/gcs_connector_metadata_cache
+google-dataproc-startup: + grep -e BDUTIL_FILE_CACHE_BINDING /etc/fstab
+google-dataproc-startup: + MOUNT_OPTIONS=bind
+google-dataproc-startup: + which systemctl
+google-dataproc-startup: /bin/systemctl
+google-dataproc-startup: + MOUNT_OPTIONS+=,x-systemd.automount
+google-dataproc-startup: + MOUNT_STRING='/hadoop/gcs_connector_metadata_cache /export/hadoop_gcs_connector_metadata_cache'
+google-dataproc-startup: + MOUNT_STRING+=' none bind,x-systemd.automount 0 0 #BDUTIL_FILE_CACHE_BINDING'
+google-dataproc-startup: + echo '/hadoop/gcs_connector_metadata_cache /export/hadoop_gcs_connector_metadata_cache none bind,x-systemd.automount 0 0 #BDUTIL_FILE_CACHE_BINDING'
+google-dataproc-startup: + mount /export/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + export REDUCE_SLOTS=2
+google-dataproc-startup: + REDUCE_SLOTS=2
+google-dataproc-startup: ++ free -m
+google-dataproc-startup: ++ awk '/^Mem:/{print $2}'
+google-dataproc-startup: + grep -e BDUTIL_HADOOP_EXPORT /etc/exports
+google-dataproc-startup: + TOTAL_MEM=15075
+google-dataproc-startup: ++ python -c 'print int(15075 *     0.4)'
+google-dataproc-startup: + id -u gcsadmin
+google-dataproc-startup: 999
+google-dataproc-startup: + HADOOP_MR_MASTER_MEM_MB=6030
+google-dataproc-startup: + [[ -x configure_mrv2_mem.py ]]
+google-dataproc-startup: ++ id -u gcsadmin
+google-dataproc-startup: ++ mktemp /tmp/mrv2_XXX_tmp_env.sh
+google-dataproc-startup: + readonly GCSADMIN_UID=999
+google-dataproc-startup: + GCSADMIN_UID=999
+google-dataproc-startup: + TEMP_ENV_FILE=/tmp/mrv2_GbL_tmp_env.sh
+google-dataproc-startup: + ./configure_mrv2_mem.py --output_file /tmp/mrv2_GbL_tmp_env.sh --total_memory 15075 --available_memory_ratio 0.8 --total_cores 4 --cores_per_map 1.0 --cores_per_reduce 2.0 --cores_per_app_master 2.0
+google-dataproc-startup: ++ id -g gcsadmin
+google-dataproc-startup: + readonly GCSADMIN_GID=999
+google-dataproc-startup: + GCSADMIN_GID=999
+google-dataproc-startup: + OPTIONS_STRING='(rw,all_squash,anonuid=999'
+google-dataproc-startup: + OPTIONS_STRING='(rw,all_squash,anonuid=999,anongid=999)'
+google-dataproc-startup: + echo '/export/hadoop_gcs_connector_metadata_cache *(rw,all_squash,anonuid=999,anongid=999) #BDUTIL_HADOOP_EXPORT'
+google-dataproc-startup: + SERVICE=nfs-kernel-server
+google-dataproc-startup: + modprobe nfsd
+google-dataproc-startup: + mount -t nfsd nfsd /proc/fs/nfsd/
+google-dataproc-startup: + run_with_retries overwrite_file_with_strings /proc/sys/fs/nfs/nlm_grace_period 10
+google-dataproc-startup: + local 'cmd=overwrite_file_with_strings /proc/sys/fs/nfs/nlm_grace_period 10'
+google-dataproc-startup: + echo 'About to run '\''overwrite_file_with_strings /proc/sys/fs/nfs/nlm_grace_period 10'\'' with retries...'
+google-dataproc-startup: About to run 'overwrite_file_with_strings /proc/sys/fs/nfs/nlm_grace_period 10' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + overwrite_file_with_strings /proc/sys/fs/nfs/nlm_grace_period 10
+google-dataproc-startup: + local contents=10
+google-dataproc-startup: + local filename=/proc/sys/fs/nfs/nlm_grace_period
+google-dataproc-startup: + echo 'Overwriting /proc/sys/fs/nfs/nlm_grace_period with contents '\''10'\'''
+google-dataproc-startup: Overwriting /proc/sys/fs/nfs/nlm_grace_period with contents '10'
+google-dataproc-startup: + echo 10
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + run_with_retries overwrite_file_with_strings /proc/fs/nfsd/nfsv4gracetime 10
+google-dataproc-startup: + local 'cmd=overwrite_file_with_strings /proc/fs/nfsd/nfsv4gracetime 10'
+google-dataproc-startup: + echo 'About to run '\''overwrite_file_with_strings /proc/fs/nfsd/nfsv4gracetime 10'\'' with retries...'
+google-dataproc-startup: About to run 'overwrite_file_with_strings /proc/fs/nfsd/nfsv4gracetime 10' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + overwrite_file_with_strings /proc/fs/nfsd/nfsv4gracetime 10
+google-dataproc-startup: + local contents=10
+google-dataproc-startup: + local filename=/proc/fs/nfsd/nfsv4gracetime
+google-dataproc-startup: + echo 'Overwriting /proc/fs/nfsd/nfsv4gracetime with contents '\''10'\'''
+google-dataproc-startup: Overwriting /proc/fs/nfsd/nfsv4gracetime with contents '10'
+google-dataproc-startup: + echo 10
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + run_with_retries overwrite_file_with_strings /proc/fs/nfsd/nfsv4leasetime 10
+google-dataproc-startup: + local 'cmd=overwrite_file_with_strings /proc/fs/nfsd/nfsv4leasetime 10'
+google-dataproc-startup: + echo 'About to run '\''overwrite_file_with_strings /proc/fs/nfsd/nfsv4leasetime 10'\'' with retries...'
+google-dataproc-startup: About to run 'overwrite_file_with_strings /proc/fs/nfsd/nfsv4leasetime 10' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + overwrite_file_with_strings /proc/fs/nfsd/nfsv4leasetime 10
+google-dataproc-startup: + local contents=10
+google-dataproc-startup: + local filename=/proc/fs/nfsd/nfsv4leasetime
+google-dataproc-startup: + echo 'Overwriting /proc/fs/nfsd/nfsv4leasetime with contents '\''10'\'''
+google-dataproc-startup: Overwriting /proc/fs/nfsd/nfsv4leasetime with contents '10'
+google-dataproc-startup: + echo 10
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + update-rc.d nfs-kernel-server enable
+google-dataproc-startup: + source /tmp/mrv2_GbL_tmp_env.sh
+google-dataproc-startup: ++ export YARN_MIN_MEM_MB=1024
+google-dataproc-startup: ++ YARN_MIN_MEM_MB=1024
+google-dataproc-startup: ++ export YARN_MAX_MEM_MB=10240
+google-dataproc-startup: ++ YARN_MAX_MEM_MB=10240
+google-dataproc-startup: ++ export NODEMANAGER_MEM_MB=10240
+google-dataproc-startup: ++ NODEMANAGER_MEM_MB=10240
+google-dataproc-startup: ++ export APP_MASTER_MEM_MB=5120
+google-dataproc-startup: ++ APP_MASTER_MEM_MB=5120
+google-dataproc-startup: ++ export CORES_PER_APP_MASTER_ROUNDED=2
+google-dataproc-startup: ++ CORES_PER_APP_MASTER_ROUNDED=2
+google-dataproc-startup: ++ export APP_MASTER_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ APP_MASTER_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ export MAP_MEM_MB=2048
+google-dataproc-startup: ++ MAP_MEM_MB=2048
+google-dataproc-startup: ++ export CORES_PER_MAP_ROUNDED=1
+google-dataproc-startup: ++ CORES_PER_MAP_ROUNDED=1
+google-dataproc-startup: ++ export MAP_JAVA_OPTS=-Xmx1638m
+google-dataproc-startup: ++ MAP_JAVA_OPTS=-Xmx1638m
+google-dataproc-startup: ++ export REDUCE_MEM_MB=5120
+google-dataproc-startup: ++ REDUCE_MEM_MB=5120
+google-dataproc-startup: ++ export CORES_PER_REDUCE_ROUNDED=2
+google-dataproc-startup: ++ CORES_PER_REDUCE_ROUNDED=2
+google-dataproc-startup: ++ export REDUCE_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ REDUCE_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ python -c 'print int(15075 / 4)'
+google-dataproc-startup: + HADOOP_CLIENT_MEM_MB=3768
+google-dataproc-startup: + MAP_JAVA_OPTS+=' -Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar'
+google-dataproc-startup: + REDUCE_JAVA_OPTS+=' -Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar'
+google-dataproc-startup: + APP_MASTER_JAVA_OPTS+=' -Xbootclasspath/p:/usr/local/share/google/alpn/alpn-boot-8.1.7.v20160121.jar'
+google-dataproc-startup: + cat
+google-dataproc-startup: + MOUNTED_DISKS=($(find /mnt -maxdepth 1 -mindepth 1))
+google-dataproc-startup: ++ find /mnt -maxdepth 1 -mindepth 1
+google-dataproc-startup: + [[ 0 -eq 0 ]]
+google-dataproc-startup: + MOUNTED_DISKS=('')
+google-dataproc-startup: + MAPRED_LOCAL_DIRS=/hadoop/mapred/local
+google-dataproc-startup: + NODEMANAGER_LOCAL_DIRS=/hadoop/yarn/nm-local-dir
+google-dataproc-startup: + mkdir -p /hadoop/mapred/local /hadoop/yarn/nm-local-dir
+google-dataproc-startup: + chgrp hadoop -L -R /hadoop /hadoop/tmp /hadoop/mapred/local /hadoop/yarn/nm-local-dir
+google-dataproc-startup: + chmod g+rwx -R /hadoop /hadoop/mapred/local /hadoop/yarn/nm-local-dir
+google-dataproc-startup: + chmod 777 -R /hadoop/tmp
+google-dataproc-startup: + export MAPRED_LOCAL_DIRS=/hadoop/mapred/local
+google-dataproc-startup: + MAPRED_LOCAL_DIRS=/hadoop/mapred/local
+google-dataproc-startup: + export NODEMANAGER_LOCAL_DIRS=/hadoop/yarn/nm-local-dir
+google-dataproc-startup: + NODEMANAGER_LOCAL_DIRS=/hadoop/yarn/nm-local-dir
+google-dataproc-startup: + YARN_ENV_FILE=/etc/hadoop/conf/yarn-env.sh
+google-dataproc-startup: + [[ -f /etc/hadoop/conf/yarn-env.sh ]]
+google-dataproc-startup: + cat
+google-dataproc-startup: + touch /etc/hadoop/conf/nodes_include /etc/hadoop/conf/nodes_exclude
+google-dataproc-startup: + chown root:hadoop /etc/hadoop/conf/nodes_include /etc/hadoop/conf/nodes_exclude
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/core-site.xml --source_configuration_file core-template.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/mapred-site.xml --source_configuration_file mapred-template.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + service nfs-kernel-server start
+google-dataproc-startup: 
+google-dataproc-startup: Reading state information...
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/yarn-site.xml --source_configuration_file yarn-template.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/capacity-scheduler.xml --source_configuration_file capacity-scheduler-template.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + set -e
+google-dataproc-startup: + loginfo 'Running setup_client_nfs.sh'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:37 UTC 2016: Running setup_client_nfs.sh'
+google-dataproc-startup: Mon Jul 11 21:51:37 UTC 2016: Running setup_client_nfs.sh
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + setup_gcs_admin
+google-dataproc-startup: + '[' -z gcsadmin ']'
+google-dataproc-startup: + id -u gcsadmin
+google-dataproc-startup: ++ get_nfs_mount_point
+google-dataproc-startup: ++ echo /hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + NFS_MOUNT_POINT=/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: ++ get_nfs_export_point
+google-dataproc-startup: ++ echo /export/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + NFS_EXPORT_POINT=/export/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + mkdir -p /hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + chown gcsadmin:gcsadmin /hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + grep -e auto.hadoop_gcs_metadata_cache /etc/auto.master
+google-dataproc-startup: + echo '/- /etc/auto.hadoop_gcs_metadata_cache nobind'
+google-dataproc-startup: + MOUNT_STRING='//hadoop_gcs_connector_metadata_cache -fstype=nfs,defaults,rw,hard,intr'
+google-dataproc-startup: + MOUNT_STRING='//hadoop_gcs_connector_metadata_cache -fstype=nfs,defaults,rw,hard,intr ha6-m:/export/hadoop_gcs_connector_metadata_cache'
+google-dataproc-startup: + echo '//hadoop_gcs_connector_metadata_cache -fstype=nfs,defaults,rw,hard,intr ha6-m:/export/hadoop_gcs_connector_metadata_cache'
+google-dataproc-startup: + update-rc.d autofs enable
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/distcp-default.xml --source_configuration_file distcp-template.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: The following packages will be REMOVED:
+google-dataproc-startup:   hadoop-hdfs-datanode* hadoop-yarn-nodemanager*
+google-dataproc-startup: + bdconfig set_property --configuration_file /etc/hadoop/conf/yarn-site.xml --name yarn.log-aggregation-enable --value false --clobber
+google-dataproc-startup: + service autofs start
+google-dataproc-startup: + bdconfig set_property --configuration_file /etc/hive/conf/hive-site.xml --name hive.metastore.uris --value thrift://ha6-m:9083 --clobber
+google-dataproc-startup: + set -e
+google-dataproc-startup: + loginfo 'Running configure_hdfs.sh'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Running configure_hdfs.sh'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Running configure_hdfs.sh
+google-dataproc-startup: + HDFS_ADMIN=hdfs
+google-dataproc-startup: + export HDFS_NAME_DIR=/hadoop/dfs/name
+google-dataproc-startup: + HDFS_NAME_DIR=/hadoop/dfs/name
+google-dataproc-startup: + MOUNTED_DISKS=($(find /mnt -maxdepth 1 -mindepth 1))
+google-dataproc-startup: ++ find /mnt -maxdepth 1 -mindepth 1
+google-dataproc-startup: + [[ 0 -eq 0 ]]
+google-dataproc-startup: + MOUNTED_DISKS=('')
+google-dataproc-startup: + HDFS_DATA_DIRS=/hadoop/dfs/data
+google-dataproc-startup: + mkdir -p /hadoop/dfs /hadoop/dfs/data
+google-dataproc-startup: + chown hdfs:hadoop -L -R /hadoop/dfs /hadoop/dfs/data
+google-dataproc-startup: + chmod 700 /hadoop/dfs/data
+google-dataproc-startup: ++ awk '/^Mem:/{print $2}'
+google-dataproc-startup: ++ free -m
+google-dataproc-startup: + TOTAL_MEM=15075
+google-dataproc-startup: ++ python -c 'print int(15075 *     0.4 / 2)'
+google-dataproc-startup: + NAMENODE_MEM_MB=3015
+google-dataproc-startup: + SECONDARYNAMENODE_MEM_MB=3015
+google-dataproc-startup: + cat
+google-dataproc-startup: + MAX_FILES=16384
+google-dataproc-startup: + ulimit -n 16384
+google-dataproc-startup: + cat
+google-dataproc-startup: + export HDFS_DATA_DIRS=/hadoop/dfs/data
+google-dataproc-startup: + HDFS_DATA_DIRS=/hadoop/dfs/data
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/hdfs-site.xml --source_configuration_file hdfs-template.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + set -e
+google-dataproc-startup: + loginfo 'Running configure_connectors.sh'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Running configure_connectors.sh'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Running configure_connectors.sh
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + export GCS_METADATA_CACHE_TYPE=FILESYSTEM_BACKED
+google-dataproc-startup: + GCS_METADATA_CACHE_TYPE=FILESYSTEM_BACKED
+google-dataproc-startup: ++ get_nfs_mount_point
+google-dataproc-startup: ++ echo /hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + export GCS_FILE_CACHE_DIRECTORY=/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + GCS_FILE_CACHE_DIRECTORY=/hadoop_gcs_connector_metadata_cache
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/core-site.xml --source_configuration_file gcs-core-template.xml --resolve_environment_variables --create_if_absent --noclobber
+google-dataproc-startup: 0 upgraded, 0 newly installed, 2 to remove and 13 not upgraded.
+google-dataproc-startup: After this operation, 16.4 kB disk space will be freed.
+google-dataproc-startup: ++ hostname -s
+google-dataproc-startup: + [[ ha6-m == \h\a\6\-\m ]]
+google-dataproc-startup: + [[ 1 -ne 0 ]]
+google-dataproc-startup: + setup_cache_cleaner
+google-dataproc-startup: + mkdir -p /usr/lib/hadoop/google
+google-dataproc-startup: + local cleaner=/usr/lib/hadoop/google/clean-caches.sh
+google-dataproc-startup: + make_cache_cleaner_script
+google-dataproc-startup: + local gc_cleaner=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystemCacheCleaner
+google-dataproc-startup: + local etab=/var/lib/nfs/etab
+google-dataproc-startup: + cat
+google-dataproc-startup: + chmod 755 /usr/lib/hadoop/google/clean-caches.sh
+google-dataproc-startup: + make_cleaner_crontab /usr/lib/hadoop/google/clean-caches.sh
+google-dataproc-startup: + local cleaner=/usr/lib/hadoop/google/clean-caches.sh
+google-dataproc-startup: + cat
+google-dataproc-startup: (Reading database ... + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/mapred-site.xml --source_configuration_file bq-mapred-template.xml --resolve_environment_variables --create_if_absent --noclobber
+google-dataproc-startup: (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%+ set -e
+google-dataproc-startup: + set -o nounset
+google-dataproc-startup: + loginfo 'Running configure_spark.sh'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Running configure_spark.sh'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Running configure_spark.sh
+google-dataproc-startup: + SPARK_TMPDIR=/hadoop/spark/tmp
+google-dataproc-startup: + SPARK_WORKDIR=/hadoop/spark/work
+google-dataproc-startup: + SPARK_LOG_DIR=/var/log/spark
+google-dataproc-startup: + mkdir -p /hadoop/spark/tmp /hadoop/spark/work /var/log/spark
+google-dataproc-startup: + chown spark:spark -R /hadoop/spark /var/log/spark
+google-dataproc-startup: + chmod 1777 -R /hadoop/spark /var/log/spark
+google-dataproc-startup: + cat
+google-dataproc-startup: (Reading database ... 65%+ SPARKR_LIB_DIR=/usr/lib/spark/R/lib
+google-dataproc-startup: + [[ -f /usr/lib/spark/R/lib/sparkr.zip ]]
+google-dataproc-startup: ++ free -m
+google-dataproc-startup: ++ awk '/^Mem:/{print $2}'
+google-dataproc-startup: + TOTAL_MEM=15075
+google-dataproc-startup: ++ python -c 'print int(15075 * 0.15)'
+google-dataproc-startup: + SPARK_DAEMON_MEMORY=2261
+google-dataproc-startup: ++ python -c 'print int(15075 / 4)'
+google-dataproc-startup: + SPARK_DRIVER_MEM_MB=3768
+google-dataproc-startup: ++ python -c 'print int(3768 / 2)'
+google-dataproc-startup: + SPARK_DRIVER_MAX_RESULT_MB=1884
+google-dataproc-startup: ++ find /tmp/mrv2_GbL_tmp_env.sh
+google-dataproc-startup: ++ head -1
+google-dataproc-startup: + YARN_MEMORY_ENV=/tmp/mrv2_GbL_tmp_env.sh
+google-dataproc-startup: + source /tmp/mrv2_GbL_tmp_env.sh
+google-dataproc-startup: ++ export YARN_MIN_MEM_MB=1024
+google-dataproc-startup: ++ YARN_MIN_MEM_MB=1024
+google-dataproc-startup: ++ export YARN_MAX_MEM_MB=10240
+google-dataproc-startup: ++ YARN_MAX_MEM_MB=10240
+google-dataproc-startup: ++ export NODEMANAGER_MEM_MB=10240
+google-dataproc-startup: ++ NODEMANAGER_MEM_MB=10240
+google-dataproc-startup: ++ export APP_MASTER_MEM_MB=5120
+google-dataproc-startup: ++ APP_MASTER_MEM_MB=5120
+google-dataproc-startup: ++ export CORES_PER_APP_MASTER_ROUNDED=2
+google-dataproc-startup: ++ CORES_PER_APP_MASTER_ROUNDED=2
+google-dataproc-startup: ++ export APP_MASTER_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ APP_MASTER_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ export MAP_MEM_MB=2048
+google-dataproc-startup: ++ MAP_MEM_MB=2048
+google-dataproc-startup: ++ export CORES_PER_MAP_ROUNDED=1
+google-dataproc-startup: ++ CORES_PER_MAP_ROUNDED=1
+google-dataproc-startup: ++ export MAP_JAVA_OPTS=-Xmx1638m
+google-dataproc-startup: ++ MAP_JAVA_OPTS=-Xmx1638m
+google-dataproc-startup: ++ export REDUCE_MEM_MB=5120
+google-dataproc-startup: ++ REDUCE_MEM_MB=5120
+google-dataproc-startup: ++ export CORES_PER_REDUCE_ROUNDED=2
+google-dataproc-startup: ++ CORES_PER_REDUCE_ROUNDED=2
+google-dataproc-startup: ++ export REDUCE_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ REDUCE_JAVA_OPTS=-Xmx4096m
+google-dataproc-startup: ++ cat
+google-dataproc-startup: ++ python
+google-dataproc-startup: + SPARK_EXECUTOR_MEMORY=5120
+google-dataproc-startup: ++ python -c 'print max(1,     4 / 2)'
+google-dataproc-startup: + SPARK_EXECUTOR_CORES=2
+google-dataproc-startup: ++ python -c 'print int(max(     5120 / 11, 384))'
+google-dataproc-startup: (Reading database ... 70%+ SPARK_YARN_EXECUTOR_MEMORY_OVERHEAD=465
+google-dataproc-startup: + SPARK_EXECUTOR_MEMORY=4655
+google-dataproc-startup: + SPARK_MASTER=yarn-client
+google-dataproc-startup: ++ dpkg -s hive
+google-dataproc-startup: ++ sed -n 's/^Version: \([0-9\.]*\).*/\1/p'
+google-dataproc-startup: + HIVE_VERSION=1.2.1
+google-dataproc-startup: + cat
+google-dataproc-startup: + [[ 1.2.1 != \1\.\0\.\0 ]]
+google-dataproc-startup: + cat
+google-dataproc-startup: + cat
+google-dataproc-startup: + cat
+google-dataproc-startup: + loginfo 'Populating initial cluster member list'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Populating initial cluster member list'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Populating initial cluster member list
+google-dataproc-startup: + WORKER_COUNT=2
+google-dataproc-startup: ++ hostname -f
+google-dataproc-startup: ++ sed -E 's/[^.]+\.//'
+google-dataproc-startup: + DOMAIN=c.crosschannel-1307.internal
+google-dataproc-startup: + [[ Master == \M\a\s\t\e\r ]]
+google-dataproc-startup: + (( i=0 ))
+google-dataproc-startup: + (( i<2 ))
+google-dataproc-startup: + echo ha6-w-0.c.crosschannel-1307.internal
+google-dataproc-startup: + (( i++  ))
+google-dataproc-startup: + (( i<2 ))
+google-dataproc-startup: + echo ha6-w-1.c.crosschannel-1307.internal
+google-dataproc-startup: + (( i++  ))
+google-dataproc-startup: + (( i<2 ))
+google-dataproc-startup: + loginfo 'Merging user-specified cluster properties'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merging user-specified cluster properties'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merging user-specified cluster properties
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/capacity-scheduler.xml /etc/hadoop/conf/capacity-scheduler.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/capacity-scheduler.xml
+google-dataproc-startup: + local dest=/etc/hadoop/conf/capacity-scheduler.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/capacity-scheduler.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/capacity-scheduler.xml --source_configuration_file /tmp/cluster/properties/capacity-scheduler.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: (Reading database ... 75%+ loginfo 'Merged /tmp/cluster/properties/capacity-scheduler.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/capacity-scheduler.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/capacity-scheduler.xml.
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/core.xml /etc/hadoop/conf/core-site.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/core.xml
+google-dataproc-startup: + local dest=/etc/hadoop/conf/core-site.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/core.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/core-site.xml --source_configuration_file /tmp/cluster/properties/core.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: (Reading database ... 80%(Reading database ... 85%+ loginfo 'Merged /tmp/cluster/properties/core.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/core.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/core.xml.
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/distcp.xml /etc/hadoop/conf/distcp-default.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/distcp.xml
+google-dataproc-startup: + local dest=/etc/hadoop/conf/distcp-default.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/distcp.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/distcp-default.xml --source_configuration_file /tmp/cluster/properties/distcp.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: (Reading database ... 90%+ loginfo 'Merged /tmp/cluster/properties/distcp.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/distcp.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/distcp.xml.
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/hdfs.xml /etc/hadoop/conf/hdfs-site.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/hdfs.xml
+google-dataproc-startup: + local dest=/etc/hadoop/conf/hdfs-site.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/hdfs.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/hdfs-site.xml --source_configuration_file /tmp/cluster/properties/hdfs.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: (Reading database ... 95%(Reading database ... 100%(Reading database ... 60446 files and directories currently installed.)
+google-dataproc-startup: Removing hadoop-hdfs-datanode (2.7.2-1) ...
+google-dataproc-startup: + loginfo 'Merged /tmp/cluster/properties/hdfs.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/hdfs.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/hdfs.xml.
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/mapred.xml /etc/hadoop/conf/mapred-site.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/mapred.xml
+google-dataproc-startup: + local dest=/etc/hadoop/conf/mapred-site.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/mapred.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/mapred-site.xml --source_configuration_file /tmp/cluster/properties/mapred.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + loginfo 'Merged /tmp/cluster/properties/mapred.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/mapred.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/mapred.xml.
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/yarn.xml /etc/hadoop/conf/yarn-site.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/yarn.xml
+google-dataproc-startup: + local dest=/etc/hadoop/conf/yarn-site.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/yarn.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hadoop/conf/yarn-site.xml --source_configuration_file /tmp/cluster/properties/yarn.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: Purging configuration files for hadoop-hdfs-datanode (2.7.2-1) ...
+google-dataproc-startup: + loginfo 'Merged /tmp/cluster/properties/yarn.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/yarn.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/yarn.xml.
+google-dataproc-startup: + merge_xml_properties /tmp/cluster/properties/hive.xml /etc/hive/conf/hive-site.xml
+google-dataproc-startup: + local src=/tmp/cluster/properties/hive.xml
+google-dataproc-startup: + local dest=/etc/hive/conf/hive-site.xml
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/hive.xml ]]
+google-dataproc-startup: + bdconfig merge_configurations --configuration_file /etc/hive/conf/hive-site.xml --source_configuration_file /tmp/cluster/properties/hive.xml --resolve_environment_variables --create_if_absent --clobber
+google-dataproc-startup: + loginfo 'Merged /tmp/cluster/properties/hive.xml.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/hive.xml.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/hive.xml.
+google-dataproc-startup: + merge_java_properties /tmp/cluster/properties/pig.properties /etc/pig/conf/pig.properties
+google-dataproc-startup: + local src=/tmp/cluster/properties/pig.properties
+google-dataproc-startup: + local dest=/etc/pig/conf/pig.properties
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/pig.properties ]]
+google-dataproc-startup: + echo -e '\n# User-supplied properties.'
+google-dataproc-startup: + cat /tmp/cluster/properties/pig.properties
+google-dataproc-startup: + loginfo 'Merged /tmp/cluster/properties/pig.properties.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/pig.properties.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/pig.properties.
+google-dataproc-startup: + merge_java_properties /tmp/cluster/properties/spark.properties /etc/spark/conf/spark-defaults.conf
+google-dataproc-startup: + local src=/tmp/cluster/properties/spark.properties
+google-dataproc-startup: + local dest=/etc/spark/conf/spark-defaults.conf
+google-dataproc-startup: + [[ ! -f /tmp/cluster/properties/spark.properties ]]
+google-dataproc-startup: + echo -e '\n# User-supplied properties.'
+google-dataproc-startup: + cat /tmp/cluster/properties/spark.properties
+google-dataproc-startup: + loginfo 'Merged /tmp/cluster/properties/spark.properties.'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/spark.properties.'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Merged /tmp/cluster/properties/spark.properties.
+google-dataproc-startup: + loginfo 'Checking port availability'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:38 UTC 2016: Checking port availability'
+google-dataproc-startup: Mon Jul 11 21:51:38 UTC 2016: Checking port availability
+google-dataproc-startup: + wait_until_ports_free_and_report --max_wait_seconds 130 8088 50010 50020 50070 50090
+google-dataproc-startup: + PORTS=("$@")
+google-dataproc-startup: + echo 'Testing for available ports: --max_wait_seconds 130 8088 50010 50020 50070 50090'
+google-dataproc-startup: Testing for available ports: --max_wait_seconds 130 8088 50010 50020 50070 50090
+google-dataproc-startup: ++ tcp_ports_in_use --max_wait_seconds 130 8088 50010 50020 50070 50090
+google-dataproc-startup: ++ ports='--max_wait_seconds 130 8088 50010 50020 50070 50090'
+google-dataproc-startup: ++ in_use=()
+google-dataproc-startup: ++ local in_use
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free --max_wait_seconds
+google-dataproc-startup: ++ port=--max_wait_seconds
+google-dataproc-startup: +++ ss -a -t '( sport = :--max_wait_seconds )'
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: Error: "--max_wait_seconds" does not look like a port.
+google-dataproc-startup: Cannot parse dst/src address.
+google-dataproc-startup: ++ ss_lines=0
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free 130
+google-dataproc-startup: ++ port=130
+google-dataproc-startup: +++ ss -a -t '( sport = :130 )'
+google-dataproc-startup: Removing hadoop-yarn-nodemanager (2.7.2-1) ...
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: ++ ss_lines=1
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free 8088
+google-dataproc-startup: ++ port=8088
+google-dataproc-startup: +++ ss -a -t '( sport = :8088 )'
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: ++ ss_lines=1
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free 50010
+google-dataproc-startup: ++ port=50010
+google-dataproc-startup: +++ ss -a -t '( sport = :50010 )'
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: ++ ss_lines=1
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free 50020
+google-dataproc-startup: ++ port=50020
+google-dataproc-startup: +++ ss -a -t '( sport = :50020 )'
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: ++ ss_lines=1
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free 50070
+google-dataproc-startup: ++ port=50070
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: +++ ss -a -t '( sport = :50070 )'
+google-dataproc-startup: ++ ss_lines=1
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ for p in '$ports'
+google-dataproc-startup: ++ tcp_port_is_free 50090
+google-dataproc-startup: ++ port=50090
+google-dataproc-startup: +++ ss -a -t '( sport = :50090 )'
+google-dataproc-startup: +++ wc -l
+google-dataproc-startup: ++ ss_lines=1
+google-dataproc-startup: ++ return 0
+google-dataproc-startup: ++ echo
+google-dataproc-startup: + local in_use=
+google-dataproc-startup: + [[ '' == '' ]]
+google-dataproc-startup: + echo 'All tested ports are available.'
+google-dataproc-startup: All tested ports are available.
+google-dataproc-startup: + return 0
+google-dataproc-startup: + loginfo 'Starting services'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:39 UTC 2016: Starting services'
+google-dataproc-startup: Mon Jul 11 21:51:39 UTC 2016: Starting services
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + run_in_background setup_service hadoop-hdfs-namenode
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + run_in_background setup_service hadoop-hdfs-secondarynamenode
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + setup_service hadoop-hdfs-secondarynamenode
+google-dataproc-startup: + run_in_background setup_service hadoop-mapreduce-historyserver
+google-dataproc-startup: + local service=hadoop-hdfs-secondarynamenode
+google-dataproc-startup: + [[ hadoop-hdfs-secondarynamenode == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + run_in_background update-rc.d hadoop-hdfs-secondarynamenode enable
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + run_in_background setup_service hadoop-yarn-resourcemanager
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ hadoop-hdfs-secondarynamenode == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + run_with_retries systemctl start hadoop-hdfs-secondarynamenode
+google-dataproc-startup: + run_in_background setup_service hive-server2
+google-dataproc-startup: + local 'cmd=systemctl start hadoop-hdfs-secondarynamenode'
+google-dataproc-startup: + echo 'About to run '\''systemctl start hadoop-hdfs-secondarynamenode'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start hadoop-hdfs-secondarynamenode' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start hadoop-hdfs-secondarynamenode
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + run_in_background setup_service hive-metastore
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + setup_service hadoop-mapreduce-historyserver
+google-dataproc-startup: + local service=hadoop-mapreduce-historyserver
+google-dataproc-startup: + [[ hadoop-mapreduce-historyserver == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + run_in_background update-rc.d hadoop-mapreduce-historyserver enable
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + run_in_background setup_service spark-history-server
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ hadoop-mapreduce-historyserver == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + run_with_retries systemctl start hadoop-mapreduce-historyserver
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + local 'cmd=systemctl start hadoop-mapreduce-historyserver'
+google-dataproc-startup: + echo 'About to run '\''systemctl start hadoop-mapreduce-historyserver'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start hadoop-mapreduce-historyserver' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + for SERVICE in '${SERVICES}'
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + run_in_background setup_service mysql
+google-dataproc-startup: + systemctl start hadoop-mapreduce-historyserver
+google-dataproc-startup: + update-rc.d hadoop-hdfs-secondarynamenode enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + loginfo 'Waiting on async proccesses'
+google-dataproc-startup: + update-rc.d hadoop-mapreduce-historyserver enable
+google-dataproc-startup: + setup_service hive-metastore
+google-dataproc-startup: + local service=hive-metastore
+google-dataproc-startup: + [[ hive-metastore == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + run_in_background update-rc.d hive-metastore enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ hive-metastore == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + run_with_retries systemctl start hive-metastore
+google-dataproc-startup: + local 'cmd=systemctl start hive-metastore'
+google-dataproc-startup: + echo 'About to run '\''systemctl start hive-metastore'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start hive-metastore' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start hive-metastore
+google-dataproc-startup: + setup_service hadoop-hdfs-namenode
+google-dataproc-startup: + local service=hadoop-hdfs-namenode
+google-dataproc-startup: + [[ hadoop-hdfs-namenode == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + loginfo 'Formatting NameNode'
+google-dataproc-startup: + setup_service hadoop-yarn-resourcemanager
+google-dataproc-startup: + local service=hadoop-yarn-resourcemanager
+google-dataproc-startup: + [[ hadoop-yarn-resourcemanager == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + run_in_background update-rc.d hadoop-yarn-resourcemanager enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ hadoop-yarn-resourcemanager == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + run_with_retries systemctl start hadoop-yarn-resourcemanager
+google-dataproc-startup: + local 'cmd=systemctl start hadoop-yarn-resourcemanager'
+google-dataproc-startup: + echo 'About to run '\''systemctl start hadoop-yarn-resourcemanager'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start hadoop-yarn-resourcemanager' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start hadoop-yarn-resourcemanager
+google-dataproc-startup: + update-rc.d hive-metastore enable
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + update-rc.d hadoop-yarn-resourcemanager enable
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:39 UTC 2016: Formatting NameNode'
+google-dataproc-startup: Mon Jul 11 21:51:39 UTC 2016: Formatting NameNode
+google-dataproc-startup: + service hadoop-hdfs-namenode init
+google-dataproc-startup: + setup_service spark-history-server
+google-dataproc-startup: + local service=spark-history-server
+google-dataproc-startup: + [[ spark-history-server == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + run_in_background update-rc.d spark-history-server enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ spark-history-server == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + return
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:39 UTC 2016: Waiting on async proccesses'
+google-dataproc-startup: Mon Jul 11 21:51:39 UTC 2016: Waiting on async proccesses
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1322 -o %a
+google-dataproc-startup: + update-rc.d spark-history-server enable
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 1322
+google-dataproc-startup: + setup_service hive-server2
+google-dataproc-startup: + local service=hive-server2
+google-dataproc-startup: + [[ hive-server2 == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + run_in_background update-rc.d hive-server2 enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ hive-server2 == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + run_with_retries systemctl start hive-server2
+google-dataproc-startup: + local 'cmd=systemctl start hive-server2'
+google-dataproc-startup: + echo 'About to run '\''systemctl start hive-server2'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start hive-server2' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start hive-server2
+google-dataproc-startup: + setup_service mysql
+google-dataproc-startup: + local service=mysql
+google-dataproc-startup: + update-rc.d hive-server2 enable
+google-dataproc-startup: + [[ mysql == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + run_in_background update-rc.d mysql enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ mysql == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + run_with_retries systemctl start mysql
+google-dataproc-startup: + local 'cmd=systemctl start mysql'
+google-dataproc-startup: + echo 'About to run '\''systemctl start mysql'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start mysql' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start mysql
+google-dataproc-startup: + update-rc.d mysql enable
+google-dataproc-startup: insserv: can not remove(../rc2.d/K01spark-history-server): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc3.d/K01hive-server2): No such file or directory
+google-dataproc-startup: Purging configuration files for hadoop-yarn-nodemanager (2.7.2-1) ...
+google-dataproc-startup: insserv: can not remove(../rc5.d/S01hadoop-yarn-resourcemanager): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc5.d/S01hadoop-hdfs-secondarynamenode): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc5.d/S01hive-metastore): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01spark-history-server): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01mysql): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hadoop-yarn-resourcemanager): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hadoop-hdfs-secondarynamenode): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hive-metastore): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hive-server2): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc3.d/S01hive-server2): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc5.d/S01hive-server2): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hadoop-hdfs-secondarynamenode): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hive-metastore): No such file or directory
+google-dataproc-startup: insserv: can not remove(../rc4.d/S01hive-server2): No such file or directory
+google-dataproc-startup: insserv: warning: current start runlevel(s) (2 3 5) of script `mysql' overrides LSB defaults (2 3 4 5).
+google-dataproc-startup: insserv: warning: current start runlevel(s) (2 3 5) of script `hive-server2' overrides LSB defaults (2 3 4 5).
+google-dataproc-startup: 16/07/11 21:51:41 INFO namenode.NameNode: STARTUP_MSG: 
+google-dataproc-startup: /************************************************************
+google-dataproc-startup: STARTUP_MSG: Starting NameNode
+google-dataproc-startup: STARTUP_MSG:   host = ha6-m.c.crosschannel-1307.internal/10.128.0.9
+google-dataproc-startup: STARTUP_MSG:   args = [-format]
+google-dataproc-startup: STARTUP_MSG:   version = 2.7.2
+google-dataproc-startup: STARTUP_MSG:   classpath = /etc/hadoop/conf:/usr/lib/hadoop/lib/api-util-1.0.0-M20.jar:/usr/lib/hadoop/lib/commons-httpclient-3.1.jar:/usr/lib/hadoop/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop/lib/htrace-core-3.1.0-incubating.jar:/usr/lib/hadoop/lib/commons-configuration-1.6.jar:/usr/lib/hadoop/lib/jetty-6.1.26.jar:/usr/lib/hadoop/lib/junit-4.11.jar:/usr/lib/hadoop/lib/jackson-mapper-asl-1.9.13.jar:/usr/lib/hadoop/lib/httpcore-4.2.5.jar:/usr/lib/hadoop/lib/commons-io-2.4.jar:/usr/lib/hadoop/lib/mockito-all-1.8.5.jar:/usr/lib/hadoop/lib/commons-math3-3.1.1.jar:/usr/lib/hadoop/lib/curator-recipes-2.7.1.jar:/usr/lib/hadoop/lib/commons-lang-2.6.jar:/usr/lib/hadoop/lib/zookeeper-3.4.6.jar:/usr/lib/hadoop/lib/jaxb-api-2.2.2.jar:/usr/lib/hadoop/lib/api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop/lib/gson-2.2.4.jar:/usr/lib/hadoop/lib/httpclient-4.2.5.jar:/usr/lib/hadoop/lib/xmlenc-0.52.jar:/usr/lib/hadoop/lib/gcs-connector-1.4.5-hadoop2.jar:/usr/lib/hadoop/lib/stax-api-1.0-2.jar:/usr/lib/hadoop/lib/apacheds-i18n-2.0.0-
+google-dataproc-startup: M15.jar:/usr/lib/hadoop/lib/commons-digester-1.8.jar:/usr/lib/hadoop/lib/jackson-core-asl-1.9.13.jar:/usr/lib/hadoop/lib/commons-collections-3.2.2.jar:/usr/lib/hadoop/lib/netty-tcnative-1.1.33.Fork12-linux-x86_64.jar:/usr/lib/hadoop/lib/jetty-util-6.1.26.jar:/usr/lib/hadoop/lib/jersey-core-1.9.jar:/usr/lib/hadoop/lib/apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop/lib/jsp-api-2.1.jar:/usr/lib/hadoop/lib/jsr305-3.0.0.jar:/usr/lib/hadoop/lib/log4j-1.2.17.jar:/usr/lib/hadoop/lib/jettison-1.1.jar:/usr/lib/hadoop/lib/xz-1.0.jar:/usr/lib/hadoop/lib/commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop/lib/java-xmlbuilder-0.4.jar:/usr/lib/hadoop/lib/jackson-xc-1.9.13.jar:/usr/lib/hadoop/lib/jets3t-0.9.0.jar:/usr/lib/hadoop/lib/jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop/lib/commons-codec-1.4.jar:/usr/lib/hadoop/lib/curator-client-2.7.1.jar:/usr/lib/hadoop/lib/paranamer-2.3.jar:/usr/lib/hadoop/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop/lib/jersey-json-1.9.jar:/usr/lib/hadoop/l
+google-dataproc-startup: ib/commons-beanutils-1.7.0.jar:/usr/lib/hadoop/lib/servlet-api-2.5.jar:/usr/lib/hadoop/lib/bigquery-connector-0.7.5-hadoop2.jar:/usr/lib/hadoop/lib/jersey-server-1.9.jar:/usr/lib/hadoop/lib/curator-framework-2.7.1.jar:/usr/lib/hadoop/lib/jsch-0.1.42.jar:/usr/lib/hadoop/lib/jackson-jaxrs-1.9.13.jar:/usr/lib/hadoop/lib/asm-3.2.jar:/usr/lib/hadoop/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop/lib/slf4j-api-1.7.10.jar:/usr/lib/hadoop/lib/guava-11.0.2.jar:/usr/lib/hadoop/lib/activation-1.1.jar:/usr/lib/hadoop/lib/slf4j-log4j12-1.7.10.jar:/usr/lib/hadoop/lib/commons-net-3.1.jar:/usr/lib/hadoop/lib/commons-cli-1.2.jar:/usr/lib/hadoop/lib/avro-1.7.4.jar:/usr/lib/hadoop/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop/.//hadoop-common-2.7.2-tests.jar:/usr/lib/hadoop/.//hadoop-auth.jar:/usr/lib/hadoop/.//hadoop-nfs.jar:/usr/lib/hadoop/.//hadoop-nfs-2.7.2.jar:/usr/lib/hadoop/.//hadoop-common.jar:/usr/lib/hadoop/.//hadoop-annotations.jar:/usr/lib/hadoop/.//hadoop-auth-2.7.2.jar:/usr
+google-dataproc-startup: /lib/hadoop/.//hadoop-annotations-2.7.2.jar:/usr/lib/hadoop/.//hadoop-common-2.7.2.jar:/usr/lib/hadoop-hdfs/./:/usr/lib/hadoop-hdfs/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-hdfs/lib/htrace-core-3.1.0-incubating.jar:/usr/lib/hadoop-hdfs/lib/jetty-6.1.26.jar:/usr/lib/hadoop-hdfs/lib/jackson-mapper-asl-1.9.13.jar:/usr/lib/hadoop-hdfs/lib/commons-io-2.4.jar:/usr/lib/hadoop-hdfs/lib/commons-lang-2.6.jar:/usr/lib/hadoop-hdfs/lib/xmlenc-0.52.jar:/usr/lib/hadoop-hdfs/lib/commons-daemon-1.0.13.jar:/usr/lib/hadoop-hdfs/lib/xercesImpl-2.9.1.jar:/usr/lib/hadoop-hdfs/lib/netty-all-4.0.23.Final.jar:/usr/lib/hadoop-hdfs/lib/jackson-core-asl-1.9.13.jar:/usr/lib/hadoop-hdfs/lib/jetty-util-6.1.26.jar:/usr/lib/hadoop-hdfs/lib/jersey-core-1.9.jar:/usr/lib/hadoop-hdfs/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-hdfs/lib/jsr305-3.0.0.jar:/usr/lib/hadoop-hdfs/lib/log4j-1.2.17.jar:/usr/lib/hadoop-hdfs/lib/xml-apis-1.3.04.jar:/usr/lib/hadoop-hdfs/lib/commons-codec-1.4.jar:/usr/lib/hadoop-hdfs/lib/commons-logging-1.1.3.jar:/usr/lib
+google-dataproc-startup: /hadoop-hdfs/lib/servlet-api-2.5.jar:/usr/lib/hadoop-hdfs/lib/jersey-server-1.9.jar:/usr/lib/hadoop-hdfs/lib/asm-3.2.jar:/usr/lib/hadoop-hdfs/lib/guava-11.0.2.jar:/usr/lib/hadoop-hdfs/lib/commons-cli-1.2.jar:/usr/lib/hadoop-hdfs/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-2.7.2.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-2.7.2-tests.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-nfs-2.7.2.jar:/usr/lib/hadoop-hdfs/.//hadoop-hdfs-nfs.jar:/usr/lib/hadoop-yarn/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-yarn/lib/jersey-client-1.9.jar:/usr/lib/hadoop-yarn/lib/guice-3.0.jar:/usr/lib/hadoop-yarn/lib/zookeeper-3.4.6-tests.jar:/usr/lib/hadoop-yarn/lib/jetty-6.1.26.jar:/usr/lib/hadoop-yarn/lib/jackson-mapper-asl-1.9.13.jar:/usr/lib/hadoop-yarn/lib/commons-io-2.4.jar:/usr/lib/hadoop-yarn/lib/commons-lang-2.6.jar:/usr/lib/hadoop-yarn/lib/zookeeper-3.4.6.jar:/usr/lib/hadoop-yarn/lib/jaxb-api-2.2.2.jar:/usr/lib/hadoop-yarn/lib/stax-api-1.0-2.jar:/usr/lib/hadoop-yarn/lib/jacks
+google-dataproc-startup: on-core-asl-1.9.13.jar:/usr/lib/hadoop-yarn/lib/commons-collections-3.2.2.jar:/usr/lib/hadoop-yarn/lib/jetty-util-6.1.26.jar:/usr/lib/hadoop-yarn/lib/jersey-core-1.9.jar:/usr/lib/hadoop-yarn/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-yarn/lib/jsr305-3.0.0.jar:/usr/lib/hadoop-yarn/lib/log4j-1.2.17.jar:/usr/lib/hadoop-yarn/lib/jettison-1.1.jar:/usr/lib/hadoop-yarn/lib/xz-1.0.jar:/usr/lib/hadoop-yarn/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-yarn/lib/jackson-xc-1.9.13.jar:/usr/lib/hadoop-yarn/lib/jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-yarn/lib/commons-codec-1.4.jar:/usr/lib/hadoop-yarn/lib/commons-logging-1.1.3.jar:/usr/lib/hadoop-yarn/lib/jersey-json-1.9.jar:/usr/lib/hadoop-yarn/lib/aopalliance-1.0.jar:/usr/lib/hadoop-yarn/lib/servlet-api-2.5.jar:/usr/lib/hadoop-yarn/lib/jersey-server-1.9.jar:/usr/lib/hadoop-yarn/lib/javax.inject-1.jar:/usr/lib/hadoop-yarn/lib/jackson-jaxrs-1.9.13.jar:/usr/lib/hadoop-yarn/lib/asm-3.2.jar:/usr/lib/hadoop-yarn/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-yarn/lib/jersey-guice-1
+google-dataproc-startup: .9.jar:/usr/lib/hadoop-yarn/lib/guava-11.0.2.jar:/usr/lib/hadoop-yarn/lib/activation-1.1.jar:/usr/lib/hadoop-yarn/lib/commons-cli-1.2.jar:/usr/lib/hadoop-yarn/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-distributedshell-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-resourcemanager-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-sharedcachemanager-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-nodemanager.jar:/usr/lib/hadoop-
+google-dataproc-startup: yarn/.//hadoop-yarn-server-applicationhistoryservice-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-common-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-tests.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-api-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-web-proxy.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-applications-unmanaged-am-launcher.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-applicationhistoryservice.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-client-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-common-2.7.2.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-registry.jar:/usr/lib/hadoop-yarn/.//hadoop-yarn-server-sharedcachemanager.jar:/usr/lib/hadoop-mapreduce/lib/protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/lib/guice-3.0.jar:/usr/lib/hadoop-mapreduce/lib/junit-4.11.jar:/usr/lib/hadoop-mapreduce/lib/jackson-mapper-asl-1.9.13.jar:/usr/lib/hadoop-mapreduce/lib/commons-io-2.4.jar:/usr/lib/hadoop-m
+google-dataproc-startup: apreduce/lib/jackson-core-asl-1.9.13.jar:/usr/lib/hadoop-mapreduce/lib/jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/lib/leveldbjni-all-1.8.jar:/usr/lib/hadoop-mapreduce/lib/log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/lib/xz-1.0.jar:/usr/lib/hadoop-mapreduce/lib/guice-servlet-3.0.jar:/usr/lib/hadoop-mapreduce/lib/paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/lib/hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/lib/aopalliance-1.0.jar:/usr/lib/hadoop-mapreduce/lib/jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/lib/javax.inject-1.jar:/usr/lib/hadoop-mapreduce/lib/asm-3.2.jar:/usr/lib/hadoop-mapreduce/lib/commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/lib/jersey-guice-1.9.jar:/usr/lib/hadoop-mapreduce/lib/avro-1.7.4.jar:/usr/lib/hadoop-mapreduce/lib/netty-3.6.2.Final.jar:/usr/lib/hadoop-mapreduce/lib/snappy-java-1.0.4.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//api-util-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//metrics-core-3.0.1.jar:/usr/lib/hadoop-m
+google-dataproc-startup: apreduce/.//hadoop-extras-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//commons-httpclient-3.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//protobuf-java-2.5.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin.jar:/usr/lib/hadoop-mapreduce/.//htrace-core-3.1.0-incubating.jar:/usr/lib/hadoop-mapreduce/.//commons-configuration-1.6.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//jackson-annotations-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jetty-6.1.26.jar:/usr/lib/hadoop-mapreduce/.//junit-4.11.jar:/usr/lib/hadoop-mapreduce/.//jackson-mapper-asl-1.9.13.jar:/usr/lib/hadoop-mapreduce/.//httpcore-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//commons-io-2.4.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth.jar:/usr/lib/hadoop-mapreduce/.//mockito-all-1.8.5.jar:/usr/lib/hadoop-mapreduce/.//commons-math3-3.1.1.jar:/usr/lib/hadoop-mapreduce/.//curator-recipes-2.7.1.jar:/usr/lib/ha
+google-dataproc-startup: doop-mapreduce/.//commons-lang-2.6.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core.jar:/usr/lib/hadoop-mapreduce/.//zookeeper-3.4.6.jar:/usr/lib/hadoop-mapreduce/.//jaxb-api-2.2.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//api-asn1-api-1.0.0-M20.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls.jar:/usr/lib/hadoop-mapreduce/.//hadoop-archives-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//gson-2.2.4.jar:/usr/lib/hadoop-mapreduce/.//httpclient-4.2.5.jar:/usr/lib/hadoop-mapreduce/.//commons-lang3-3.3.2.jar:/usr/lib/hadoop-mapreduce/.//xmlenc-0.52.jar:/usr/lib/hadoop-mapreduce/.//hadoop-openstack-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//stax-api-1.0-2.jar:/usr/lib/hadoop-mapreduce/.//apacheds-i18n-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient.jar:/usr/lib/hadoop-mapreduce/.//aws-java-sdk-1.7.4.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapredu
+google-dataproc-startup: ce-client-hs.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//commons-digester-1.8.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix.jar:/usr/lib/hadoop-mapreduce/.//joda-time-2.9.4.jar:/usr/lib/hadoop-mapreduce/.//azure-storage-2.0.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-openstack.jar:/usr/lib/hadoop-mapreduce/.//hadoop-streaming.jar:/usr/lib/hadoop-mapreduce/.//jackson-core-asl-1.9.13.jar:/usr/lib/hadoop-mapreduce/.//commons-collections-3.2.2.jar:/usr/lib/hadoop-mapreduce/.//jetty-util-6.1.26.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-app.jar:/usr/lib/hadoop-mapreduce/.//jersey-core-1.9.jar:/usr/lib/hadoop-mapreduce/.//apacheds-kerberos-codec-2.0.0-M15.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins.jar:/usr/lib/hadoop-mapreduce/.//hadoop-gridmix-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-rumen.jar:/usr/lib/hadoop-ma
+google-dataproc-startup: preduce/.//jsp-api-2.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle.jar:/usr/lib/hadoop-mapreduce/.//hadoop-datajoin-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//jsr305-3.0.0.jar:/usr/lib/hadoop-mapreduce/.//log4j-1.2.17.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-core-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-shuffle-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//jettison-1.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-sls-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-common.jar:/usr/lib/hadoop-mapreduce/.//xz-1.0.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-core-1.8.0.jar:/usr/lib/hadoop-mapreduce/.//hadoop-aws-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//java-xmlbuilder-0.4.jar:/usr/lib/hadoop-mapreduce/.//jackson-xc-1.9.13.jar:/usr/lib/hadoop-mapreduce/.//jets3t-0.9.0.jar:/usr/lib/hadoop-mapreduce/.//jaxb-impl-2.2.3-1.jar:/usr/lib/hadoop-mapreduce/.//commons-codec-1.4.jar:/usr/lib/hadoop-mapreduce/.//curator-client-2.7.1.jar:/usr/lib/hadoop-mapreduce/.
+google-dataproc-startup: //paranamer-2.3.jar:/usr/lib/hadoop-mapreduce/.//commons-logging-1.1.3.jar:/usr/lib/hadoop-mapreduce/.//hamcrest-core-1.3.jar:/usr/lib/hadoop-mapreduce/.//jersey-json-1.9.jar:/usr/lib/hadoop-mapreduce/.//commons-beanutils-1.7.0.jar:/usr/lib/hadoop-mapreduce/.//servlet-api-2.5.jar:/usr/lib/hadoop-mapreduce/.//hadoop-auth-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//jersey-server-1.9.jar:/usr/lib/hadoop-mapreduce/.//curator-framework-2.7.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-hs-plugins-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//hadoop-ant.jar:/usr/lib/hadoop-mapreduce/.//jsch-0.1.42.jar:/usr/lib/hadoop-mapreduce/.//hadoop-aws.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples.jar:/usr/lib/hadoop-mapreduce/.//hadoop-extras.jar:/usr/lib/hadoop-mapreduce/.//jackson-jaxrs-1.9.13.jar:/usr/lib/hadoop-mapreduce/.//asm-3.2.jar:/usr/lib/hadoop-mapreduce/.//commons-compress-1.4.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-client-jobclient-2.7.2-tests.jar:/usr/lib/hadoop-mapreduce/.//jackson-cor
+google-dataproc-startup: e-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//jackson-databind-2.2.3.jar:/usr/lib/hadoop-mapreduce/.//guava-11.0.2.jar:/usr/lib/hadoop-mapreduce/.//activation-1.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-distcp-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//commons-net-3.1.jar:/usr/lib/hadoop-mapreduce/.//hadoop-mapreduce-examples-2.7.2.jar:/usr/lib/hadoop-mapreduce/.//commons-cli-1.2.jar:/usr/lib/hadoop-mapreduce/.//avro-1.7.4.jar:/usr/lib/hadoop-mapreduce/.//netty-3.6.2.Final.jar:/usr/lib/hadoop-mapreduce/.//hadoop-azure.jar:/usr/lib/hadoop-mapreduce/.//snappy-java-1.0.4.1.jar
+google-dataproc-startup: STARTUP_MSG:   build = https://bigdataoss-internal.googlesource.com/third_party/apache/bigtop -r 2d23ed8be961d3c0328d65eb506d98c20204ac1f; compiled by 'bigtop' on 2016-06-21T18:48Z
+google-dataproc-startup: STARTUP_MSG:   java = 1.8.0_91
+google-dataproc-startup: ************************************************************/
+google-dataproc-startup: 16/07/11 21:51:41 INFO namenode.NameNode: registered UNIX signal handlers for [TERM, HUP, INT]
+google-dataproc-startup: 16/07/11 21:51:41 INFO namenode.NameNode: createNameNode [-format]
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ hive-metastore == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ hive-server2 == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: 16/07/11 21:51:44 WARN common.Util: Path /hadoop/dfs/name should be specified as a URI in configuration files. Please update hdfs configuration.
+google-dataproc-startup: 16/07/11 21:51:44 WARN common.Util: Path /hadoop/dfs/name should be specified as a URI in configuration files. Please update hdfs configuration.
+google-dataproc-startup: Formatting using clusterid: CID-fafe7e7a-eb45-43b7-a870-824a901a52c9
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: No KeyProvider found.
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: fsLock is fair:true
+google-dataproc-startup: 16/07/11 21:51:44 INFO util.HostsFileReader: Adding ha6-w-0.c.crosschannel-1307.internal to the list of included hosts from /etc/hadoop/conf/nodes_include
+google-dataproc-startup: 16/07/11 21:51:44 INFO util.HostsFileReader: Adding ha6-w-1.c.crosschannel-1307.internal to the list of included hosts from /etc/hadoop/conf/nodes_include
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.DatanodeManager: dfs.block.invalidate.limit=1000
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.DatanodeManager: dfs.namenode.datanode.registration.ip-hostname-check=true
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: dfs.namenode.startup.delay.block.deletion.sec is set to 000:00:00:00.000
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: The block deletion will start around 2016 Jul 11 21:51:44
+google-dataproc-startup: 16/07/11 21:51:44 INFO util.GSet: Computing capacity for map BlocksMap
+google-dataproc-startup: 16/07/11 21:51:44 INFO util.GSet: VM type       = 64-bit
+google-dataproc-startup: 16/07/11 21:51:44 INFO util.GSet: 2.0% max memory 2.6 GB = 53.6 MB
+google-dataproc-startup: 16/07/11 21:51:44 INFO util.GSet: capacity      = 2^23 = 8388608 entries
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: dfs.block.access.token.enable=false
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: defaultReplication         = 2
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: maxReplication             = 512
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: minReplication             = 1
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: maxReplicationStreams      = 2
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: replicationRecheckInterval = 3000
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: encryptDataTransfer        = false
+google-dataproc-startup: 16/07/11 21:51:44 INFO blockmanagement.BlockManager: maxNumBlocksToLog          = 1000
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: fsOwner             = hdfs (auth:SIMPLE)
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: supergroup          = hadoop
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: isPermissionEnabled = false
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: HA Enabled: false
+google-dataproc-startup: 16/07/11 21:51:44 INFO namenode.FSNamesystem: Append Enabled: true
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: Computing capacity for map INodeMap
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: VM type       = 64-bit
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: 1.0% max memory 2.6 GB = 26.8 MB
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: capacity      = 2^22 = 4194304 entries
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSDirectory: ACLs enabled? false
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSDirectory: XAttrs enabled? true
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSDirectory: Maximum size of an xattr: 16384
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.NameNode: Caching file names occuring more than 10 times
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: Computing capacity for map cachedBlocks
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: VM type       = 64-bit
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: 0.25% max memory 2.6 GB = 6.7 MB
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: capacity      = 2^20 = 1048576 entries
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSNamesystem: dfs.namenode.safemode.threshold-pct = 0.9990000128746033
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ mysql == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSNamesystem: dfs.namenode.safemode.min.datanodes = 0
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSNamesystem: dfs.namenode.safemode.extension     = 30000
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1321 -o %a
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ hadoop-mapreduce-historyserver == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ hadoop-yarn-resourcemanager == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: 16/07/11 21:51:45 INFO metrics.TopMetrics: NNTop conf: dfs.namenode.top.window.num.buckets = 10
+google-dataproc-startup: 16/07/11 21:51:45 INFO metrics.TopMetrics: NNTop conf: dfs.namenode.top.num.users = 10
+google-dataproc-startup: 16/07/11 21:51:45 INFO metrics.TopMetrics: NNTop conf: dfs.namenode.top.windows.minutes = 1,5,25
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSNamesystem: Retry cache on namenode is enabled
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSNamesystem: Retry cache will use 0.03 of total heap and retry cache entry expiry time is 600000 millis
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 1321
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1319 -o %a
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: Computing capacity for map NameNodeRetryCache
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: VM type       = 64-bit
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: 0.029999999329447746% max memory 2.6 GB = 823.6 KB
+google-dataproc-startup: 16/07/11 21:51:45 INFO util.GSet: capacity      = 2^17 = 131072 entries
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 1319
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1317 -o %a
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 1317
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1316 -o %a
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 1316
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1314 -o %a
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 1314
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1313 -o %a
+google-dataproc-startup: + INVOCATION='systemctl start hadoop-hdfs-secondarynamenode'
+google-dataproc-startup: + loginfo 'Waiting on '\''systemctl start hadoop-hdfs-secondarynamenode'\'''
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:45 UTC 2016: Waiting on '\''systemctl start hadoop-hdfs-secondarynamenode'\'''
+google-dataproc-startup: Mon Jul 11 21:51:45 UTC 2016: Waiting on 'systemctl start hadoop-hdfs-secondarynamenode'
+google-dataproc-startup: + wait 1313
+google-dataproc-startup: 16/07/11 21:51:45 INFO namenode.FSImage: Allocated new BlockPoolId: BP-1806617831-10.128.0.9-1468273905403
+google-dataproc-startup: 16/07/11 21:51:45 INFO common.Storage: Storage directory /hadoop/dfs/name has been successfully formatted.
+google-dataproc-startup: 16/07/11 21:51:46 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
+google-dataproc-startup: 16/07/11 21:51:46 INFO util.ExitUtil: Exiting with status 0
+google-dataproc-startup: 16/07/11 21:51:46 INFO namenode.NameNode: SHUTDOWN_MSG: 
+google-dataproc-startup: /************************************************************
+google-dataproc-startup: SHUTDOWN_MSG: Shutting down NameNode at ha6-m.c.crosschannel-1307.internal/10.128.0.9
+google-dataproc-startup: ************************************************************/
+google-dataproc-startup: + run_in_background update-rc.d hadoop-hdfs-namenode enable
+google-dataproc-startup: + BACKGROUND_PROCESSES=($! "${BACKGROUND_PROCESSES[@]}")
+google-dataproc-startup: + [[ hadoop-hdfs-namenode == \s\p\a\r\k\-\h\i\s\t\o\r\y\-\s\e\r\v\e\r ]]
+google-dataproc-startup: + run_with_retries systemctl start hadoop-hdfs-namenode
+google-dataproc-startup: + local 'cmd=systemctl start hadoop-hdfs-namenode'
+google-dataproc-startup: + echo 'About to run '\''systemctl start hadoop-hdfs-namenode'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start hadoop-hdfs-namenode' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start hadoop-hdfs-namenode
+google-dataproc-startup: + update-rc.d hadoop-hdfs-namenode enable
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ hadoop-hdfs-secondarynamenode == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 1312 -o %a
+google-dataproc-startup: + INVOCATION='systemctl start hadoop-hdfs-namenode'
+google-dataproc-startup: + loginfo 'Waiting on '\''systemctl start hadoop-hdfs-namenode'\'''
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:48 UTC 2016: Waiting on '\''systemctl start hadoop-hdfs-namenode'\'''
+google-dataproc-startup: Mon Jul 11 21:51:48 UTC 2016: Waiting on 'systemctl start hadoop-hdfs-namenode'
+google-dataproc-startup: + wait 1312
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + [[ hadoop-hdfs-namenode == \h\a\d\o\o\p\-\h\d\f\s\-\n\a\m\e\n\o\d\e ]]
+google-dataproc-startup: + loginfo 'Initializing HDFS directories'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:51:55 UTC 2016: Initializing HDFS directories'
+google-dataproc-startup: Mon Jul 11 21:51:55 UTC 2016: Initializing HDFS directories
+google-dataproc-startup: + HADOOP_USERS=(hdfs mapred yarn spark pig hive hbase zookeeper)
+google-dataproc-startup: + REAL_USERS=($(getent passwd | awk -F: '1000 < $3 && $3 < 6000 { print $1}'))
+google-dataproc-startup: ++ awk -F: '1000 < $3 && $3 < 6000 { print $1}'
+google-dataproc-startup: ++ getent passwd
+google-dataproc-startup: + HDFS_USERS=("${HADOOP_USERS[@]}" "${REAL_USERS[@]}")
+google-dataproc-startup: + HDFS_USER_DIRS=("${HDFS_USERS[@]/#//user/}")
+google-dataproc-startup: + sudo -u hdfs hadoop fs -mkdir -p /tmp/hadoop-yarn/staging/history /user/hdfs /user/mapred /user/yarn /user/spark /user/pig /user/hive /user/hbase /user/zookeeper /user/spark/eventlog
+google-dataproc-startup: + sudo -u hdfs hadoop fs -chmod -R 1777 /
+google-dataproc-startup: + run_with_retries systemctl start spark-history-server
+google-dataproc-startup: + local 'cmd=systemctl start spark-history-server'
+google-dataproc-startup: + echo 'About to run '\''systemctl start spark-history-server'\'' with retries...'
+google-dataproc-startup: About to run 'systemctl start spark-history-server' with retries...
+google-dataproc-startup: + local update_succeeded=0
+google-dataproc-startup: + local sleep_time=1
+google-dataproc-startup: + local max_attempts=5
+google-dataproc-startup: + (( i = 1 ))
+google-dataproc-startup: + (( i < 5 ))
+google-dataproc-startup: + systemctl start spark-history-server
+google-dataproc-startup: + update_succeeded=1
+google-dataproc-startup: + break
+google-dataproc-startup: + ((  1  ))
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 886 -o %a
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 886
+google-dataproc-startup: + for PID in '"${BACKGROUND_PROCESSES[@]}"'
+google-dataproc-startup: ++ ps -ww --no-headers --ppid 808 -o %a
+google-dataproc-startup: + INVOCATION=
+google-dataproc-startup: + wait 808
+google-dataproc-startup: + loginfo 'All done'
+google-dataproc-startup: ++ bdutil_date
+google-dataproc-startup: ++ date
+google-dataproc-startup: + echo 'Mon Jul 11 21:52:04 UTC 2016: All done'
+google-dataproc-startup: Mon Jul 11 21:52:04 UTC 2016: All done

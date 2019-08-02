@@ -1,0 +1,21 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin
+export GOROOT=/usr/local/go
+export PATH=$PATH:/usr/lib64/google-cloud-sdk/bin
+
+if [ -d /var/www/vhosts/data ]; then
+DATADIR=/var/www/vhosts/data
+fi

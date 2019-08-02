@@ -1,0 +1,15 @@
+ssh -q www-ccdex-201704171400-gdp7 hostname && ssh -q www-ccdex-201704171400-gdp7 git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-201704171400-hhzr hostname && ssh -q www-ccdex-201704171400-hhzr git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-201704171400-r5q9 hostname && ssh -q www-ccdex-201704171400-r5q9 git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-201704171400-v3wv hostname && ssh -q www-ccdex-201704171400-v3wv git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-201704171400-wjkp hostname && ssh -q www-ccdex-201704171400-wjkp git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-47k8 hostname && ssh -q www-ccdex-mayumi-47k8 git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-4pvp hostname && ssh -q www-ccdex-mayumi-4pvp git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-60t1 hostname && ssh -q www-ccdex-mayumi-60t1 git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-6c56 hostname && ssh -q www-ccdex-mayumi-6c56 git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-c2t1 hostname && ssh -q www-ccdex-mayumi-c2t1 git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-j0vf hostname && ssh -q www-ccdex-mayumi-j0vf git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-kp1l hostname && ssh -q www-ccdex-mayumi-kp1l git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-nfdh hostname && ssh -q www-ccdex-mayumi-nfdh git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-w92c hostname && ssh -q www-ccdex-mayumi-w92c git_merge_all.sh api.wolk.com 2>&1 &
+ssh -q www-ccdex-mayumi-xghp hostname && ssh -q www-ccdex-mayumi-xghp git_merge_all.sh api.wolk.com 2>&1 &

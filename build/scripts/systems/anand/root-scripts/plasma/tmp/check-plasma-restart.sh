@@ -1,0 +1,12 @@
+ssh -q 18.130.136.122 hostname && ssh -q 18.130.136.122 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 47.74.252.13 hostname && ssh -q 47.74.252.13 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 40.74.65.156 hostname && ssh -q 40.74.65.156 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 54.64.176.94 hostname && ssh -q 54.64.176.94 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 65.52.166.152 hostname && ssh -q 65.52.166.152 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 13.125.119.66 hostname && ssh -q 13.125.119.66 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 52.47.189.22 hostname && ssh -q 52.47.189.22 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 104.211.221.190 hostname && ssh -q 104.211.221.190 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 47.254.214.76 hostname && ssh -q 47.254.214.76 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 13.211.61.227 hostname && ssh -q 13.211.61.227 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 60.205.185.220 hostname && ssh -q 60.205.185.220 ls -lt /root/scripts/plasma-restart.sh
+ssh -q 185.22.174.203 hostname && ssh -q 185.22.174.203 ls -lt /root/scripts/plasma-restart.sh

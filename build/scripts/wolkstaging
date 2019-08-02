@@ -1,0 +1,11 @@
+#!/usr/bin/php
+<?php
+$stage = isset($argv[1]) ? $argv[1] : 5;
+if ( ($stage < 1) || ( $stage > 6 ) ) {
+  echo "Invalid stage";
+  exit(0);
+}
+$cmd = "nohup /root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk$stage --verbosity=6 --datadir /usr/local/wolk$stage --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 990$stage --port 3".$stage."300 --httpport 8".$stage." --wolklog nothing --config /root/go/src/github.com/wolkdb/cloudstore/wolk$stage.toml &>/var/log/wolk$stage.log &";
+echo "$cmd\n";
+exec($cmd);
+?>

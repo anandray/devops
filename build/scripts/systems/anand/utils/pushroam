@@ -1,0 +1,40 @@
+#!/bin/bash
+
+input1=api
+input2=dev
+input3=all
+
+if [ -z $1 ]
+  then
+#    echo "Pushing to sourabh.crosschannel.com/api.colorfulnotion.com..."
+    echo "
+           Usage: 
+                 \"pushroam api\" --> api.colorfulnotion.com.
+                 \"pushroam dev\" --> dev.colorfulnotion.com.
+                 \"pushroam all\" --> Both dev.colorfulnotion.com + api.colorfulnotion.com.
+"
+fi
+
+if [[ $1 == $input1 ]];
+  then
+    echo "Pushing to api --> api-colorfulnotion-com --project colorfulnotion-1307"
+    gcloud compute instances list --project colorfulnotion-1307 | grep api-colorfulnotion | awk '{print"ssh -q",$6,"hostname && ssh -q",$6,"sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh 2>&1 &"}' > /tmp/api-colorfulnotion.sh && sh /tmp/api-colorfulnotion.sh &> /dev/null
+    
+    echo -e "PUSHROAM api --> api-colorfulnotion-com --project colorfulnotion-1307 at `date +'%b %d, %Y, %T'`" | mailx -A gmail -s "[CODE PUSH] PUSHROAM -- api --> api-colorfulnotion-com --project colorfulnotion-1307 | `date +'%b %d, %Y, %T'`" engineering@crosschannel.com &> /dev/null
+
+elif [[ $1 == $input2 ]];
+  then
+    echo "Pushing to dev.colorfulnotion.com..."
+    ssh -q dev.colorfulnotion.com sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh &> /dev/null
+
+   echo -e "PUSHROAM dev --> dev.colorfulnotion.com at `date +'%b %d, %Y, %T'`" | mailx -A gmail -s "[CODE PUSH] PUSHROAM -- api --> sourabh.crosschannel.com | `date +'%b %d, %Y, %T'`" engineering@crosschannel.com &> /dev/null
+
+elif [[ $1 == $input3 ]];
+    then
+    echo "Pushing to dev.colorfulnotion.com + api-colorfulnotion-com --project colorfulnotion-1307"
+    ssh -q dev.colorfulnotion.com sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh &> /dev/null
+    gcloud compute instances list --project colorfulnotion-1307 | grep api-colorfulnotion | awk '{print"ssh -q",$6,"hostname && ssh -q",$6,"sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh 2>&1 &"}' > /tmp/api-colorfulnotion.sh && sh /tmp/api-colorfulnotion.sh &> /dev/null
+
+    echo -e "PUSHROAM dev.colorfulnotion.com + api-colorfulnotion-com" at `date +'%b %d, %Y, %T'`" | mailx -A gmail -s "[CODE PUSH] PUSHROAM -- dev.colorfulnotion.com + api-colorfulnotion-com" | `date +'%b %d, %Y, %T'`" engineering@crosschannel.com &> /dev/null
+
+fi

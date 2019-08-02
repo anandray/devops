@@ -1,0 +1,7 @@
+gcloud sql instances describe db03 | grep "104.154.0.0/15"
+gcloud sql instances describe db03 | grep "104.196.0.0/14"
+gcloud sql instances describe db03 | grep "130.211.0.0/16"
+gcloud sql instances describe db03 | grep "146.148.0.0/17"
+gcloud sql instances describe db03 | grep "23.236.48.0/20"
+gcloud sql instances describe db03 | grep "23.251.128.0/19"
+gcloud sql instances describe db03 | grep "35.184.0.0/13"

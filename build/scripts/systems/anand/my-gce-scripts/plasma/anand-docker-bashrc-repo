@@ -1,0 +1,44 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+
+alias bashrc='vi ~/.bashrc'
+alias sourcebashrc='source ~/.bashrc'
+alias watch='watch '
+
+#sql
+alias cpsql='"yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/sql /root/sql/bin/sql;"yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/sql /var/www/vhosts/docker/docker-sql/sql/bin/;"yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/sql /var/www/vhosts/docker/sql-docker/sql/bin/; scp -C -p /root/go/src/github.com/wolkdb/plasma/build/bin/sql www6001:/var/www/vhosts/mdotm.com/httpdocs/.start/sql; scp -C -p /root/go/src/github.com/wolkdb/plasma/build/bin/sql www6001:/root/go/src/github.com/wolkdb/plasma/build/bin/sql'
+
+alias makesql='cd /root/go/src/github.com/wolkdb/plasma; git fetch origin && git merge origin/master; make sql; "yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/sql /root/sql/bin/sql'
+alias makenosql=''
+alias makecloudstore=''
+
+alias md5sql='md5sum /root/go/src/github.com/wolkdb/plasma/build/bin/sql; md5sum /root/sql/bin/sql; md5sum /var/www/vhosts/docker/docker-sql/sql/bin/sql; md5sum /var/www/vhosts/docker/sql-docker/sql/bin/sql; ssh -q www6001 hostname && ssh -q www6001 md5sum /var/www/vhosts/mdotm.com/httpdocs/.start/sql; ssh -q www6001 hostname && ssh -q www6001 md5sum /root/go/src/github.com/wolkdb/plasma/build/bin/sql'
+
+# nosql
+alias cpnosql='"yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/nosql /root/nosql/bin/nosql;"yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/nosql /var/www/vhosts/docker/docker-nosql/nosql/bin/;"yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/nosql /var/www/vhosts/docker/nosql-docker/nosql/bin/; scp -C -p /root/go/src/github.com/wolkdb/plasma/build/bin/nosql www6001:/var/www/vhosts/mdotm.com/httpdocs/.start/nosql; scp -C -p /root/go/src/github.com/wolkdb/plasma/build/bin/nosql www6001:/root/go/src/github.com/wolkdb/plasma/build/bin/nosql'
+
+alias makenosql='cd /root/go/src/github.com/wolkdb/plasma; git fetch origin && git merge origin/master; make nosql; "yes" | cp -rf /root/go/src/github.com/wolkdb/plasma/build/bin/nosql /root/nosql/bin/nosql'
+
+alias md5nosql='md5sum /root/go/src/github.com/wolkdb/plasma/build/bin/nosql; md5sum /root/nosql/bin/nosql; md5sum /var/www/vhosts/docker/docker-nosql/nosql/bin/nosql; md5sum /var/www/vhosts/docker/nosql-docker/nosql/bin/nosql; ssh -q www6001 hostname && ssh -q www6001 md5sum /var/www/vhosts/mdotm.com/httpdocs/.start/nosql; ssh -q www6001 hostname && ssh -q www6001 md5sum /root/go/src/github.com/wolkdb/plasma/build/bin/nosql'
+
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+export PATH=/root/sbin:/root/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin
+export PATH=$PATH:/root/go/bin
+export PATH=$PATH:/root/go/src/github.com/wolkdb/plasma/build/bin
+export PATH=$PATH:/var/www/vhosts/mdotm.com/scripts/utils
+
+# google auth credentials for datastore access
+export GOOGLE_APPLICATION_CREDENTIALS="/root/.google/crosschannel-1307-520dd999e93e.json"
+
+#set -o ignoreeof

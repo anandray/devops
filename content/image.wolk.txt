@@ -1,0 +1,8 @@
+;; image.wolk zone entries
+;; TXT Records
+dns3.image.wolk.    3600   IN  A   104.154.155.233
+cat.image.wolk.	    3600   IN TXT   "efe7386a067b9258dc2354749cafa311746b5804789be07ae9049185a402a87a"
+banana.image.wolk.  3600   IN TXT   "a8fc2bec91008474dbd90f95b440341016d7555ad35f10e6042ff6eefa01c264"
+pot.image.wolk.     3600   IN TXT   "7a6eb7f74888832e30adc6165f1c61e1378a48236940a16ff1770c95b0158219"
+zone.image.wolk.    3600   IN TXT   "270810ae8a3a083f6407cdd4bd7d3dd6c7c4a5b4f6a594e05c4d129797db775f"
+bunny.image.wolk.   3600   IN TXT   "6dfc6eb3150d397c0b7d2a1970353884920c9c35922be1faa2b1ad5a5185acc5"

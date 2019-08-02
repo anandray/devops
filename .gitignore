@@ -1,0 +1,13 @@
+wolk.toml
+wolk1.toml
+wolk2.toml
+wolk3.toml
+wolk4.toml
+wolk5.toml
+wolk/cloud/credentials/google.json
+wolk/algorand/algorand
+wolk/cloud/credentials/credentials
+wolk/testowner.eth*
+wolk/tests/*
+wolk/tests
+wolk/testowner*

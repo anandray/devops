@@ -1,0 +1,366 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Trustless HTTP Blockchain Protocols</title>
+</head>
+<style>
+body {
+  font-family: 'Source sans pro', sans-serif;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+#aggregatenutritionheading, .linearnutritionheading, .linearnutrient, .nutritionheading, #tabularheading, #newtabularheading, #childheading, #newchildheading, #infantheading, #newinfantheading, .nutrient, .subright, .subright-sat-trans, .label, .blank, .tabularright, .servingsizenew-bold, #newaggregatenutritionheading, #newdualnutritionheading, #newnutritionheading, #newcanadaheading, .newdailyvalue {
+  font-family: 'Arial Black', 'Helvetica Black', 'Helvetica W01 Blk', Arial, Helvetica, sans-serif;
+}
+
+.linearnutrientcontent, .servingsize, .nutrientsubgroup, .nutrientsubsubgroup, .nutrientcontent, .vitamin, .childvitamin, .infantvitamin, .childvitaminbullet, .infantvitaminbullet, .vitaminbullet, .vitamintabular, .vitamintabularrow, .vitaminnewtabularrow, .vitaminbullettabular, .asterisksection, .asterisksectionaggregate, #tabular_asterisk_col, #new_tabular_asterisk_col, #new_tabular_dual_asterisk_row, #asterisksection-replace-preview, #asterisksection-replace, #asterisksection-replace-aggregate, #asterisksectiontabular-replace, .asterisksection-new-child, .asterisksection-new-vertical, #calorieconversion, #calorieconversiontabular, #calorieconversionaggregate, #new-vertical-insignificant-nutrients-list, #insignificant-nutrients-list, #insignificant-nutrients-list-tabular, #insignificant-nutrients-list-new-tabular, #new_tabular_daily_value_explanation, .childinfantright, .unboldnutrient, #recipe-show-ingredient-list, #recipe-show-french-ingredient-list, #recipe-show-old-canada-ingredient-list, #recipe-show-new-canada-ingredient-list, #recipe-show-new-canada-french-ingredient-list, #allergen-list, #allergen-list-canada-english, #allergen-list-canada-french, #recipe_manufactured_at, #facility-allergen-list {
+  font-family: Arial, 'Helvetica Regular', Helvetica, 'Helvetica W01 Roman', sans-serif;
+}
+
+  .gotwolk {
+    font-family: Arial;
+    font-size: 160pt;
+  }
+  #nutritionfactstable {
+    border: 1px solid;
+padding: 3pt;
+color: black;
+background-color: transparent;
+-webkit-print-color-adjust: exact;
+width: 207px;
+line-height: 12px;
+  }
+  #nutritionheading {
+    font-size: 19pt;
+    line-height: 100%;
+  }
+  #servingsize {
+    font-size: 8pt;
+        padding-top: 1px;
+  }
+  .thickseparator {
+    padding-top: 2pt;
+    margin-bottom: 2pt;
+    border-bottom: 7pt solid;
+  }
+  .label {
+font-size: 7pt;
+  }
+  .hairlineseparator {
+    margin-bottom: 2pt;
+    padding-top: 2pt;
+    border-bottom: 1pt solid;
+  }
+  .nutrient {
+    font-size: 8pt;
+    line-height: 11px;
+  }
+  .labelright {
+    position: absolute;
+        width: 207px;
+        text-align: right;
+  }
+  .nutrientcontent {
+font-size: 8pt;
+  }
+  #separator {
+
+  }
+  #trans_fat {
+
+  }
+  .nutrientsubgroup {
+    font-size: 8pt;
+    padding-left: 10px;
+    line-height: 11px;
+  }
+  .subhairlineseparator {
+    padding-top: 2pt;
+margin-bottom: 2pt;
+margin-left: 10px;
+padding-left: 10px;
+border-bottom: 1pt solid;
+  }
+  .subright {
+
+  }
+  .thickseparator {
+    padding-top: 2pt;
+    margin-bottom: 2pt;
+    border-bottom: 7pt solid;
+  }
+  .vitamin {
+    font-size: 8pt;
+        padding-top: 2px;
+        line-height: 11px;
+  }
+  .vitaminbullet {
+    font-size: 10pt;
+        text-align: center;
+        width: 207px;
+        position: absolute;
+        margin-top: 0px;
+        overflow: hidden;
+  }
+  .vitaminleft {
+    text-align: left;
+    float: left;
+  }
+  .vitaminright {
+    padding-top: 0;
+        width: 207px;
+        text-align: right;
+        position: absolute;
+  }
+  .ingredients {
+    font-size: 8pt;
+        padding-top: 2px;
+        line-height: 11px;
+  }
+</style>
+<body>
+<!--
+// Use correct location
+<script src="http://c0.wolk.com/wolk/apps/wolk.js"></script>
+-->
+
+<center>
+<table>
+<tr>
+<td valign="top" align="center">
+<img src="gotwolk.png" width="500"/><br/>
+<div>
+<h2>
+  Introducing Wolk Protocols for Trustless HTTP Blockchains
+</h2>
+</div>
+
+<div>
+  Wolk's mission is to develop decentralized web protocols for pure digital freedom.  When application code and user data are held by HTTP blockchain nodes everywhere and nowhere,
+  users and developers can trustlessly stay in control of user data and application code, with no intermediaries
+  in between.  Instead of a world controlled by a handful of people and companies run by the few that do not deserve our trust, we imagine a world
+  where pure digital freedom is guaranteed by design through trustless open protocols.
+</div>
+<hr/>
+
+<div class="links"><a href="http://docs.wolk.com">No TOS, only the Protocol</a> | <a href="http://docs.wolk.com">No Privacy Policy, You Own Your Data</a> | <a href="wolk://">Trustless Appstore [Wolk Browser/Extension only]</a> </div>
+</td>
+<td>
+<div id="nutritionfactstable" itemscope="" itemtype="http://schema.org/NutritionInformation">
+    <div id="nutritionheading">
+      Nutrition Facts
+    </div>
+    <div id="servingsize">
+      Serving Size
+      <span itemprop="servingSize">1 user</span>
+      <br>
+      <span>Servings Per Container: 1</span>
+    </div>
+    <div class="thickseparator"></div>
+    <div class="label">Amount Per Serving</div>
+    <div class="hairlineseparator"></div>
+    <div class="nutrient">
+      <div class="labelright">
+        <span class="nutrientcontent">TestNet Block Number
+           <span id="blockNumber">3,044</span>
+         </span>
+      </div>
+      Calories
+      <span itemprop="calories" class="nutrientcontent">0</span>
+    </div>
+    <div id="separator"></div>
+    <div class="label">
+      <div class="labelright">%Daily Value*</div>
+      &ensp;
+    </div>
+    <div class="hairlineseparator"></div>
+    <div class="nutrient">
+      <div class="labelright">
+        0<span class="nutrientcontent">%</span>
+      </div>
+      Total Fat
+      <span itemprop="fatContent" class="nutrientcontent">0g</span>
+      <div id="saturated_fat">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <i># of People Controlling Your Data</i>
+          <span itemprop="saturatedFatContent" class="nutrientcontent">0</span>
+        </div>
+      </div>
+      <div id="trans_fat">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <i># Companies Controlling Your App</i>
+          <span itemprop="transFatContent" class="nutrientcontent">0</span>
+        </div>
+      </div>
+      <div id="saturated_fat">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <i># of Privacy Policies</i>
+          <span itemprop="saturatedFatContent" class="nutrientcontent">0</span>
+        </div>
+      </div>
+      <div id="trans_fat">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <i># of Terms of Service</i>
+          <span itemprop="transFatContent" class="nutrientcontent">0</span>
+        </div>
+      </div>
+      <div id="cholesterol">
+        <div class="hairlineseparator"></div>
+        <div class="nutrient">
+          <div class="labelright">
+            100<span class="nutrientcontent">%</span>
+          </div>
+          Censorship-Resistant
+          <span itemprop="cholesterolContent" class="nutrientcontent"></span>
+        </div>
+      </div>
+      <div class="hairlineseparator"></div>
+
+      <div class="nutrient">
+        <div class="labelright">
+          <span class="nutrientcontent"><a href="https://etherscan.io/token/0xf6b55acbbc49f4524aa48d19281a9a77c54de10f">61</a>MM</span>
+        </div>
+        Wolk Token Supply
+        <span itemprop="sodiumContent" class="nutrientcontent"></span>
+      </div>
+
+      <div class="nutrient">
+        <div class="nutrientsubgroup">
+          <i>Block Rewards for Developers</i>
+          <span itemprop="transFatContent" class="nutrientcontent">60%</span>
+        </div>
+      </div>
+
+      <div class="nutrient">
+        <div class="nutrientsubgroup">
+          <i>Block Rewards for Mining Nodes</i>
+          <span itemprop="transFatContent" class="nutrientcontent">40%</span>
+        </div>
+      </div>
+
+
+      <div class="hairlineseparator"></div>
+      <div class="nutrient">
+        <div class="labelright">
+          100<span class="nutrientcontent">%</span>
+        </div>
+        % Open Source
+        <span itemprop="carbohydrateContent" class="nutrientcontent"></span>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <a href="">Wolk Browser</a>
+          <span itemprop="fiberContent" class="nutrientcontent">8g</span>
+        </div>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <a href="https://github.com/wolkdb/extension">Wolk Extension</a>
+          <span itemprop="fiberContent" class="nutrientcontent">8g</span>
+        </div>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <a href="https://github.com/wolkdb/wolkjs">wolk.js API</a>
+          <span itemprop="fiberContent" class="nutrientcontent">8g</span>
+        </div>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <a href="https://github.com/wolkdb/wcloud">wcloud CLI</a>
+          <span itemprop="fiberContent" class="nutrientcontent">8g</span>
+        </div>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          <a href="https://github.com/wolkdb/cloudstore">Wolk Mining</a>
+          <span itemprop="fiberContent" class="nutrientcontent">8g</span>
+        </div>
+      </div>
+
+      <div class="hairlineseparator"></div>
+      <div class="nutrient">
+        <div class="labelright">
+          100<span class="nutrientcontent">%</span>
+        </div>
+        Trustlessness
+        <span itemprop="proteinContent" class="nutrientcontent"></span>
+      </div>
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          Trustless HTTP Protocol
+          <span itemprop="fiberContent" class="nutrientcontent">48g</span>
+        </div>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          Layer 1 Blockchain
+          <span itemprop="fiberContent" class="nutrientcontent">48g</span>
+        </div>
+      </div>
+
+      <div id="fiber">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          Provable Key-Value Storage
+          <span itemprop="fiberContent" class="nutrientcontent">18g</span>
+        </div>
+      </div>
+      <div id="sugar">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          Trustless Appstore
+          <span itemprop="sugarContent" class="nutrientcontent">12g</span>
+        </div>
+      </div>
+
+      <div id="sugar">
+        <div class="subhairlineseparator"></div>
+        <div class="nutrientsubgroup">
+          Open Data Schema
+          <span itemprop="sugarContent" class="nutrientcontent">12g</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="thickseparator"></div>
+    <div id="vitaminsection">
+      <div class="vitamin">
+        <div class="vitaminleft"> Servers 0%</div>
+        <div class="vitaminbullet">•</div>
+        <div class="vitaminright"> Decentralized 100%</div>
+        <br>
+      </div>
+      <div class="hairlineseparator"></div>
+    </div>
+    <div class="ingredients"><b>Ingredients:</b> <a href="">Wolk Protocol HTTP Headers</a>, <a href="">Sparse Merkle Tree Proofs</a>, <a href="">Algorand POS Consensus with VRF</a>, <a href="">Web Crypto API</a>, <a href="">go-ethereum/swarm</a>, <a href="">ECDSA with SHA-256</a>,
+      <a href="">Ethereum P2P</a>, <a href="">JSON Web Keys</a>, <a href="">RSA Proof of Replication</a>, <a href="">SWARM Chunker</a>, <a href="">IAVL Trees</a>, <a href="">SQLite Virtual Machine</a>, lots of love, and
+      lots of love for <u>pure digital freedom</u></div>
+  </div>
+</td>
+</tr>
+</table>
+
+
+</center>
+</body>
+</html>

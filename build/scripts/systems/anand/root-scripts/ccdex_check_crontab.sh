@@ -1,0 +1,10 @@
+ssh -q www-ccdex-201704171400-0l2h hostname && ssh -q www-ccdex-201704171400-0l2h crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-0qvs hostname && ssh -q www-ccdex-201704171400-0qvs crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-9vm8 hostname && ssh -q www-ccdex-201704171400-9vm8 crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-b1rm hostname && ssh -q www-ccdex-201704171400-b1rm crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-cf1h hostname && ssh -q www-ccdex-201704171400-cf1h crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-gn6s hostname && ssh -q www-ccdex-201704171400-gn6s crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-hhzr hostname && ssh -q www-ccdex-201704171400-hhzr crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-k91w hostname && ssh -q www-ccdex-201704171400-k91w crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-nmg0 hostname && ssh -q www-ccdex-201704171400-nmg0 crontab -l | grep ccdex_disk_size.sh
+ssh -q www-ccdex-201704171400-w0l0 hostname && ssh -q www-ccdex-201704171400-w0l0 crontab -l | grep ccdex_disk_size.sh

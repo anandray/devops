@@ -1,0 +1,237 @@
+#!/usr/bin/php
+<?
+include "storage.php";
+include "www-servers.php";
+include_once "communications.php";
+
+$storage = new Storage;
+$storage->getMdotmDatabase();
+
+//$sql = "select hostname, publicip from servers where (hostname like 'www8%' or hostname like 'www2%' or hostname like 'www9%' or hostname like 'wwwa%' or hostname like 'www6%' or hostname like 'log%' or hostname like 'ha%') and status = 'RUNNING' and length(publicip) > 0";
+$sql = "select hostname, privateip, publicip from servers where (hostname like 'www8%' or hostname like 'www2%' or hostname like 'wwwa%' or hostname like 'www6%' or hostname like 'ha%') and status = 'RUNNING' and length(publicip) and length(privateip) > 0";
+if ( $res = mysql_query($sql) ) {
+  while ( $a = mysql_fetch_object($res) ) {
+ 
+    	// log, seed           in $www_servers (include "www-servers.php";)
+    	// www6001, www6002    manually added in this file 
+
+        switch ( substr($a->hostname, 0, 4) ) {
+            case "www6":               
+                $zone = "cn";
+                break;
+            case "www2":
+                $zone = "ea";
+                break;
+            case "www8":
+                $zone = "eu";
+                break;
+            case "wwwa":
+                $zone = "as";
+                break;
+            }
+           
+        switch ( substr($a->hostname, 0, 3) ) {
+            case "ha6":
+                $zone = "cn";
+                break;
+            case "ha2":
+                $zone = "ea";
+                break;
+            case "ha8":
+                $zone = "eu";
+                break;
+            case "haa":
+                $zone = "as";
+                break;
+        }
+ 
+    $servers[$zone][] = $a->privateip;
+    $hostname[$a->privateip] = $a->hostname;
+  }
+}
+
+foreach ($servers as $zone => $ips) {
+  $www_servers[$zone] = implode("|", $ips); 
+}
+
+function readin($prompt = ''){
+    echo $prompt;
+    return rtrim( fgets( STDIN ), "\n" );
+}
+
+function get_service() 
+{
+  $number = readin("\nSelect a number to Restart:
+                                      1 - crosschannel.com (just files no Build and Restart)     
+                                      2 - bt server  
+                                      3 - adx server  
+                                      4 - mopub server  
+                                      5 - zn server                                        
+                                      ");
+  if(empty($number)){
+    echo "\n\nI need to know which Service to Restart!";
+    get_service();
+  } else {
+        $service = "";  
+        switch ($number) {
+            case 1:
+                $service = "";
+                break;  
+            case 2:
+                $service = "bt";                     
+                break;
+            case 3:
+                $service = "adx";                     
+                break;
+            case 4:
+                $service = "mopub";                     
+                break;
+            case 5:
+                $service = "zn";                     
+                break;               
+            default:
+                echo "$number is not a valid option.\n\n";
+                exit(0);
+        }
+        return $service;
+    }
+}
+
+function get_instanceGroup() 
+{
+  $instanceGroup = readin("Enter Instance Group [www22-mpoub-01271702] ");
+  if(empty($instanceGroup)){
+    echo "\nI need to know the Instance Group to pushcode to!\n";
+    get_instanceGroup();
+  } else
+    return $instanceGroup;
+}
+
+function get_name() 
+{
+  $name = readin("Who are you? ");
+  if(empty($name)){
+    echo "\nI need to know who you are!\n";
+    get_name();
+  } else
+    return $name;
+}
+
+function get_qa() 
+{
+  $qa = readin("Who QA? ");
+  if(empty($qa)){
+    echo "\nI need to know who QA!\n";
+    get_qa();
+  } else
+    return $qa;
+}
+
+function prompt_silent($prompt = "Enter Password:") 
+{
+  $command = "/usr/bin/env bash -c 'echo OK'";
+  if (rtrim(shell_exec($command)) !== 'OK') {
+    trigger_error("Can't invoke bash");
+    return;
+  }
+  $command = "/usr/bin/env bash -c 'read -s -p \""
+    . addslashes($prompt)
+    . "\" mypassword && echo \$mypassword'";
+  $password = rtrim(shell_exec($command));
+  echo "\n";
+  return $password;
+}
+
+
+function get_reason() {
+  $reason = readin("Why are you pushing? ");
+  if(empty($reason)){
+    echo "\nPlease supply a reason.\n";
+    get_reason();
+  } else
+    return $reason;
+}
+
+if ( isset($argv[1]) ) {
+  $cluster = $argv[1];
+} else {
+  echo "CrossChannel PushcodeCC - Usage : pushcode {all|seed|log|cn|ea|eu|as}\n";
+}
+
+if ( $cluster == "all" ) {
+  $servers = explode("|", implode("|", array(
+      $www_servers["cn"], //www6xxx	
+      $www_servers["ea"], //www2xxx	
+      $www_servers["eu"], //www8xxx	
+      $www_servers["as"] //wwwaxxx	
+  )
+  ));
+} else if ( isset($www_servers[$cluster]) ) {
+    $servers = explode("|", $www_servers[$cluster]);
+} else {
+    echo "Invalid cluster specified! " . $cluster . " does not exist. Options are: \n";
+    print_r(array_keys($www_servers));
+    exit;
+}
+
+if($argv[2] == "-s") {
+    $name = "Auto";
+    $qa = "Auto";
+    $reason = "Auto";
+    $silent = true;
+} else {
+    $service = get_service();    
+    $instanceGroup = get_instanceGroup();    
+    $name = get_name();
+    $qa = get_qa();
+    $reason = get_reason();
+}
+
+$f = false;
+if($argv[2] == "-f") { $f = true; }
+
+echo "CrossChannel Pushcode\n";
+echo "git update www6001-> /var/www/vhosts/crosschannel.com\n\n";
+//$c = "ssh -q www6001 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_crosschannel.com.sh && php /var/www/vhosts/crosschannel.com/bidder/bin/goservice.php $service 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+$c = "ssh -q www6001 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_crosschannel.com.sh 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n"; 
+
+echo "CrossChannel Pushcode\n";
+echo "git update www6002-> /var/www/vhosts/crosschannel.com\n\n";
+$c = "ssh www6002 'cd /var/www/vhosts/crosschannel.com/bidder/bin && git fetch upstream && git merge upstream/master 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n";
+
+//$servers[] = "www6002"; // add www6002   to update www6002
+foreach ($servers as $server) {
+  if (strstr($hostname[$server], $instanceGroup)) { echo "\n$hostname[$server] $instanceGroup\n";
+    $h = "git reset --hard HEAD~1;";
+    $c = "ssh $server 'cd /var/www/vhosts/crosschannel.com/bidder/bin && git fetch upstream && git merge upstream/master && php goservice.php $service 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+    echo "$c\n";
+    $output = array();
+    exec($c, $output);  
+    echo "\n";
+  }
+}
+for ($i=0; $i<3; $i++) {
+  sleep(1);
+  echo "[$i]";
+}
+
+$today = date("F j, Y, g:i a T"); 
+$mail_subject = "CODE PUSH crosschannel.com (" . $name . ") - $today";
+$mail_body = "Code was pushed at " . $today . " to " . $cluster . ".  Details below:\n\n";
+$mail_body .= "Pushed by: " . $name . "\n";
+$mail_body .= "QA by: " . $qa . "\n";
+$mail_body .= "Reason: " . $reason . "\n\n";
+  
+$mail_return = crosschannel_mail("adops@crosschannel.com", "engineering@crosschannel.com", $mail_subject, $mail_body);
+if ($mail_return) echo("Message successfully sent!!\n");
+?>

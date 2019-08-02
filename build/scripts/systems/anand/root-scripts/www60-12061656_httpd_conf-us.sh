@@ -1,0 +1,15 @@
+ssh www60-12061656-0fhf sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-4dhz sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-6qdz sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-6zhq sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-f5tq sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-k9g1 sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-lpk7 sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-m4g8 sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-mrrf sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-nxqz sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-pd9w sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-phht sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-q40k sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-sg5x sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &
+ssh www60-12061656-v0xx sh /var/www/vhosts/mdotm.com/httpdocs/gce/httpd_conf-us.sh 2>&1 &

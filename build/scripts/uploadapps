@@ -1,0 +1,59 @@
+#!/usr/bin/php
+<?php
+
+$appdir = "/root/go/src/github.com/wolkdb/wolkjs/apps";
+
+function myexec($cmd, $run) {
+	echo "$cmd\n";
+	if ( $run ) {
+		$output = array();
+		exec($cmd, $output);
+		if ( count($output) > 0 ) {
+			print_r($output);
+		}
+	}
+}
+
+function exec_cmds($cmds, $run = false) {
+	foreach ($cmds as $cmd) {
+    echo "$cmd\n";
+	}
+}
+
+function setup($owner = "app")
+{
+  global $appdir, $port;
+  $hp = "-httpport=$port";
+  $cmds = array();
+  $cmds[] = "wcloud $hp --waitfortx createaccount $owner";
+  $cmds[] = "wcloud $hp setdefault $owner";
+  $cmds[] = "wcloud $hp --waitfortx mkdir wolk://$owner/js";
+  $cmds[] = "wcloud $hp put $appdir/wolk.js wolk://$owner/js/wolk.js";
+  return $cmds;
+}
+
+function uploadapps($owner = "app", $app = "explorer", $files = null)
+{
+  global $appdir, $port;
+  $hp = "-httpport=$port";
+  $cmds = array();
+  $cmds[] = "wcloud $hp --waitfortx  mkdir wolk://$owner/$app";
+  foreach ($files as $i => $fn) {
+    $cmds[] = "wcloud $hp  put $appdir/$app/$fn   wolk://$owner/$app/$fn";
+  }
+  return $cmds;
+}
+$owner = "app";
+$ports = array(443, 81, 82, 83, 84, 85);
+$apps = array("explorer", "nosql", "sql") ;
+foreach ($ports as $port) {
+  $cmds = setup($owner);
+  exec_cmds($cmds);
+  foreach ($apps as $app) {
+		$files = array();
+		exec("ls -1 $appdir/$app", $files);
+    $cmds = uploadapps($owner, $app, $files);
+    exec_cmds($cmds);
+  }
+}
+?>

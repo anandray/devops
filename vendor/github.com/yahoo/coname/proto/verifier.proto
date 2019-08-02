@@ -1,0 +1,60 @@
+// Copyright 2014-2015 The Dename Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License. You may obtain a copy of
+// the License at
+//
+// 	http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations under
+// the License.
+
+syntax = "proto3";
+package proto;
+import "github.com/maditya/protobuf/gogoproto/gogo.proto";
+import "client.proto";
+
+service E2EKSVerification {
+	// VerifierStream accesses the public inputs to a keyserver state machine.
+	// The returned stream is given a limited view of the log which the keyserver
+	// being verified uses to replicate its state internally.  However, private
+	// user data, such as usernames and profile details, is not included (the
+	// relevant fields are set to nil).  note: the keyserver implementation also
+	// uses the same log to persist verifier ratifications, but as they do not
+	// affect any username:profile mappings, they are excluded as well.
+	rpc VerifierStream(VerifierStreamRequest) returns (stream VerifierStep);
+	// PushRatification is called each time a verifier who has been
+	// successfully replaying the log returned by VerifierStream interprets a
+	// keyserver_ratified step and agrees that the keyserver state summarized
+	// by it is the unique result of applying all the previous update steps.
+	// The SignedRatification will be stored by the server and used to
+	// argue the correctness of future lookups in front of clients.
+	rpc PushRatification(SignedEpochHead) returns (Nothing);
+}
+
+// UpdateRequest streams a specified number of committed updates or
+// ratifications. See replication.GetCommitted and replication.WaitCommitted.
+message VerifierStreamRequest {
+	// Start identifies the first epoch for which verifier steps should be
+	// returned.
+	uint64 start = 1;
+	// PageSize specifies number of entries to be returned, MaxUint64 for
+	// unlimited.
+	uint64 page_size = 2; 
+}
+
+// VerifierStep denotes the input to a single state transition of the verified
+// part of the keyserver state machine.
+message VerifierStep {
+	oneof type {
+		SignedEntryUpdate Update = 1;
+		SignedEpochHead Epoch = 2;
+	}
+}
+
+message Nothing {
+	option (gogoproto.gostring) = false;
+}

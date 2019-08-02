@@ -1,0 +1,46 @@
+{
+	"ListenHTTP": ":8000",
+
+	"ListenHTTPS": ":4443",
+
+	"TLSCert": "/Users/user/certs/cert.pem",
+
+	"TLSKey": "/Users/user/keys/key.pem",
+
+	"DataRoot": "/Users/user/gold-data/",
+
+	"Vhosts": true,
+
+	"Insecure": false,
+
+	"Debug": false,
+
+	"CookieAge": 8736,
+
+	"TokenAge":  5,
+
+	"METASuffix": ".meta",
+
+	"ACLSuffix": ".acl",
+
+	"DataApp":  "tabulator",
+
+	"DirApp":   "http://linkeddata.github.io/warp/#list/",
+
+	"SignUpApp": "https://solid.github.io/solid-signup/?domain=",
+
+	"DirIndex":  ["index.html", "index.htm"],
+
+	"DiskLimit": 100000000,
+
+	"SMTPConfig": {
+		"Name": "Administrator",
+		"Addr": "admin@test.org",
+		"User": "username",
+		"Pass": "password",
+		"Host": "mail.test.org",
+		"Port": 25,
+		"SSL": true,
+		"Insecure": false
+	}
+}

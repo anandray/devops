@@ -1,0 +1,14 @@
+package merkletree
+
+import (
+	"testing"
+
+	"github.com/ceph/go-ceph/rados"
+)
+
+func TestRados(t *testing.T) {
+	conn, _ := rados.NewConn()
+	conn.ReadDefaultConfigFile()
+	conn.Connect()
+
+}

@@ -1,0 +1,3 @@
+#!/bin/sh
+mysql -A -h db03.mdotm.com -udb  -p1wasb0rn2 mdotmtv
+

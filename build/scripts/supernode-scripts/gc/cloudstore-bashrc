@@ -1,0 +1,27 @@
+# .bashrc
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+export PATH=/root/sbin:/root/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin
+export PATH=$PATH:/root/go/bin
+export PATH=$PATH:/root/go/src/github.com/wolkdb/cloudstore/build/scripts
+export PATH=$PATH:/root/go/src/github.com/wolkdb/cloudstore/build/bin
+export PATH=$PATH:/root/.local/bin
+
+# User specific aliases and functions
+# include .bashrc if it exists
+if [ -f $HOME/.bashrc_aliases ]; then
+    . $HOME/.bashrc_aliases
+fi
+
+export GOPATH=/root/go
+export GOROOT=/usr/local/go
