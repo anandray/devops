@@ -1,0 +1,11 @@
+ssh www60-0891300-no2v sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-08291230-7r5o sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-1uf1 sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-9xdv sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-cdzw sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-fu53 sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-htpj sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-odna sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-adx-09080230-ymjy sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-fyber-08291236-g6ez sh /root/scripts/cron_uncomment.sh 2>&1 &
+ssh www61-mopub-11031700-z8xr sh /root/scripts/cron_uncomment.sh 2>&1 &

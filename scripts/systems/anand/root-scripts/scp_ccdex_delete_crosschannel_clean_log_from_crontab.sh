@@ -1,0 +1,12 @@
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-014f:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-0gt4:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-1bw0:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-4m17:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-7b7c:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-cdnq:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-gs6m:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-j3br:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-nd25:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-201704171400-x6gr:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-yaron-5n50:/root/scripts/ 2>&1 &
+scp /root/scripts/ccdex_delete_crosschannel_clean_log_from_crontab.sh www-ccdex-yaron-kp45:/root/scripts/ 2>&1 &

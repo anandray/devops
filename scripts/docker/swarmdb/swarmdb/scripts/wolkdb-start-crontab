@@ -1,0 +1,5 @@
+MAILTO=''
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/swarmdb/scripts/:/usr/local/swarmdb/bin
+
+*/1 * * * * /usr/local/swarmdb/scripts/wolkdb-start.sh &>> /usr/local/swarmdb/log/wolkdb-start.log

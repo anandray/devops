@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if ps aux | grep "plasma --bootnode" | grep -v grep; then
+echo "PLASMA is running.. Killing PLASMA before copying new binary..."
+kill -9 $(ps aux | grep "plasma --bootnode" | grep -v grep | awk '{print$2}')
+wget -O /root/go/src/github.com/wolkdb/plasma/build/bin/plasma http://www6001.wolk.com/.start/plasma
+chmod +x /root/go/src/github.com/wolkdb/plasma/build/bin/plasma
+/root/scripts/plasma-start.sh &
+
+elif ! ps aux | grep "plasma --bootnode" | grep -v grep; then
+wget -O /root/go/src/github.com/wolkdb/plasma/build/bin/plasma http://www6001.wolk.com/.start/plasma
+chmod +x /root/go/src/github.com/wolkdb/plasma/build/bin/plasma
+/root/scripts/plasma-start.sh &
+fi

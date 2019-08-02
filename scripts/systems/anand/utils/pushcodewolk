@@ -1,0 +1,171 @@
+#!/usr/bin/php
+<?
+include "storage.php";
+include "www-servers.php";
+include_once "communications.php";
+
+$storage = new Storage;
+$storage->getMdotmDatabase();
+
+$sql = "select hostname, privateip, publicip from servers where (hostname like 'www%' or hostname like 'ha%') and status = 'RUNNING' and length(publicip) and length(privateip) > 0";
+
+if ( $res = mysql_query($sql) ) {
+  while ( $a = mysql_fetch_object($res) ) {
+    $servers[] = $a->privateip;
+    $hostname[$a->privateip] = $a->hostname;
+  }
+}
+
+function readin($prompt = ''){
+    echo $prompt;
+    return rtrim( fgets( STDIN ), "\n" );
+}
+
+function get_branch() 
+{
+  $number = readin("\nSelect a GIT branch:
+                                      1 - master
+                                      2 - mayumi                                                                   
+                                      ");
+  if(empty($number)){
+    echo "\n\nI need to know which GIT branch to use!";
+    get_branch();
+  } else {
+        $branch = "";  
+        switch ($number) {
+            case 1:
+                $branch = "master";
+                break;        
+            case 2:
+                $branch = "mayumi";
+                break;                         
+            default:
+                echo "$number is not a valid option.\n\n";
+                exit(0);
+        }
+        return $branch;
+    }
+}
+
+function get_service() 
+{
+  $number = readin("\nSelect a number to Restart:
+                                      1 - api.wolk.com (just git files no Restart)
+                                      2 - wolk server                         
+                                      ");
+  if(empty($number)){
+    echo "\n\nI need to know which Service to Restart!";
+    get_service();
+  } else {
+        $service = "";  
+        switch ($number) {
+            case 1:
+                $service = "";
+                break;        
+            case 2:
+                $service = "wolk";
+                break;                
+            default:
+                echo "$number is not a valid option.\n\n";
+                exit(0);
+        }
+        return $service;
+    }
+}
+
+function get_name() 
+{
+  $name = readin("Who are you? ");
+  if(empty($name)){
+    echo "\nI need to know who you are!\n";
+    get_name();
+  } else
+    return $name;
+}
+
+function get_qa() 
+{
+  $qa = readin("Who QA? ");
+  if(empty($qa)){
+    echo "\nI need to know who QA!\n";
+    get_qa();
+  } else
+    return $qa;
+}
+
+function get_reason() {
+  $reason = readin("Why are you pushing? ");
+  if(empty($reason)){
+    echo "\nPlease supply a reason.\n";
+    get_reason();
+  } else
+    return $reason;
+}
+
+if ( isset($argv[1]) && ( strlen($argv[1]) > 14 ) ) {
+  $instanceGroup = $argv[1];
+} else {
+  echo "\nI need to know the Instance Group to pushcode to!\nMust be more the 7 char to prevent pushcode to all the servers.\n\n";
+  exit(0);
+}
+
+$branch = get_branch(); 
+$service = get_service();    
+$name = get_name();
+$qa = get_qa();
+$reason = get_reason();
+
+echo "CrossChannel Pushcode\n";
+echo "git update www6001-> /var/www/vhosts/crosschannel.com\n\n";
+$c = "ssh -q www6001 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_api.wolk.com.sh && sh goservice.sh $service 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+//$c = "ssh -q www6001 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_crosschannel.com.sh 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n"; 
+
+echo "CrossChannel Pushcode\n";
+echo "git update www6002-> /var/www/vhosts/crosschannel.com\n\n";
+$c = "ssh www6002 'cd /var/www/vhosts/api.wolk.com/bin && git fetch upstream && git merge upstream/master && sh goservice.sh $service 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n";
+ 
+//$servers[] = "www6002"; // add www6002   to update www6002
+foreach ($servers as $server) {
+  if (strstr($hostname[$server], $instanceGroup)) { echo "\n$hostname[$server] $instanceGroup\n";
+    $h = "git reset --hard HEAD~1;";
+            
+    if ($branch == "master" ) {
+        $branch_a = "master";
+        $branch_b = "upstream/master";
+    } else if ($branch == "mayumi") {
+        $branch_a = "remotes/upstream/mayumi";
+        $branch_b = "remotes/upstream/mayumi";    
+    }      
+        
+    $c = "ssh $server 'cd /var/www/vhosts/api.wolk.com/bin && git checkout $branch_a && git fetch upstream && git merge $branch_b && sh goservice.sh $service 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+    echo "$c\n";
+    $output = array();
+    exec($c, $output);  
+    echo "\n";
+  }
+}
+for ($i=0; $i<3; $i++) {
+  sleep(1);
+  echo "[$i]";
+}
+
+$today = date("F j, Y, g:i a T"); 
+$mail_subject = "CODE PUSH crosschannel.com (" . $name . ") - $today";
+$mail_body = "Code was pushed at " . $today . " to " . $instanceGroup . ".  Details below:\n\n";
+$mail_body .= "Pushed by: " . $name . "\n";
+$mail_body .= "QA by: " . $qa . "\n";
+$mail_body .= "Reason: " . $reason . "\n\n";
+  
+$mail_return = crosschannel_mail("adops@crosschannel.com", "engineering@crosschannel.com", $mail_subject, $mail_body);
+if ($mail_return) echo("Message successfully sent!!\n");
+?>

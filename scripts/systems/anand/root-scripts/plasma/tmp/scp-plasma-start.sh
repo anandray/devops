@@ -1,0 +1,12 @@
+scp -C -p /root/scripts/plasma-start.sh 18.130.136.122:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 47.74.252.13:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 40.74.65.156:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 54.64.176.94:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 65.52.166.152:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 13.125.119.66:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 52.47.189.22:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 104.211.221.190:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 47.254.214.76:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 13.211.61.227:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 120.77.46.213:/root/scripts/ 2>&1 &
+scp -C -p /root/scripts/plasma-start.sh 185.22.174.203:/root/scripts/ 2>&1 &

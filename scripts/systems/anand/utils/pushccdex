@@ -1,0 +1,26 @@
+#!/bin/bash
+
+instances=`gcloud compute instances list | grep RUNNING | grep www-ccdex | awk '{print$1}'` &> /tmp/ccdex
+#cat /tmp/ccdex | awk '{print"ssh -q",$1,"hostname && ssh -q",$1,"sh /root/scripts/run_ccdex.sh 2> /dev/null &"}' > /tmp/run_ccdex.sh
+echo "$instances" | awk '{print"ssh -q",$1,"hostname && ssh -q",$1,"sh /var/www/vhosts/mdotm.com/httpdocs/gce/ccdex/run_ccdex.sh 2> /dev/null &"}' > /tmp/run_ccdex.sh
+sh /tmp/run_ccdex.sh &> /dev/null
+#sleep 2
+echo -ne "
+pushing to www-ccdex instances:
+$instances\n
+"
+sleep 1
+echo -ne '######                                  (20%)\r'
+sleep 1
+echo -ne '##############                          (40%)\r'
+sleep 1
+echo -ne '#######################                 (60%)\r'
+sleep 1
+echo -ne '###############################         (80%)\r'
+sleep 1
+echo -ne '####################################### (100%)\r'
+echo -ne '\n'
+echo "
+pushccdex completed...
+"
+php /var/www/vhosts/mdotm.com/scripts/utils/pushccdex_email.php

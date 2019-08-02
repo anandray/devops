@@ -1,0 +1,15 @@
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-26wp:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-4gdf:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-57rm:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-dkq9:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-dnjt:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-g4v3:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-hvw4:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-hxgm:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-mgwf:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-ndn5:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-nq9v:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-ns0r:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-q6gf:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-v37q:/root/ 2>&1 &
+scp /root/scripts/www60-12061656-http-logs-check-for-404.sh www60-12061656-zbc2:/root/ 2>&1 &

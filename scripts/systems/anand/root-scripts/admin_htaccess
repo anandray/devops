@@ -1,0 +1,49 @@
+DirectoryIndex index.php
+
+<Files terms>
+ForceType application/x-httpd-php
+</Files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteCond %{REQUEST_URI} ^system.*
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{HTTP_HOST} ^adm\.mdotm\.com$
+#RewriteRule ^(.*)$ http://adm.crosschannel.com/$1 [L,R=301]
+#</IfModule>
+
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{HTTP_HOST} ^admin\.mdotm\.com$
+#RewriteRule ^(.*)$ http://admin.crosschannel.com/$1 [L,R=301]
+#</IfModule>
+
+<Limit GET POST>
+ order allow,deny
+# allow from all
+ order deny,allow
+# deny from all
+ allow from 67.167.207.50
+ allow from 73.93.143.84
+ allow from 50.233.2.134 
+ allow from 50.225.47.189 
+ allow from 50.206.37.122 
+ allow from 67.180.166.145
+ allow from 76.126.201.220
+ allow from 50.131.40.196
+ allow from 113.21.76.25
+</Limit>
+ErrorDocument 403 http://www.crosschannel.com

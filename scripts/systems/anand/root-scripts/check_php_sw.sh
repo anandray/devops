@@ -1,0 +1,10 @@
+ssh -q ha6-anand-sw-0qj6 hostname -s && ssh -q ha6-anand-sw-0qj6 php -v
+ssh -q ha6-anand-sw-38vf hostname -s && ssh -q ha6-anand-sw-38vf php -v
+ssh -q ha6-anand-sw-3byx hostname -s && ssh -q ha6-anand-sw-3byx php -v
+ssh -q ha6-anand-sw-3mt4 hostname -s && ssh -q ha6-anand-sw-3mt4 php -v
+ssh -q ha6-anand-sw-4wbf hostname -s && ssh -q ha6-anand-sw-4wbf php -v
+ssh -q ha6-anand-sw-50n4 hostname -s && ssh -q ha6-anand-sw-50n4 php -v
+ssh -q ha6-anand-sw-62bm hostname -s && ssh -q ha6-anand-sw-62bm php -v
+ssh -q ha6-anand-sw-e6mf hostname -s && ssh -q ha6-anand-sw-e6mf php -v
+ssh -q ha6-anand-sw-kbq4 hostname -s && ssh -q ha6-anand-sw-kbq4 php -v
+ssh -q ha6-anand-sw-nmuj hostname -s && ssh -q ha6-anand-sw-nmuj php -v

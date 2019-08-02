@@ -1,0 +1,15 @@
+gcloud -q compute instances  delete wwwa0-08291220-0djo --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa0-08291220-4vxw --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa0-08291220-8fgv --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-1gj5 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-78n5 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-8a00 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-aga6 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-d6wb --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-dhxl --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-jik3 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-nwcw --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-pzb3 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-slpa --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-adx-09080600-xvo3 --zone asia-east1-b 2>&1
+gcloud -q compute instances  delete wwwa1-spotx-09081000-gbjn --zone asia-east1-b 2>&1

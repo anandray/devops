@@ -1,0 +1,10 @@
+scp /etc/sudoers www60-12061656-1z0n:/etc/
+scp /etc/sudoers www60-12061656-cch0:/etc/
+scp /etc/sudoers www60-12061656-ktvz:/etc/
+scp /etc/sudoers www60-12061656-l2pn:/etc/
+scp /etc/sudoers www60-12061656-mlrm:/etc/
+scp /etc/sudoers www60-12061656-nqm7:/etc/
+scp /etc/sudoers www60-12061656-p6c8:/etc/
+scp /etc/sudoers www60-12061656-qlzj:/etc/
+scp /etc/sudoers www60-12061656-r9f6:/etc/
+scp /etc/sudoers www60-12061656-zk6g:/etc/

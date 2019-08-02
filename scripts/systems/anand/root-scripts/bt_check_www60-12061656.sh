@@ -1,0 +1,14 @@
+ssh -q www60-12061656-1465 hostname && ssh -q www60-12061656-1465 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-2h69 hostname && ssh -q www60-12061656-2h69 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-5hpg hostname && ssh -q www60-12061656-5hpg tail -n10 /var/log/bt.log
+ssh -q www60-12061656-6sj2 hostname && ssh -q www60-12061656-6sj2 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-71d6 hostname && ssh -q www60-12061656-71d6 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-74k5 hostname && ssh -q www60-12061656-74k5 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-9jrd hostname && ssh -q www60-12061656-9jrd tail -n10 /var/log/bt.log
+ssh -q www60-12061656-f5hz hostname && ssh -q www60-12061656-f5hz tail -n10 /var/log/bt.log
+ssh -q www60-12061656-gzs8 hostname && ssh -q www60-12061656-gzs8 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-jc09 hostname && ssh -q www60-12061656-jc09 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-n86n hostname && ssh -q www60-12061656-n86n tail -n10 /var/log/bt.log
+ssh -q www60-12061656-n8b4 hostname && ssh -q www60-12061656-n8b4 tail -n10 /var/log/bt.log
+ssh -q www60-12061656-tp7n hostname && ssh -q www60-12061656-tp7n tail -n10 /var/log/bt.log
+ssh -q www60-12061656-v3sx hostname && ssh -q www60-12061656-v3sx tail -n10 /var/log/bt.log

@@ -1,0 +1,21 @@
+define hostgroup {
+        hostgroup_name          Development
+        alias                   Development
+#       contacts                admins
+        members                 d0,d1,d2,d4,d5,d6,d7
+        }
+
+define hostgroup {
+        hostgroup_name          GC
+        alias                   GC
+#       contacts                admins
+#       members                 c0,c1,c2,c3,c4,c5,c6,c7
+        members                 consensus-wolk-0-gc-us-west2-datastore,storage-wolk-0-gc-us-west-datastore-f7p6,consensus-wolk-1-gc-us-east-datastore,storage-wolk-1-gc-us-east-datastore-k5rz,consensus-wolk-2-asia-northeast-datastore,consensus-wolk-3-gc-asia-east-datastore,consensus-wolk-4-gc-europe-west-datastore,consensus-wolk-5-gc-europe-west-datastore,consensus-wolk-6-gc-sa-east-datastore,consensus-wolk-7-na-northeast-datastore
+        }
+define hostgroup {
+        hostgroup_name          LOG
+        alias                   LOG SERVER
+#       contacts                admins
+#       members                 c0,c1,c2,c3,c4,c5,c6,c7
+        members                 log0
+        }

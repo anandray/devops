@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# Compiling the swarmdb binary
+if [ -d /usr/local/go/src/github.com/wolkdb/plasma/build ] && [ ! -f /usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb ]; then
+echo "
+${bold}`date +%T` - Compiling \"swarmdb\" binary...
+"
+
+echo ${normal}
+
+cd /usr/local/go/src/github.com/wolkdb/plasma/
+make swarmdb &> /dev/null &
+
+echo -ne '####                                          (10%)\r'
+sleep 12
+echo -ne '########                                      (20%)\r'
+sleep 12
+echo -ne '############                                  (30%)\r'
+sleep 12
+echo -ne '################                              (40%)\r'
+sleep 12
+echo -ne '####################                          (50%)\r'
+sleep 12
+echo -ne '########################                      (60%)\r'
+sleep 12
+echo -ne '############################                  (70%)\r'
+sleep 12
+echo -ne '################################              (80%)\r'
+sleep 12
+echo -ne '####################################          (90%)\r'
+sleep 12
+echo -ne '##########################################    (100%)\r'
+sleep 12
+echo -ne '\n'
+
+else
+echo "
+${bold}`date +%T` - \"swarmdb\" binary already exists...
+"
+fi
+
+echo ${normal}
+
+# Verify if the 'make swarmdb' process is still running.. 
+if ps aux | grep -E "go run build|go install" | grep -v grep &> /dev/null; then
+echo "
+${bold}Looks like SWARMDB is still being complied.. Allow some more time to complete the compilation...
+"
+sleep 10
+fi
+
+echo ${normal}
+
+# Verify if swarmdb was compiled successfully or not. If not, try compiling again...
+if [ ! -f /usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb ]; then
+echo "
+${bold}Looks like SWARMDB is not compiled yet! Try compiling again...
+"
+
+echo ${normal}
+
+cd /usr/local/go/src/github.com/wolkdb/plasma/
+make swarmdb &> /dev/null &
+
+echo -ne '####                                          (10%)\r'
+sleep 12
+echo -ne '########                                      (20%)\r'
+sleep 12
+echo -ne '############                                  (30%)\r'
+sleep 12
+echo -ne '################                              (40%)\r'
+sleep 12
+echo -ne '####################                          (50%)\r'
+sleep 12
+echo -ne '########################                      (60%)\r'
+sleep 12
+echo -ne '############################                  (70%)\r'
+sleep 12
+echo -ne '################################              (80%)\r'
+sleep 12
+echo -ne '####################################          (90%)\r'
+sleep 12
+echo -ne '##########################################    (100%)\r'
+sleep 12
+echo -ne '\n'
+
+else
+echo "
+${bold}swarmdb was successfully compiled...
+"
+echo ${normal}
+fi

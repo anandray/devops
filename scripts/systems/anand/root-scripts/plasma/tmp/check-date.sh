@@ -1,0 +1,12 @@
+ssh -q 18.130.136.122 hostname && ssh -q 18.130.136.122 date
+ssh -q 47.74.252.13 hostname && ssh -q 47.74.252.13 date
+ssh -q 40.74.65.156 hostname && ssh -q 40.74.65.156 date
+ssh -q 54.64.176.94 hostname && ssh -q 54.64.176.94 date
+ssh -q 65.52.166.152 hostname && ssh -q 65.52.166.152 date
+ssh -q 13.125.119.66 hostname && ssh -q 13.125.119.66 date
+ssh -q 52.47.189.22 hostname && ssh -q 52.47.189.22 date
+ssh -q 104.211.221.190 hostname && ssh -q 104.211.221.190 date
+ssh -q 47.254.214.76 hostname && ssh -q 47.254.214.76 date
+ssh -q 13.211.61.227 hostname && ssh -q 13.211.61.227 date
+ssh -q 120.77.46.213 hostname && ssh -q 120.77.46.213 date
+ssh -q 185.22.174.203 hostname && ssh -q 185.22.174.203 date

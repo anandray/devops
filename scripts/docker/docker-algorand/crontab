@@ -1,0 +1,7 @@
+MAILTO=''
+SHELL=/bin/bash
+PATH=/go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+#* * * * * /root/scripts/git-update.sh &> /var/log/git-update.log
+* * * * * /root/scripts/algod-check.sh &> /var/log/algod-start.log
+

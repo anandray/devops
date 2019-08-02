@@ -1,0 +1,13 @@
+ssh -q www60-12061656-1z0n hostname && ssh -q www60-12061656-1z0n sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-cch0 hostname && ssh -q www60-12061656-cch0 sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-ktvz hostname && ssh -q www60-12061656-ktvz sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-l2pn hostname && ssh -q www60-12061656-l2pn sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-mlrm hostname && ssh -q www60-12061656-mlrm sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-nqm7 hostname && ssh -q www60-12061656-nqm7 sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-p6c8 hostname && ssh -q www60-12061656-p6c8 sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-qlzj hostname && ssh -q www60-12061656-qlzj sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-r9f6 hostname && ssh -q www60-12061656-r9f6 sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-12061656-zk6g hostname && ssh -q www60-12061656-zk6g sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-crosschannel-com-09231100-3s20 hostname && ssh -q www60-crosschannel-com-09231100-3s20 sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-crosschannel-com-09231100-cr9l hostname && ssh -q www60-crosschannel-com-09231100-cr9l sh /root/scripts/apache-ui-upload.sh
+ssh -q www60-crosschannel-com-09231100-ls5t hostname && ssh -q www60-crosschannel-com-09231100-ls5t sh /root/scripts/apache-ui-upload.sh
