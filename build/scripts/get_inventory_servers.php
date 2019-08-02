@@ -1,6 +1,6 @@
 <?php
 include "storage.php";
-include "dns.php";
+
 error_reporting(E_ERROR);
 getWolkDatabase(true);
 
