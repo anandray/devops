@@ -9,7 +9,7 @@
 * [Kubernetes across Cloud Providers](https://docs.google.com/document/d/14lwSSygwcL5NJecyTUbLq1YjnyxxfrStxO4UBQPFuB8/edit)
 
 ## Ceph
-* Ceph OSD Add/Removal: https://docs.google.com/document/d/1u-WQXbYQnDVJpHluBRAUeyzEDOAe_WQJ3H3XYpPwr_M/edit
+* [Ceph OSD Add/Removal](ttps://docs.google.com/document/d/1u-WQXbYQnDVJpHluBRAUeyzEDOAe_WQJ3H3XYpPwr_M/edit)
 * [ceph-repair/recovery](https://docs.google.com/document/d/1XB2nTf8bXn8o8adbk8wBUacByvbor5Ppnm2l7QjgpSE/edit)
 * Ceph Dashboards: [cephy](http://cephy2.wolk.com:7000/) [cephz](http://dash.wolk.com:7000/health)
 * Graphana Dashboards: https://computingforgeeks.com/monitoring-ceph-cluster-with-prometheus-and-grafana/ 
