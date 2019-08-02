@@ -7,6 +7,7 @@
  
 * [Docker / Kubernetes Cheat Sheet](https://docs.google.com/document/d/1ZsQ3_WgvIHf92e2sPcVXuEfseoQ3mZISdmKQ2xiF9jU/edit)
 * [Kubernetes across Cloud Providers](https://docs.google.com/document/d/14lwSSygwcL5NJecyTUbLq1YjnyxxfrStxO4UBQPFuB8/edit)
+* [Kubernetes - Add nodes to existing cluster](https://docs.google.com/document/d/1ZGTdU_imxuOoahUHP8IGwILl7S263EJn9v5ywWQ-sro/edit?usp=sharing)
 
 ## Ceph
 * [Ceph OSD Add/Removal](ttps://docs.google.com/document/d/1u-WQXbYQnDVJpHluBRAUeyzEDOAe_WQJ3H3XYpPwr_M/edit)
