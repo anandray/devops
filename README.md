@@ -22,6 +22,11 @@
 * Ceph Dashboards: [cephy](http://cephy2.wolk.com:7000/) [cephz](http://dash.wolk.com:7000/health)
 * Graphana Dashboards: https://computingforgeeks.com/monitoring-ceph-cluster-with-prometheus-and-grafana/ 
 * Ceph on Mac: https://docs.google.com/document/d/16NXWAV6ukiAw3kYvytjHfqp1GUtwTTCfMsLyMtS5dEY/edit
+* Create replicapool:
+  ```
+  for i in {0..15}; do ceph osd pool create x$i 10; done
+  for i in {0..15}; do ceph osd pool application enable x$i rbd; done
+  ```
 
 ## Cloudflare
 * [Cloudflare DNS API](https://docs.google.com/spreadsheets/d/1Dsz4lbtwjAoTY2WHoh30eydhBxT9akCYf1BNwVXtzMw/edit#gid=0)
