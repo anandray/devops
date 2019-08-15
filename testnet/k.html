@@ -6,6 +6,7 @@
 <meta name="description" content="Wolk Trustless HTTP Blockchains" />
 <meta name="robots" content="index, follow" />
 <style>
+.prob { color: red; }
 th { font-size: 10pt;}
 .h { font-size: 8pt; }
 .hn { font-size: 8pt; text-align: right; white-space: nowrap; }
@@ -22,16 +23,19 @@ th { font-size: 10pt;}
 .problem {  color: red; }
 .minter { background-color: #00FF00; padding: 1px; margin: 1px; border: 1px solid black;}
 </style>
-<script src="https://testnet.wolk.com/knodes.js"></script>
 <script>
 
-function sshpod(stage, idx) {
-  alert("kubectl exec -it `kubectl get pods | grep k" + idx + "-" + stage + " | awk '{print$1}'` -- bash")
+var registryLength=8;
+
+
+
+function sshpod(idx, stage) {
+  alert("kubectl exec -it `kubectl get pods | grep " + cluster + idx + "-" + stage + " | awk '{print$1}'` -- bash")
 }
 
 function getlatest(stage) {
-    for (var i = 0; i < registry.length; i++) {
-        updateinfo(stage, i, registry[i]);
+    for (var i = 0; i < registryLength; i++) {
+        updateinfo(stage, i);
     }
 }
 
@@ -47,12 +51,18 @@ function getBlockchainInfo(stage) {
   return info
 }
 
-function updateinfo(stage, i, r) {
-    var nodenumber = r.nodenumber;
+function nodename(i, cluster) {
+  console.log("nodename", "cluster", cluster)
+  return cluster + i + ".wolk.com";
+}
+
+function updateinfo(stage, i) {
+    var nodenumber = i;
     var port = 80 + stage * 1000 + i;
     var scheme = "https";
     var domain = "wolk.com";
-    var url = scheme + "://" + r.dns + "." + domain + ":" + port + "/wolk/info";
+    var dns = cluster + i + "." + domain;
+    var url = "https://" + dns + ":" + port + "/wolk/info";
 
     var bl_id = "bl-" + stage + "-" + i;
     var peers_id = "peers-" + stage + "-" + i;
@@ -61,7 +71,6 @@ function updateinfo(stage, i, r) {
     var gor_id = "gor-" + stage + "-" + i;
     var buildinfosum_id = "bis-" + stage + "-" + i;
     var networkid_id = "networkid-" + stage + "-" + i;
-    var dns = r.dns + "." + domain;
     fetch(url)
         .then(function(response) {
             return response.json();
@@ -139,19 +148,43 @@ function updateinfo(stage, i, r) {
         });
 }
 
-function restartkube(stage, dns) {
+function restartkube(stage, dns) 
+{
 	alert("restartkube " + dns + " " + stage);
 }
 
-function updatestages(nstages) {
-    document.getElementById("testnettable").innerHTML = testnet();
-    for (var i=1; i<=nstages; i++) {
-      getlatest(i);
-    }
+function updatestages() 
+{
+  var e = document.getElementById("cluster");
+  var p = window.location.pathname;
+  var selcluster = "z";
+  if ( p == "/x.html" ) {
+     selcluster = "x";
+  } 
+  if ( p == "/w.html" ) {
+     selcluster = "w";
+  } 
+  if ( p == "/v.html" ) {
+     selcluster = "v";
+  } 
+  if ( p == "/z.html" ) {
+     selcluster = "z";
+  } 
+
+  cluster = e.options[e.selectedIndex].id;
+  if ( cluster == "" ) {
+    cluster = selcluster;
+  }
+  registryLength = 8;
+  document.getElementById("testnettable").innerHTML = testnet(cluster);
+  for (var i=1; i<=nstages; i++) {
+    getlatest(i);
+  }
 }
 var nstages = 3;
 
-function testnet() {
+function testnet(cluster) {
+   console.log("testnet", cluster)
    var str = "<table width='100%'>";
    str += "<tr bgcolor='#EECCCC'>";
    str += "<th colspan=3>Node Info</th>";
@@ -172,22 +205,12 @@ function testnet() {
      str += "<th width=75>Cache" + i + "</th>";
    }
    str += "</tr>";
-   for (var j=0; j<registry.length; j++) {
-     var r = registry[j];
-     var publicip = r.publicip;
-
+   for (var j=0; j<registryLength; j++) {
      var cl = "storage";
      var domain = "wolk.com";
-     if ( r.consensus > 0 ) {
-       cl = "consensus";
-     } else {
-       domain = "wolk.com";
-     }
-     var nodename = r.dns + "." + domain;
      str += "<tr class='h " + cl + "'>";
-     str += "<td class='h'>" + nodename + "</td>";
-     str += "<td class='h'>" + r.nodenumber + "<br/>" +  r.cloudprovider + "</div>";
-     str += "</td><td><code>" + publicip + "</code></td>";
+     str += "<td class='h'>" + nodename(j, cluster) + "</td>";
+     str += "<td class='h'>" + j + "</div></td><td></td>";
      for (var i=1; i<=nstages; i++) {
       str += "<td class='hn s" + i + "'><span id='bl-" + i + "-" + j + "'></span></td>";
       str += "<td class='hn s" + i + "'><span id='peers-" + i + "-" + j + "'>0</span><div class='infosum' id='bis-" + i + "-" + j + "'></div></td>";
@@ -202,14 +225,17 @@ function testnet() {
 }
 </script>
 </table>
-
-</script>
-<style>
-.prob { color: red; }
-</style>
 </head>
-<body onload="updatestages(nstages);">
-<h3>got wolk://? Testnets</h3>
+<body onload="updatestages();">
+<h3>got wolk://? Kubernetes Testnets</h3>
+Cluster: 
+<select id="cluster" onchange="updatestages()">
+<option id=""></option>
+<option id="z">z - GC [d0-d5]</option>
+<option id="w">w - AWS [d6]</option>
+<option id="v">v - Azure [d7]</option>
+<option id="x">x - Alibaba [d8]</option>
+</select>
 <div id="testnettable">
 </div>
 </body>
