@@ -24,12 +24,9 @@ th { font-size: 10pt;}
 .minter { background-color: #00FF00; padding: 1px; margin: 1px; border: 1px solid black;}
 </style>
 <script>
-
 var registryLength=8;
 
-
-
-function sshpod(idx, stage) {
+function sshpod(idx, stage, cluster) {
   alert("kubectl exec -it `kubectl get pods | grep " + cluster + idx + "-" + stage + " | awk '{print$1}'` -- bash")
 }
 
@@ -52,11 +49,15 @@ function getBlockchainInfo(stage) {
 }
 
 function nodename(i, cluster) {
-  console.log("nodename", "cluster", cluster)
   return cluster + i + ".wolk.com";
 }
 
+function basename(i, cluster) {
+  return cluster + i;
+}
+
 function updateinfo(stage, i) {
+     var cluster = getcluster(stage);
     var nodenumber = i;
     var port = 80 + stage * 1000 + i;
     var scheme = "https";
@@ -76,6 +77,7 @@ function updateinfo(stage, i) {
             return response.json();
         })
         .then(function(info) {
+	    var cluster = getcluster(stage);
             if ( info.peers != undefined ) {
                 document.getElementById(peers_id).innerHTML = "<a target='_new' href=\"" + url + "\">" + info.peers + "</a>";
             }
@@ -84,8 +86,7 @@ function updateinfo(stage, i) {
       	    var restart = false;
             if ( info.blockNumber != undefined ) {
                 var blockurl = base + "/wolk/block/" + info.blockNumber;
-                str = "<a href='" + blockurl + "'>" + info.blockNumber + "</a>";
-                str += "<BR><a href='javascript:sshpod(" + i + "," + stage + ");'>bash</a></span>";
+                str = "<a href='javascript:sshpod(" + i + "," + stage + ", " + cluster + ");'>" + basename(i, cluster) + "</a>&nbsp;<a href='" + blockurl + "'>" + info.blockNumber + "</a></span>";
                 if ( info.lastBlockMintedSecondsAgo != undefined ) {
                   if ( info.lastBlockMintedSecondsAgo > 60 ) {
                     if ( info.lastBlockMintedSecondsAgo > 999 ) {
@@ -99,11 +100,13 @@ function updateinfo(stage, i) {
                     str += "<BR><span class='secondsago'>" + info.lastBlockMintedSecondsAgo + " secs ago</span>"
                   }
                 }
+			console.log(str)
                 document.getElementById(bl_id).innerHTML = str;
             }
       	    if (restart) {
       	      str += "&nbsp;<a href='javascript:restartkube(" + stage + ", \"" + dns + "\")'>restart</a>";
       	    }
+			console.log(cluster, url, str)
             document.getElementById(bl_id).innerHTML = str;
             if ( info.alloc != undefined ) {
               var strm = "Alloc:" + bytes_to_mb(info.alloc) + "<BR>Sys:" + bytes_to_mb(info.sys);
@@ -144,6 +147,7 @@ function updateinfo(stage, i) {
             }
         })
         .catch(function(err) {
+console.log(err)
             document.getElementById(peers_id).innerHTML = "<a href='javascript:restartkube(" + stage + ", \"" + dns + "\")'>unk</a>";
         });
 }
@@ -155,48 +159,36 @@ function restartkube(stage, dns)
 
 function updatestages() 
 {
-  var e = document.getElementById("cluster");
-  var p = window.location.pathname;
-  var selcluster = "z";
-  if ( p == "/x.html" ) {
-     selcluster = "x";
-  } 
-  if ( p == "/w.html" ) {
-     selcluster = "w";
-  } 
-  if ( p == "/v.html" ) {
-     selcluster = "v";
-  } 
-  if ( p == "/z.html" ) {
-     selcluster = "z";
-  } 
-
-  cluster = e.options[e.selectedIndex].id;
-  if ( cluster == "" ) {
-    cluster = selcluster;
-  }
   registryLength = 8;
-  document.getElementById("testnettable").innerHTML = testnet(cluster);
+  document.getElementById("testnettable").innerHTML = testnet();
   for (var i=1; i<=nstages; i++) {
     getlatest(i);
   }
 }
-var nstages = 3;
 
-function testnet(cluster) {
-   console.log("testnet", cluster)
+function getcluster(stage) {
+  if ( stage == 1 ) {
+     return "x";
+  } else if ( stage == 2 ) {
+     return "z";
+  } else if ( stage == 3 ) {
+     return "w";
+  } else if ( stage == 4 ) {
+     return "v";
+  }
+}
+
+var nstages = 4;
+
+function testnet() {
    var str = "<table width='100%'>";
    str += "<tr bgcolor='#EECCCC'>";
-   str += "<th colspan=3>Node Info</th>";
    for (var i=1; i<=nstages; i++) {
      var info = getBlockchainInfo(i);
-     str += "<th colspan=5><a href='" + info.explorerURL + "' target='_new'>Stage " + i + " </a> [<a href='" + info.consensusURL + "' target='_new'>Real-Time Consensus</a>] </th>";
+     str += "<th colspan=5><a href='" + info.explorerURL + "' target='_new'>Stage " + getcluster(i) + " </a> [<a href='" + info.consensusURL + "' target='_new'>Real-Time Consensus</a>] </th>";
    }
    str += "</tr>";
    str += "<tr bgcolor='#EECCCC'>";
-   str += "<th width=300>Node</th>";
-   str += "<th width=50>Provider</th>";
-   str += "<th width=100>Public IP</th>";
    for (var i=1; i<=nstages; i++) {
      str += "<th width=75><a href='javascript:getlatest(" + i + ");'>BN" + i + "</a></th>";
      str += "<th width=75>Bld/Peers" + i + "</th>";
@@ -209,8 +201,6 @@ function testnet(cluster) {
      var cl = "storage";
      var domain = "wolk.com";
      str += "<tr class='h " + cl + "'>";
-     str += "<td class='h'>" + nodename(j, cluster) + "</td>";
-     str += "<td class='h'>" + j + "</div></td><td></td>";
      for (var i=1; i<=nstages; i++) {
       str += "<td class='hn s" + i + "'><span id='bl-" + i + "-" + j + "'></span></td>";
       str += "<td class='hn s" + i + "'><span id='peers-" + i + "-" + j + "'>0</span><div class='infosum' id='bis-" + i + "-" + j + "'></div></td>";
@@ -228,14 +218,6 @@ function testnet(cluster) {
 </head>
 <body onload="updatestages();">
 <h3>got wolk://? Kubernetes Testnets</h3>
-Cluster: 
-<select id="cluster" onchange="updatestages()">
-<option id=""></option>
-<option id="z">z - GC [d0-d5]</option>
-<option id="w">w - AWS [d6]</option>
-<option id="v">v - Azure [d7]</option>
-<option id="x">x - Alibaba [d8]</option>
-</select>
 <div id="testnettable">
 </div>
 </body>
