@@ -66,7 +66,7 @@ aws ec2 create-key-pair --key-name WolkKeyPair-$region --query 'KeyMaterial' --r
 fi
 
 # security group
-if aws ec2 describe-security-groups --region sa-east-1 --query SecurityGroups[*].GroupName | grep -i wolk-sg-$region; then
+if aws ec2 describe-security-groups --region $region --query SecurityGroups[*].GroupName | grep -i wolk-sg-$region; then
 echo "Security Group named wolk-sg-$region already exists...
 "
 else
