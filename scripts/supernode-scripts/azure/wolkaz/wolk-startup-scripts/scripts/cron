@@ -1,0 +1,13 @@
+MAILTO=''
+
+0 * * * * tail -n100 /var/log/messages > /var/log/messages > /dev/null 2>&1
+0 * * * * rm -rf /var/log/httpd/*log.* /var/log/*2016* /var/log/btmp.* /var/log/wtmp.* > /dev/null 2>&1
+
+*/8 * * * * php /var/www/vhosts/mdotm.com/cron/www/checkServer.php `hostname` > /dev/null 2>&1
+*/5 * * * * /usr/bin/flock -w 0 /var/run/loadAll.lock /usr/bin/php /var/www/vhosts/mdotm.com/cron/www/loadAll.php > /var/log/loadAll.log
+*/6 * * * * /usr/bin/php /var/www/vhosts/mdotm.com/cron/www/tvloadAll.php > /var/log/tvloadAll.log
+*/5 * * * * /bin/sh /var/www/vhosts/mdotm.com/scripts/systems/apachechk.sh > /dev/null 2>&1
+
+#*   * * * * /usr/bin/php /var/www/vhosts/mdotm.com/httpdocs/ads/systems/debuglog.php
+*/1 * * * * ssh `hostname` /bin/sh /root/scripts/hbasechk.sh > /var/log/hbase.log 2>&1
+#*/1 * * * * /bin/sh /root/scripts/git_clone.sh > /var/log/git_clone.log 2>&1

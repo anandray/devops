@@ -1,0 +1,3 @@
+<?
+$shortcircuit = array();
+?>

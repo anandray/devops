@@ -1,0 +1,164 @@
+DirectoryIndex index.php
+
+<Files terms>
+ForceType application/x-httpd-php
+</Files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteCond %{REQUEST_URI} ^system.*
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{HTTP_HOST} ^adm\.mdotm\.com$
+#RewriteRule ^(.*)$ http://adm.crosschannel.com/$1 [L,R=301]
+#</IfModule>
+
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{HTTP_HOST} ^admin\.mdotm\.com$
+#RewriteRule ^(.*)$ http://admin.crosschannel.com/$1 [L,R=301]
+#</IfModule>
+
+<Limit GET POST>
+ order allow,deny
+# allow from all
+ order deny,allow
+# deny from all
+ allow from 67.167.207.50
+ allow from 73.93.143.84
+ allow from 50.233.2.134 
+ allow from 50.225.47.189 
+ allow from 50.206.37.122 
+ allow from 67.180.166.145 
+ allow from 24.5.3.39 
+ allow from 24.23.158.98 
+ allow from 2601:646:c200:9d00::/64
+ allow from 24.23.159.27 
+ allow from 50.152.245.123 
+ allow from 73.51.201.210 
+ allow from 24.1.161.236 
+ allow from 128.248.255.74 
+ allow from 24.6.98.192 
+ allow from 73.50.43.208 
+ allow from 209.117.57.66 
+ allow from 73.176.0.211 
+ allow from 73.189.210.91 
+ allow from 73.41.110.159 
+ allow from 70.197.1.176 
+ allow from 70.209.218.176 
+ allow from 73.151.192.225 
+ allow from 50.204.120.242  
+ allow from 50.185.65.85    
+ allow from 198.8.80.223 
+ allow from 73.202.187.137 
+ allow from 76.126.201.220 
+ allow from 24.148.57.66  
+ allow from 166.175.187.235  
+ allow from 98.224.223.233 
+ allow from 104.15.70.111 
+ allow from 73.93.142.82
+ allow from 73.189.23.57 
+ allow from 64.85.225.48 
+ allow from 108.224.86.27 
+ allow from 73.162.225.209 
+ allow from 108.233.254.234 
+ allow from 184.187.179.16 
+ allow from 73.93.140.243
+ allow from 73.93.140.212
+ allow from 115.187.56.0/24 
+ allow from 73.93.142.199
+ allow from 223.191.4.90 
+ allow from 122.163.110.0/24 
+ allow from 110.227.70.0/24 
+ allow from 150.129.64.0/22 
+ allow from 98.210.192.36 
+ allow from 72.223.43.107 
+ allow from 168.1.23.79 
+ allow from 73.223.30.42 
+ allow from 73.189.213.45 
+ allow from 50.185.118.140 
+ allow from 75.126.23.71 
+ allow from 98.207.3.96 
+ allow from 23.126.179.87 
+ allow from 23.126.177.214 
+ allow from 73.93.140.247
+ allow from 66.249.64.61 
+ allow from 173.13.162.158 
+ allow from 12.130.117.99 
+ allow from 66.249.84.0/8 
+ allow from 73.93.140.187
+ allow from 73.170.140.55 
+ allow from 12.118.131.186 
+ allow from 24.23.158.98
+ allow from 96.82.67.217 
+ allow from 24.130.61.17 
+ allow from 203.171.245.53
+ allow from 70.194.132.219
+ allow from 70.194.0.0/16
+ allow from 67.167.206.175 
+ allow from 180.215.94.9
+ allow from 27.63.130.19 
+ allow from 67.180.166.43
+ allow from 73.92.164.36 
+ allow from 172.56.15.93
+ allow from 172.56.17.198
+ allow from 70.167.159.70
+ allow from 216.218.131.174
+ allow from 24.4.161.176
+ allow from 71.198.226.55
+ allow from 73.162.110.185
+ allow from 104.156.240.168
+ allow from 104.200.0.0/16
+ allow from 198.8.80.0/24
+ allow from 198.8.80.77
+ allow from 107.152.98.170
+ allow from 198.8.80.211
+ allow from 69.31.51.207
+ allow from 198.8.80.18
+ allow from 150.129.65.182
+ allow from 116.203.138.108
+ allow from 23.27.13.227
+ allow from 27.63.133.224
+ allow from 107.152.98.159
+ allow from 104.156.228.167
+ allow from 70.197.9.2
+ allow from 116.203.200.77
+ allow from 113.21.77.217
+
+ allow from 198.8.80.186
+ allow from 104.200.151.32
+ allow from 198.8.80.173
+ allow from 198.8.80.152
+ allow from 73.222.38.59
+ allow from 107.152.98.172
+ allow from 198.8.80.7
+ allow from 180.215.76.122
+ allow from 150.129.65.97
+ allow from 223.191.13.66
+ allow from 27.63.130.3
+ allow from 73.189.210.91
+ allow from 207.181.249.216
+ allow from 46.165.220.207
+ allow from 24.130.120.184
+ allow from 178.162.199.92
+ allow from 168.1.75.4
+ allow from 178.162.199.143
+ allow from 157.119.105.34
+ allow from 98.224.90.24
+ allow from 4.16.41.187
+ allow from 70.214.2.87
+ allow from 67.167.215.149
+</Limit>
+ErrorDocument 403 http://www.crosschannel.com

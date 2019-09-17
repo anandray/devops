@@ -1,0 +1,23 @@
+[Unit]
+Description=Plasma Cloudstore
+;After=network.target
+Requires=network.target
+
+[Service]
+PIDFile=/var/run/wolk.pid
+User=root
+LimitNOFILE=1000000
+
+;Type=forking
+;EnvironmentFile=/etc/sysconfig/cloudstore
+ExecStart=/bin/sh -c 'exec nohup /root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk --datadir /usr/local/wolk --rpc  --rpcaddr 0.0.0.0 --rpcapi cloudstore --port 30300 --rpccorsdomain=* --rpcvhosts=* 2>> /var/log/wolk.log'
+;ExecReload=/bin/kill -USR2 $MAINPID
+;ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+StandardOutput=null
+StandardError=null
+Restart=on-failure
+;Restart=always
+
+[Install]
+WantedBy=multi-user.target

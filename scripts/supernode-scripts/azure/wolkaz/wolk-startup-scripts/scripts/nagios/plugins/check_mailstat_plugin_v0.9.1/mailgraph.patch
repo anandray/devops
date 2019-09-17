@@ -1,0 +1,46 @@
+--- mailgraph.orig	2007-08-29 17:06:01.000000000 +0800
++++ mailgraph	2010-12-15 09:46:23.000000000 +0800
+@@ -382,6 +382,7 @@
+ my $year;
+ my $this_minute;
+ my %sum = ( sent => 0, received => 0, bounced => 0, rejected => 0, virus => 0, spam => 0 );
++my %sum_stat = %sum;
+ my $rrd_inited=0;
+ 
+ my %opt = ();
+@@ -858,6 +859,7 @@
+ sub event($$)
+ {
+ 	my ($t, $type) = @_;
++	$sum_stat{$type}++;
+ 	update($t) and $sum{$type}++;
+ }
+ 
+@@ -880,6 +882,10 @@
+ 			RRDs::update $rrd_virus, "$sm:0:0" unless $opt{'only-mail-rrd'};
+ 		}
+ 	}
++
++	#update mail statistics file
++	update_stat(); 
++
+ 	$this_minute = $m;
+ 	$sum{sent}=0;
+ 	$sum{received}=0;
+@@ -890,6 +896,16 @@
+ 	return 1;
+ }
+ 
++sub update_stat()
++{
++	my $stat_file = '/var/tmp/mailstat';
++	open (my $stath, ">", $stat_file) or die "unable to open $stat_file to write mail statistic $!";
++	print $stath "sent:$sum_stat{sent} received:$sum_stat{received} bounced:$sum_stat{bounced} rejected:$sum_stat{rejected} virus:$sum_stat{virus} spam:$sum_stat{spam}\n";
++	close($stath);
++
++	return 1;
++}
++
+ main;
+ 
+ __END__

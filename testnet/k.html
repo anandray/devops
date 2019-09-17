@@ -26,7 +26,8 @@ th { font-size: 10pt;}
 <script>
 var registryLength=8;
 
-function sshpod(idx, stage, cluster) {
+function sshpod(idx, stage) {
+  var cluster = getcluster(stage);
   alert("kubectl exec -it `kubectl get pods | grep " + cluster + idx + "-" + stage + " | awk '{print$1}'` -- bash")
 }
 
@@ -86,7 +87,7 @@ function updateinfo(stage, i) {
       	    var restart = false;
             if ( info.blockNumber != undefined ) {
                 var blockurl = base + "/wolk/block/" + info.blockNumber;
-                str = "<a href='javascript:sshpod(" + i + "," + stage + ", " + cluster + ");'>" + basename(i, cluster) + "</a>&nbsp;<a href='" + blockurl + "'>" + info.blockNumber + "</a></span>";
+                str = "<a href='javascript:sshpod(" + i + "," + stage + ");'>" + basename(i, cluster) + "</a>&nbsp;<a href='" + blockurl + "'>" + info.blockNumber + "</a></span>";
                 if ( info.lastBlockMintedSecondsAgo != undefined ) {
                   if ( info.lastBlockMintedSecondsAgo > 60 ) {
                     if ( info.lastBlockMintedSecondsAgo > 999 ) {
@@ -100,13 +101,12 @@ function updateinfo(stage, i) {
                     str += "<BR><span class='secondsago'>" + info.lastBlockMintedSecondsAgo + " secs ago</span>"
                   }
                 }
-			console.log(str)
                 document.getElementById(bl_id).innerHTML = str;
             }
       	    if (restart) {
       	      str += "&nbsp;<a href='javascript:restartkube(" + stage + ", \"" + dns + "\")'>restart</a>";
       	    }
-			console.log(cluster, url, str)
+
             document.getElementById(bl_id).innerHTML = str;
             if ( info.alloc != undefined ) {
               var strm = "Alloc:" + bytes_to_mb(info.alloc) + "<BR>Sys:" + bytes_to_mb(info.sys);
