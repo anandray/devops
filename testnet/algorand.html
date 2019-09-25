@@ -519,7 +519,7 @@
           if (info.chunkCacheSize != undefined) {
             var str = "StateDB:" + info.stateDBCacheSize;
             if (info.pendingTxCount != undefined) {
-              str += "<BR>PendingTX:" + info.pendingTxCount;
+              str += "<BR>PendingTX: <a href='" + base + "/wolk/txpool'>" + info.pendingTxCount + "</a>";
             }
             document.getElementById(cache_id).innerHTML = str;
           }

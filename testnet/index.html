@@ -193,7 +193,7 @@ function updateinfo(stage, i, r) {
             if ( info.chunkCacheSize != undefined ) {
       	        var str = "Chunk:" + info.chunkCacheSize + "<BR>" + "StateDB:" + info.stateDBCacheSize;
                 if ( info.pendingTxCount != undefined ) {
-      	           str += "<BR>PendingTX:" + info.pendingTxCount;
+      	           str += "<BR>PendingTX: <a href='" + base + "/wolk/txpool'>" + info.pendingTxCount + "</a>";
       	        }
                 if ( ( info.fetchChainLength != undefined ) && ( info.fetchChainLength > 0 ) ) {
       	           str += "<BR><u>FChainLength:</u>" + info.fetchChainLength;
