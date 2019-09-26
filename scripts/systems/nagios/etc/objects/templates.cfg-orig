@@ -30,8 +30,8 @@ define contact {
     host_notification_period        24x7                    ; host notifications can be sent anytime
     service_notification_options    w,u,c,r,f,s             ; send notifications for all service states, flapping events, and scheduled downtime events
     host_notification_options       d,u,r,f,s               ; send notifications for all host states, flapping events, and scheduled downtime events
-    service_notification_commands   notify-service-by-slack,notify-service-by-email ; send service notifications via email
-    host_notification_commands      notify-host-by-slack,notify-host-by-email    ; send host notifications via email
+    service_notification_commands   notify-service-by-email ; send service notifications via email
+    host_notification_commands      notify-host-by-email    ; send host notifications via email
     register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL CONTACT, JUST A TEMPLATE!
 }
 
@@ -69,15 +69,15 @@ define host {
     name                            linux-server            ; The name of this host template
     use                             generic-host            ; This template inherits other values from the generic-host template
     check_period                    24x7                    ; By default, Linux hosts are checked round the clock
-    check_interval                  1                       ; Actively check the host every 5 minutes
+    check_interval                  5                       ; Actively check the host every 5 minutes
     retry_interval                  1                       ; Schedule host check retries at 1 minute intervals
-    max_check_attempts              2                      ; Check each Linux host 10 times (max)
+    max_check_attempts              10                      ; Check each Linux host 10 times (max)
     check_command                   check-host-alive        ; Default command to check Linux hosts
-    notification_period             24x7               ; Linux admins hate to be woken up, so we only notify during the day
+    notification_period             workhours               ; Linux admins hate to be woken up, so we only notify during the day
                                                             ; Note that the notification_period variable is being overridden from
                                                             ; the value that is inherited from the generic-host template!
-    notification_interval           5                     ; Resend notifications every 2 hours
-    notification_options            d,u,r,f,s                   ; Only send notifications for specific host states
+    notification_interval           120                     ; Resend notifications every 2 hours
+    notification_options            d,u,r                   ; Only send notifications for specific host states
     contact_groups                  admins                  ; Notifications get sent to the admins by default
     register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!
 }
@@ -176,8 +176,8 @@ define service {
     check_interval                  10                      ; Check the service every 10 minutes under normal conditions
     retry_interval                  2                       ; Re-check the service every two minutes until a hard state can be determined
     contact_groups                  admins                  ; Notifications get sent out to everyone in the 'admins' group
-    notification_options            w,u,c,r,f                 ; Send notifications about warning, unknown, critical, and recovery events
-    notification_interval           5                      ; Re-notify about service problems every hour
+    notification_options            w,u,c,r                 ; Send notifications about warning, unknown, critical, and recovery events
+    notification_interval           60                      ; Re-notify about service problems every hour
     notification_period             24x7                    ; Notifications can be sent out at any time
     register                        0                       ; DON'T REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!
 }
@@ -191,7 +191,7 @@ define service {
 
     name                            local-service           ; The name of this service template
     use                             generic-service         ; Inherit default values from the generic-service definition
-    max_check_attempts              3                       ; Re-check the service up to 4 times in order to determine its final (hard) state
+    max_check_attempts              4                       ; Re-check the service up to 4 times in order to determine its final (hard) state
     check_interval                  5                       ; Check the service every 5 minutes under normal conditions
     retry_interval                  1                       ; Re-check the service every minute until a hard state can be determined
     register                        0                       ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!

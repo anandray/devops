@@ -1,10 +1,10 @@
-#define host {
-#	 use				 linux-server
-#         host_name                       d0
-#         address                         d0
-#         contact_groups                  admins
-#         check_command                   check-host-alive
-#         }
+define host {
+	 use				 linux-server
+         host_name                       d0
+         address                         d0
+         contact_groups                  admins
+         check_command                   check-host-alive
+         }
 define host {
 	 use				 linux-server
          host_name                       d1
@@ -133,26 +133,26 @@ define host {
          check_command                   check-host-alive
          }
 
-#define host {
-#	 use				 linux-server
-#         host_name                       cephy1
-#         address                         cephy1
-#         contact_groups                  admins
-#         check_command                   check-host-alive
-#         }
+define host {
+	 use				 linux-server
+         host_name                       cephy1
+         address                         cephy1
+         contact_groups                  admins
+         check_command                   check-host-alive
+         }
 
-#define host {
-#	 use				 linux-server
-#         host_name                       cephy2
-#         address                         cephy2
-#         contact_groups                  admins
-#         check_command                   check-host-alive
-#         }
+define host {
+	 use				 linux-server
+         host_name                       cephy2
+         address                         cephy2
+         contact_groups                  admins
+         check_command                   check-host-alive
+         }
 
-#define host {
-#	 use				 linux-server
-#         host_name                       cephy3
-#         address                         cephy3
-#         contact_groups                  admins
-#         check_command                   check-host-alive!!!!!!!!
-#         }
+define host {
+	 use				 linux-server
+         host_name                       cephy3
+         address                         cephy3
+         contact_groups                  admins
+         check_command                   check-host-alive
+         }
