@@ -1,1 +1,224 @@
-k.html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Wolk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="Wolk Trustless HTTP Blockchains" />
+<meta name="robots" content="index, follow" />
+<style>
+.prob { color: red; }
+th { font-size: 10pt;}
+.h { font-size: 8pt; }
+.hn { font-size: 8pt; text-align: right; white-space: nowrap; }
+.s0 { background-color: #FFEEEE; }
+.s1 { background-color: #EEFFEE; }
+.s2 { background-color: #EEEEFF; }
+.s3 { background-color: #FFEEFF; }
+.s4 { background-color: #FFFFEE; }
+.s5 { background-color: #FFCCFF; }
+.infosum { float: left; background: #FFAAAA; margin: 2px; }
+.networkid { float: left; background: #FFEEFF; margin: 2px; }
+.storage { background-color: #EEEEEE; }
+.secondsago { white-space: nowrap; }
+.problem {  color: red; }
+.minter { background-color: #00FF00; padding: 1px; margin: 1px; border: 1px solid black;}
+</style>
+<script>
+var registryLength=8;
+
+function sshpod(idx, stage) {
+  var cluster = getcluster(stage);
+  alert("kubectl exec -it `kubectl get pods | grep " + cluster + idx + "-" + stage + " | awk '{print$1}'` -- bash")
+}
+
+function getlatest(stage) {
+    for (var i = 0; i < registryLength; i++) {
+        updateinfo(stage, i);
+    }
+}
+
+function bytes_to_mb(b) {
+    return (b/(1024*1024)).toFixed(0) + "MB";
+}
+function getBlockchainInfo(stage) {
+  var port = 80 + stage * 1000;
+  var info = {
+    explorerURL: "https://c0.wolk.com:" + port + "/app/explorer/home.html",
+    consensusURL: "https://testnet.wolk.com/stage.html?stage=" + stage
+  }
+  return info
+}
+
+function nodename(i, cluster) {
+  return cluster + i + ".wolk.com";
+}
+
+function basename(i, cluster) {
+  return cluster + i;
+}
+
+function updateinfo(stage, i) {
+     var cluster = getcluster(stage);
+    var nodenumber = i;
+    var port = 80 + stage * 1000 + i;
+    var scheme = "https";
+    var domain = "wolk.com";
+    var dns = cluster + i + "." + domain;
+    var url = "https://" + dns + ":" + port + "/wolk/info";
+
+    var bl_id = "bl-" + stage + "-" + i;
+    var peers_id = "peers-" + stage + "-" + i;
+    var mem_id = "mem-" + stage + "-" + i;
+    var cache_id = "cache-" + stage + "-" + i;
+    var gor_id = "gor-" + stage + "-" + i;
+    var buildinfosum_id = "bis-" + stage + "-" + i;
+    var networkid_id = "networkid-" + stage + "-" + i;
+    fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(info) {
+	    var cluster = getcluster(stage);
+            if ( info.peers != undefined ) {
+                document.getElementById(peers_id).innerHTML = "<a target='_new' href=\"" + url + "\">" + info.peers + "</a>";
+            }
+            var base = scheme + "://" + dns + ":" + port
+      	    var str = "";
+      	    var restart = false;
+            if ( info.blockNumber != undefined ) {
+                var blockurl = base + "/wolk/block/" + info.blockNumber;
+                str = "<a href='javascript:sshpod(" + i + "," + stage + ");'>" + basename(i, cluster) + "</a>&nbsp;<a href='" + blockurl + "'>" + info.blockNumber + "</a></span>";
+                if ( info.lastBlockMintedSecondsAgo != undefined ) {
+                  if ( info.lastBlockMintedSecondsAgo > 60 ) {
+                    if ( info.lastBlockMintedSecondsAgo > 999 ) {
+                      info.lastBlockMintedSecondsAgo = 999;
+                    }
+                    restart = true;
+                    cl = "problem";
+                    str += "<BR><span class='secondsago " + cl + "'>" + info.lastBlockMintedSecondsAgo + " secs ago</span>"
+                  } else {
+                    cl = "";
+                    str += "<BR><span class='secondsago'>" + info.lastBlockMintedSecondsAgo + " secs ago</span>"
+                  }
+                }
+                document.getElementById(bl_id).innerHTML = str;
+            }
+      	    if (restart) {
+      	      str += "&nbsp;<a href='javascript:restartkube(" + stage + ", \"" + dns + "\")'>restart</a>";
+      	    }
+
+            document.getElementById(bl_id).innerHTML = str;
+            if ( info.alloc != undefined ) {
+              var strm = "Alloc:" + bytes_to_mb(info.alloc) + "<BR>Sys:" + bytes_to_mb(info.sys);
+              if ( info.numConnections != undefined ) {
+                strm += "<BR>NumConn:" + info.numConnections;
+              }
+              document.getElementById(mem_id).innerHTML = strm;
+            }
+            if ( info.numGoroutine != undefined ) {
+                var pprofurl = base + "/pprof/goroutine/2"
+                document.getElementById(gor_id).innerHTML = "<a href='" + pprofurl + "'>" + info.numGoroutine + "</a>";
+            }
+            if ( info.chunkCacheSize != undefined ) {
+      	        var str = "Chunk:" + info.chunkCacheSize + "<BR>" + "StateDB:" + info.stateDBCacheSize;
+                if ( info.pendingTxCount != undefined ) {
+      	           str += "<BR>PendingTX:" + info.pendingTxCount;
+      	        }
+                if ( ( info.fetchChainLength != undefined ) && ( info.fetchChainLength > 0 ) ) {
+      	           str += "<BR><u>FChainLength:</u>" + info.fetchChainLength;
+      	        }
+                if ( ( info.insertChainLength != undefined ) && ( info.insertChainLength > 1 ) ) {
+      	           str += "<BR><u>IChainLength:</u>" + info.insertChainLength;
+      	        }
+                document.getElementById(cache_id).innerHTML = str;
+            }
+            if ( info.buildInfoSum != undefined ) {
+
+              var sum = info.buildInfoSum;
+              if ( sum.length > 4 ) {
+                sum = sum.substr(0, 4);
+              }
+              document.getElementById(buildinfosum_id).innerHTML = "<code><span style='background: #" + sum + "'>"+ sum + "</span></code>";
+            }
+            if ( info.networkID != undefined ) {
+              var networkID = info.networkID % 10000;
+
+              document.getElementById(networkid_id).innerHTML = "<code><span style='background: #CC" + networkID + "'>" + networkID + "</span></code>";
+            }
+        })
+        .catch(function(err) {
+console.log(err)
+            document.getElementById(peers_id).innerHTML = "<a href='javascript:restartkube(" + stage + ", \"" + dns + "\")'>unk</a>";
+        });
+}
+
+function restartkube(stage, dns) 
+{
+	alert("restartkube " + dns + " " + stage);
+}
+
+function updatestages() 
+{
+  registryLength = 8;
+  document.getElementById("testnettable").innerHTML = testnet();
+  for (var i=1; i<=nstages; i++) {
+    getlatest(i);
+  }
+}
+
+function getcluster(stage) {
+  if ( stage == 1 ) {
+     return "x";
+  } else if ( stage == 2 ) {
+     return "z";
+  } else if ( stage == 3 ) {
+     return "w";
+  } else if ( stage == 4 ) {
+     return "v";
+  }
+}
+
+var nstages = 4;
+
+function testnet() {
+   var str = "<table width='100%'>";
+   str += "<tr bgcolor='#EECCCC'>";
+   for (var i=1; i<=nstages; i++) {
+     var info = getBlockchainInfo(i);
+     str += "<th colspan=5><a href='" + info.explorerURL + "' target='_new'>Stage " + getcluster(i) + " </a> [<a href='" + info.consensusURL + "' target='_new'>Real-Time Consensus</a>] </th>";
+   }
+   str += "</tr>";
+   str += "<tr bgcolor='#EECCCC'>";
+   for (var i=1; i<=nstages; i++) {
+     str += "<th width=75><a href='javascript:getlatest(" + i + ");'>BN" + i + "</a></th>";
+     str += "<th width=75>Bld/Peers" + i + "</th>";
+     str += "<th width=75>Mem" + i + "</th>";
+     str += "<th width=75>NID/GoR" + i + "</th>";
+     str += "<th width=75>Cache" + i + "</th>";
+   }
+   str += "</tr>";
+   for (var j=0; j<registryLength; j++) {
+     var cl = "storage";
+     var domain = "wolk.com";
+     str += "<tr class='h " + cl + "'>";
+     for (var i=1; i<=nstages; i++) {
+      str += "<td class='hn s" + i + "'><span id='bl-" + i + "-" + j + "'></span></td>";
+      str += "<td class='hn s" + i + "'><span id='peers-" + i + "-" + j + "'>0</span><div class='infosum' id='bis-" + i + "-" + j + "'></div></td>";
+      str += "<td class='hn s" + i + "'><span id='mem-" + i + "-" + j + "'></span></td>";
+      str += "<td class='hn s" + i + "'><span class='networkid' id='networkid-" + i + "-" + j + "'></span><span id='gor-" + i + "-" + j + "'></span></td>";
+      str += "<td class='hn s" + i + "'><span id='cache-" + i + "-" + j + "'></span></td>";
+    }
+    str += "</tr>";
+  }
+  str += "</table>";
+  return str;
+}
+</script>
+</table>
+</head>
+<body onload="updatestages();">
+<h3>got wolk://? Kubernetes Testnets</h3>
+<div id="testnettable">
+</div>
+</body>
+</html>
