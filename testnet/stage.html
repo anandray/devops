@@ -256,6 +256,28 @@
 
     var domain = "wolk.com";
 
+    var parseQueryString = function() {
+	var str = window.location.search;
+	var objURL = {};
+	str.replace(
+	    new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
+	    function( $0, $1, $2, $3 ){
+            	objURL[ $1 ] = $3;
+	    }
+    	);
+       return objURL;
+   };
+
+    function loadDefaultStage() {
+	var params = parseQueryString();
+	var defaultstage = params["stage"];
+	if ( defaultstage == null){
+	    return updateregistry(1);
+	}else{
+	    return updateregistry(parseInt(defaultstage));
+	}
+    }
+
     function updateregistry(stage) {
       currentstage = stage;
       maxblocknumber = 1;
@@ -669,7 +691,7 @@ function showstagelist() {
     }
   </style>
 </head>
-<body onload="updateregistry(1)">
+<body onload="loadDefaultStage()">
   <span id="blocknumber_id"></span>
   <h3>got wolk://? Testnets</h3><div id='stagelist'></div>
   <div id="testnettable"></div>
