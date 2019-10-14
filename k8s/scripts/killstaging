@@ -1,0 +1,303 @@
+#!/usr/bin/php
+<?php
+include "storage.php";
+
+error_reporting(E_ERROR);
+define('MAX_PROCESS_NUM', 100);
+define('TIMEOUT',120);
+
+$mysqli = getWolkDatabase(true);
+
+function myexec($cmd, $run) {
+	echo "$cmd\n";
+	if ( $run ) {
+		$output = array();
+		exec($cmd, $output);
+		if ( count($output) > 0 ) {
+			print_r($output);
+		}
+	}
+}
+
+function get_network($stage, $restart = false, $projecttable = "project") {
+   global $mysqli;
+    if ( $restart == "restart" ) {
+        $ts = time();
+	$sql = "update network set networkID = '$ts' where stage = '$stage' and projecttable = '$projecttable'";
+	echo "$sql\n";
+	if ( $res = $mysqli->query($sql) ) {
+		echo "$sql\n";
+	} else {
+		echo $mysqli->error()."$sql\n";
+	}
+   }
+   $sql = "select networkID, consensusAlgorithm from network where stage = '$stage' and projecttable = '$projecttable'";
+   echo "---- $sql\n";
+   if ( $res = $mysqli->query($sql) ) {
+        echo "1\n";
+      	print_r($res);
+	while ( $a = $res->fetch_object() ) {
+          echo "a\n";
+	  print_r($a);
+	  return $a;
+	}
+        echo "b\n";
+   } else {
+        echo "2\n";
+	echo $mysqli->error();
+   }
+   echo "networkID not found: $sql\n";
+   exit(0);
+}
+
+$mysqli = getWolkDatabase(true);
+
+$stage = isset($argv[1]) ? $argv[1] : 1;
+$restart = isset($argv[2]) ? $argv[2] : ($argv[2]=="restart");
+$projecttable = isset($argv[3]) ? $argv[3] : "project";
+$ts = time();
+
+
+$nodes_json = json_encode($nodes);
+$network = get_network($stage, $restart, $projecttable);
+$networkid = $network->networkID;
+$consensusAlgorithm = $network->consensusAlgorithm;
+$httpport = 80 + $stage;
+$rpcport = 9900 + $stage;
+$p2pport = 30300 + 1000*$stage;
+$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+
+
+$genesistemplate = "$maindir/build/scripts/genesis-staging.json";
+$genesis = ( $stage == 0 ) ? "$maindir/build/conf/genesis.json" : "$mainddir/build/conf/genesis$stage.json";
+$seed_16 = "0x".substr(sha1($networkid).md5($networkid), 0, 64);
+$seed_64 = base64_encode(hex2bin(substr($seed_16, 2)));
+$httpport = ( $stage == 0 ) ? 443 : 80 + $stage;
+
+$sql = "select servers.hostname, servers.publicip, servers.privateip, servers.datacenter, servers.cloudprovider, servers.consensus, servers.dns from servers
+          where pushwolk=1 and servers.projecttable in ( 'project', 'project1' ) order by consensus desc, nodenumber";
+$num = 0;
+if ( $res = $mysqli->query($sql) ) {
+	while ( $a = $res->fetch_object() ) {
+		$a->nodenumber = $num;
+		$servers[] = $a;
+		$n = new StdClass;
+		$n->owner = "0xC30Ad35a90aB3F39805900125705D1d40E7A961c";
+		$n->valueInt = 10000;
+		$n->httpport = $httpport;
+		$n->region = 1;
+		$n->pubkey = "02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01";
+		$n->consensusip = "{$a->dns}.wolk.com";
+		$n->storageip = "{$a->dns}.wolk.com";
+		echo $num . "\t". $a->dns . "\n";
+		$nodes[$num++] = $n;
+	}
+} else {
+	echo $mysqli->error();
+	exit(0);
+}
+
+$nodes_data = json_encode($nodes);
+$genesisdata = str_replace(array( "HTTPPORT", "SEED", "NETWORKID", "NODES"), array($httpport, $seed_64, $networkid, $nodes_data), file_get_contents($genesistemplate));
+file_put_contents($genesis, $genesisdata);
+
+echo $genesisdata."\n";
+$ts = date("Y-m-d", time()).$stage;
+$SkipLocalGetChunk = 0;
+echo "start " . date("Y/m/d H:i:s") ." Seed $seed_16 ($seed_64)\n";
+$args[networkID] = $networkid;
+$args[servers] = $servers;
+$args[stage] = $stage;
+$args[restart] = $restart;
+$mp = new MultiProcess($args);
+$ext = new extFunc();
+$mp->setWork(array($ext, "wolk"));
+$mp->run();
+echo "finish " . date("Y/m/d H:i:s") ."\n";
+
+class MultiProcess
+{
+	private $args;
+	private $maxProcessNum;
+
+	public function setWork($callback)
+	{
+		$this->work = $callback;
+	}
+
+	public function __construct($args)
+	{
+	$maxProcessNum = MAX_PROCESS_NUM;
+		$this->args		  = $args;
+		$this->maxProcessNum = $maxProcessNum;
+
+		pcntl_signal(SIGTERM, array($this, 'sigHandler'));
+		pcntl_signal(SIGHUP,  array($this, 'sigHandler'));
+		pcntl_signal(SIGUSR1, array($this, 'sigHandler'));
+		pcntl_signal(SIGALRM, array($this, 'sigHandler'));
+
+	}
+
+	private function sigHandler($signo)
+	{
+		switch ($signo)
+		{
+			case SIGTERM:
+				echo "shutdown...\n";
+				exit;
+				break;
+			case SIGHUP:
+				echo "reboot...\n";
+				break;
+			case SIGUSR1:
+				echo "SIGUSER($signo)\n";
+				break;
+			case SIGALRM:
+				echo "alarm...\n";
+				exit;
+				break;
+			default:
+				echo "Other signal: " . $signo . "\n";
+		}
+	}
+
+	public function run()
+	{
+
+		$pchild = 0;
+		$pnum = 0;
+		$pend = 0;
+
+		$servers = $this->args[servers];
+		$servercount;
+		foreach ($servers as $i => $s) {
+			$servercount++;
+			if( $pchild < $this->maxProcessNum)
+			{
+				$pid = pcntl_fork();
+
+				if ($pid == -1)
+				{
+					throw new Exception('Failed forc process.');
+				}
+				else if ($pid)
+				{
+					$pchild++;
+					$pnum++;
+				}
+				else
+				{
+					$arg[servers] = $s;
+					$arg[stage] = $this->args[stage];
+					$arg[restart] = $this->args[restart];
+
+					pcntl_alarm(TIMEOUT);
+
+					if (!is_array($this->work))
+					{
+						$function = $this->work;
+						$function($arg);
+					}
+					else
+					{
+						$obj  = $this->work[0];
+						$func = $this->work[1];
+						$obj->$func($arg);
+					}
+					exit(0);
+				}
+			}
+			else
+			{
+				echo "waiting.\n";
+				$pid = pcntl_waitpid(-1, $status, WUNTRACED);
+				$pchild--;
+				$pend++;
+
+				echo "$pid stopped.\n";
+			}
+		}
+		echo "kicked all.\n";
+		while (pcntl_waitpid(0, $status) != -1) {
+			$status = pcntl_wexitstatus($status);
+			//echo "Child $status completed\n";
+		}
+	}
+}
+
+class extFunc
+{
+	function wolk($args)
+	{
+		global $seed_64;
+		global $consensusAlgorithm;
+		global $networkid;
+		$stage = $args[stage];
+		$s = $args[servers];
+		$restart = $args[restart];
+		$httpport = 80 + $stage;
+		if ( $stage == 0 ) {
+			$httpport = 443;
+		}
+		$rpcport = 9900 + $stage;
+		$p2pport = 30300 + 1000*$stage;
+		$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+
+		$MicrosoftAzureAccountName = $s->MicrosoftAzureAccountName;
+		$MicrosoftAzureAccountKey = $s->MicrosoftAzureAccountKey;
+		$AlibabaAccessKeyId = $s->AlibabaAccessKeyId;
+		$AlibabaAccessKeySecret = $s->AlibabaAccessKeySecret;
+		$AlibabaEndpointURL = $s->AlibabaEndpointURL;
+
+		$hostname = $s->hostname;
+		$consensusidx = $s->nodenumber;
+		$server = $s->privateip;
+		$dc = $s->datacenter;
+		if ( $s->cloudprovider == "gc" ) {
+		   $project = $s->projectID;
+		   $region = $s->region;
+	 	} else {
+			$region = $s->datacenter;
+  		}
+		$toml = array();
+		echo "consensus " .  $s->consensus . "consensusidx ". $consensusidx . "server". $server. "\n";
+		$toml[] = "ConsensusIdx = ".$consensusidx;
+		$toml[] = "NodeType = \"consensus\"";
+		$genesis = ( $stage == 0 ) ? "$maindir/build/conf/genesis.json" : "$maindir/build/conf/genesis$stage.json";
+		$toml[] = "ConsensusAlgorithm = \"$consensusAlgorithm\"";
+		$toml[] = "GenesisFile = \"$genesis\"";
+		$toml[] = "Preemptive = true";
+		//$toml[] = "Leveldb = false"; //set back to true if needed
+		if ( $SkipLocalGetChunk > 0 ) {
+			$toml[] = "SkipLocalGetChunk = $SkipLocalGetChunk";
+		}
+		$toml[] = "NetworkID = $networkid";
+		$toml[] = "SSLCertFile = \"/etc/ssl/certs/wildcard.wolk.com/www.wolk.com.crt\"";
+		$toml[] = "SSLKeyFile = \"/etc/ssl/certs/wildcard.wolk.com/www.wolk.com.key\"";
+		$tomlstr = implode("\n", $toml);
+		// set up a list of commands
+		$binary = "wolk$stage";
+		$logfile = "/var/log/$binary.log";
+
+		if ( $restart == "restart" ) {
+   			$localdb = "/usr/local/$binary";
+		} else {
+   			$localdb = "";
+		}
+		// copy the TOML file
+		$cp_toml = "/tmp/$binary$server.toml";
+		$dst_toml = "$maindir/$binary.toml";
+		file_put_contents($cp_toml, $tomlstr);
+
+		// kill pre-existing binary running, remove pre-existing log
+		$cmds = array();
+		$cmds[] = "ssh $server 'kill -9 $(pidof $binary)' &";
+		foreach ($cmds as $cmd) {
+   			// $pushstaginglog = "/var/log/pushstaging.log";
+   			//$c = implode($cmds, " && ")." ";
+   			myexec($cmd, true);
+		}
+	}
+}
+
+?>

@@ -1,0 +1,32 @@
+10.138.0.53   log0    log0.wolk.com
+35.238.149.234    db03
+
+10.138.0.55	d1	d1.wolk.com
+10.138.0.24	d2	d2.wolk.com
+10.138.0.25	d4	d4.wolk.com
+10.138.0.54	d7	d7.wolk.com
+
+10.138.0.22      cloudstore.wolk.com
+
+10.138.0.93     c.wolk.com
+
+10.138.0.56      c0      c0.wolk.com
+10.138.0.57      c1      c1.wolk.com
+10.138.0.31      c2      c2.wolk.com
+10.138.0.61      c3      c3.wolk.com
+#10.138.0.58      c4      c4.wolk.com
+#10.138.0.26      c5      c5.wolk.com
+10.138.0.27      c6      c6.wolk.com
+10.138.0.59      c7      c7.wolk.com
+
+# Kubernetes-managed hosts file (host network).
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+169.254.169.254 metadata.google.internal metadata

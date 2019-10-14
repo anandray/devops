@@ -1,0 +1,88 @@
+#!/usr/bin/php
+<?php
+include "storage.php";
+error_reporting(E_ERROR);
+define('MAX_PROCESS_NUM', 100);
+define('TIMEOUT',120);
+
+$mysqli = getWolkDatabase(true);
+
+function myexec($cmd, $run) {
+   echo "$cmd\n";
+   if ( $run ) {
+	    $output = array();
+    	    exec($cmd, $output);
+	    if ( count($output) > 0 ) {
+			       	    print_r($output);
+	    }
+   }
+}
+
+function get_network($stage, $restart = false, $projecttable = "project") {
+   global $mysqli;
+    if ( $restart == "restart" ) {
+        $ts = time();
+	$sql = "update network set networkID = '$ts' where stage = '$stage' and projecttable = '$projecttable'";
+	echo "$sql\n";
+	if ( $res = $mysqli->query($sql) ) {
+		echo "$sql\n";
+	} else {
+		echo $mysqli->error()."$sql\n";
+	}
+   }
+   $sql = "select networkID, consensusAlgorithm from network where stage = '$stage' and projecttable = '$projecttable'";
+   echo "---- $sql\n";
+   if ( $res = $mysqli->query($sql) ) {
+        echo "1\n";
+      	print_r($res);
+	while ( $a = $res->fetch_object() ) {
+          echo "a\n";
+	  print_r($a);
+	  return $a;
+	}
+        echo "b\n";
+   } else {
+        echo "2\n";
+	echo $mysqli->error();
+   }
+   echo "networkID not found: $sql\n";
+   exit(0);
+}
+
+
+if ( $argc < 3 ) {
+   echo "restartwolk [server] [stage=0..5]\n";
+   exit(0);
+}
+$mysqli = getWolkDatabase(true);
+
+
+$server = isset($argv[1]) ? $argv[1] : false;
+$stage = isset($argv[2]) ? $argv[2] : 0;
+$network = get_network($stage, $restart);
+$networkid = $network->networkID;
+if ( $server == false ) {
+   echo "node [$node] not found;\n";
+   exit(0);
+} else {
+  echo "restarting Node found with ip $server\n";
+}
+
+$httpport = 80 + $stage;
+$rpcport = 9900 + $stage;
+$p2pport = 30300 + 1000*$stage;
+$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+$bindir = "/root/go/src/github.com/wolkdb/cloudstore/build/bin";
+$httpport = ( $stage == 0 ) ? 443 : 80 + $stage;
+$binary = "wolk$stage";
+$logfile = "/var/log/$binary.log";
+$dst_toml = "$maindir/$binary.toml";
+$fullcmd = "$bindir/$binary --verbosity=6 --datadir /usr/local/$binary --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport $rpcport --port $p2pport --httpport $httpport --wolklog nothing --config $dst_toml";
+$cmds[] = "ssh $server 'kill -9 $(pidof $binary)'";
+$cmds[] = "scp $bindir/wolk $server:$bindir/$binary";
+$cmds[] = "ssh $server '$fullcmd >> $logfile 2>&1 &'";
+foreach ($cmds as $cmd) {
+	myexec($cmd, true); 
+}
+?>
+

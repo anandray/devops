@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  labels:
+    app: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  template:
+    metadata:
+      labels:
+        app: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+        image: gcr.io/us-west1-wlk/wolkinc/cloudstore_STAGE_CEPHCLUSTER:_BUILD
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: CONSENSUSIDX
+            value: "_CONSENSUSIDX"
+          - name: NETWORKID
+            value: "_NETWORKID"
+          - name: CEPHCLUSTER
+            value: "_CEPHCLUSTER"
+          - name: HTTPPORT
+            value: "_HTTPPORT"
+          - name: P2PPORT
+            value: "_P2PPORT"
+          - name: RPCPORT
+            value: "_RPCPORT"
+        ports:
+        - name: https-stage_STAGE
+          containerPort: _HTTPPORT
+        - name: p2p-stage_STAGE
+          containerPort: _P2PPORT
+        resources:
+          requests:
+            cpu: _cpu
+            memory: _memory
+        securityContext:
+          privileged: true
+      # if hostNetwork: false, the "rbd map" command hangs, see https://github.com/rook/rook/issues/2021
+      hostNetwork: true

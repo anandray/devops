@@ -1,0 +1,11 @@
+apiVersion: autoscaling.k8s.io/v1beta2
+kind: VerticalPodAutoscaler
+metadata:
+  name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+spec:
+  targetRef:
+    apiVersion: "extensions/v1beta1"
+    kind:       Deployment
+    name:       _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  updatePolicy:
+    updateMode: "Auto"

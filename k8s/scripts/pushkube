@@ -1,0 +1,99 @@
+#!/usr/bin/php
+<?php
+include "storage.php";
+error_reporting(E_ERROR);
+
+$cluster = getCluster();
+
+$mysqli = getWolkDatabase(true);
+$stage = isset($argv[1]) ? $argv[1] : 1;
+$build = isset($argv[2]) ? $argv[2] : "201908140113";
+$a = get_testnet($stage, false, $cluster);
+$networkID = $a->networkID;
+
+$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+$cloudstoretemplate = file_get_contents("$maindir/build/yaml/cloudstore-template.yaml");
+$servicetemplate = file_get_contents("$maindir/build/yaml/service-template.yaml");
+$hpatemplate =   file_get_contents("$maindir/build/yaml/cloudstore-hpa-template.yaml");
+
+  $lbips = array( 0 => "35.185.209.207",
+		  1 => "104.198.97.52", 
+		  2 => "35.233.202.108",
+		  3 => "34.83.64.97",
+		  4 => "35.247.123.203",
+		  5 => "35.247.55.106", 
+		  6 => "35.230.63.161", 
+		  7 => "34.83.185.10"); 
+
+
+if ( $cluster == "v" ) { // azure
+   $lbips = array( 0 => "13.64.241.1",
+		   1 => "13.88.10.8", 
+		   2 => "13.88.10.126",
+		   3 => "13.88.11.10",
+		   4 => "13.88.11.234",
+		   5 => "13.88.9.31", 
+		   6 => "13.88.9.254", 
+		   7 => "13.88.12.145"); 
+}
+
+foreach ($lbips as $i => $lbip) {
+  // key value pairs
+  $lbipstr = "loadBalancerIP: $lbip";
+  if ( $cluster == "x" || $cluster == "v" ) {
+    $lbipstr = "# no ip specified";
+  }
+  $httpPort = 80 + 1000 * $stage + $i;
+  $p2pPort = 30000 + 1000 * $stage + $i;
+  $rpcPort = 9900  + 1000 * $stage + $i;
+  $cpu = "100m";
+  $memory = "50Mi";
+  $minreplicas = 1;
+  $maxreplicas = 3;
+  $targetcpu = 80;
+  $kv = array("_STAGE" => $stage,
+	      "_BUILD" => $build,
+	      "_CONSENSUSIDX" => $i,
+	      "_NETWORKID" => $networkID,
+	      "_CEPHCLUSTER" => $cluster,
+	      "_HTTPPORT" => $httpPort,
+	      "_P2PPORT" => $p2pPort,
+	      "_RPCPORT" => $rpcPort,
+	      "_cpu" => $cpu,
+	      "_memory" => $memory,
+	      "_minReplicas" => $minreplicas,
+	      "_maxReplicas" => $maxreplicas,
+	      "_targetCPUUtilizationPercentage" => $targetcpu,
+	      "_LBIP" => $lbipstr);
+  // generate service yaml
+  $servicefn = "$maindir/build/yaml/$cluster$i-$stage-service.yml";
+  file_put_contents($servicefn, str_replace(array_keys($kv), array_values($kv), $servicetemplate));
+  $cmds["deleteservice"][] = "kubectl delete -f $servicefn";
+  $cmds["createservice"][] = "kubectl create -f $servicefn";
+  
+  // generate cloudstore yaml
+  $cloudstorefn = "$maindir/build/yaml/$cluster$i-$stage-cloudstore.yml";
+  file_put_contents($cloudstorefn, str_replace(array_keys($kv), array_values($kv), $cloudstoretemplate));
+  $cmds["deletecloudstore"][] = "kubectl delete -f $cloudstorefn";
+  $cmds["createcloudstore"][] = "kubectl create -f $cloudstorefn";
+
+  // TODO: QA this new concept
+  $hpafn = "$maindir/build/yaml/$cluster$i-$stage-cloudstore-hpa.yml";
+  file_put_contents($hpafn, str_replace(array_keys($kv), array_values($kv), $hpatemplate));
+  $cmds["deletehpa"][] = "kubectl delete -f $hpafn";
+  $cmds["createhpa"][] = "kubectl create -f $hpafn";
+
+  // generate checks
+  $cmds["curlcheck"][] = "curl https://$cluster$i.wolk.com:$httpPort/wolk/info";
+  $cmds["sshpod"][] = "kubectl exec -it `kubectl get pods | grep $cluster$i-$stage | awk '{print$1}'` -- bash";
+  $cmds["telnetp2p"][] = "telnet $lbip $p2pPort";
+}
+
+foreach ($cmds as $grp => $cmd) {
+  echo "# $grp\n";
+  foreach ($cmd as $c) {
+    echo "$c\n";
+    //  exec($c);
+  }
+}
+?>

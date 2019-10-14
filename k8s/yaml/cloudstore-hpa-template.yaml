@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  namespace: default
+spec:
+  maxReplicas: _maxReplicas
+  minReplicas: _minReplicas
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  targetCPUUtilizationPercentage: _targetCPUUtilizationPercentage

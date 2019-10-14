@@ -1,0 +1,139 @@
+#!/usr/bin/php
+<?php
+
+$wcloudloc = "/root/go/src/github.com/wolkdb/wolkjs/";
+$appdir = "/root/go/src/github.com/wolkdb/wolkjs/apps";
+$port = "81";
+
+function myexec($cmd, $run) {
+	echo "$cmd\n";
+	if ( $run ) {
+		$output = array();
+		exec($cmd, $output);
+		if ( count($output) > 0 ) {
+			print_r($output);
+		}
+	}
+}
+
+function exec_cmds($cmds, $run = false) {
+	foreach ($cmds as $cmd) {
+    echo "$cmd\n";
+		if( $run ) {
+		  myexec($cmd, $run);
+		}
+	}
+}
+
+function createAccount($owner = "app")
+{
+  global $appdir, $port, $wcloudloc;
+  $hp = "--httpport=$port --server=c0.wolk.com";
+  $cmds = array();
+  $cmds[] = $wcloudloc."wcloud createaccount $hp --waitfortx $owner";
+  return $cmds;
+}
+
+function uploadVideo($owner = "uploader", $key = "unknown.mp4", $desc = "explorer", $keywords ="news", $duration = "T0M9S", $encodingformat = "video/mpeg")
+{
+	/*
+	./wcloud put ~/bs.css wolk://rodney/VideoObject/b.mp4 --metadata='{
+	  "@context": "http://schema.org",
+	  "@type": "VideoObject",
+	  "identifier": "rodney/VideoObject/d.mp4",
+	  "contentUrl": "wolk://rodney/VideoObject/d.mp4",
+	  "author": "wolk://rodney",
+	  "description": "a d.mp4 video",
+	  "duration": "T0M9S",
+	  "encodingFormat": "video/mpeg",
+	  "name": "d.mp4 - d Video",
+	  "thumbnailUrl": "wolk://rodney/ImageObject/dthumb.jpg",
+	  "uploadDate": "2019-07-22 09:00:00",
+	  "keywords": "tennis"
+	}'
+	*/
+  global $appdir, $port, $wcloudloc;
+	$metadata = '{
+	  "@context": "http://schema.org",
+	  "@type": "VideoObject",
+	  "identifier": "'.$owner.'/VideoObject/'.$key.'",
+	  "contentUrl": "wolk://'.$owner.'/VideoObject/'.$key.'",
+	  "author": "wolk://'.$owner.'",
+	  "description": "'.$desc.'",
+	  "duration": "'.$duration.'",
+	  "encodingFormat": "'.$encodingformat.'",
+	  "name": "Name:'.$key.'",
+	  "thumbnailUrl": "wolk://'.$owner.'/ImageObject/dthumb.jpg",
+	  "uploadDate": "2019-07-22 09:00:00",
+	  "keywords": "'.$keywords.'"
+	}';
+  $hp = "--httpport=$port --server=c0.wolk.com";
+  $cmds = array();
+  $cmds[] = $wcloudloc."wcloud $hp --server=c0.wolk.com put 'test dummy content' wolk://$owner/VideoObject/$key --metadata='$metadata' --waitfortx ";
+  return $cmds;
+}
+
+function commentOnVideo($commenter, $commentKey, $comment, $videoContentUrl) {
+	return createAction("CommentAction", $commenter, $commentKey, $comment, $videoContentUrl);
+}
+
+function likeVideo($liker, $likeKey, $likeDetails, $videoContentUrl) {
+	return createAction("LikeAction", $liker, $likeKey, $likeDetails, $videoContentUrl);
+}
+
+function installApp($installer, $installKey, $installDetail, $appUrl) {
+	return createAction("InstallAction", $liker, $likeKey, $likeDetails, $videoContentUrl);
+}
+
+function createAction($actionType = "CommentAction", $agent, $actionKey, $actionResult, $object) {
+	/*
+	./wcloud put "wow great vid" wolk://commenter/Action/c3 --metadata='{
+	  "identifier": "commenter/Action/c3",
+	  "@type": "CommentAction",
+	  "object": "wolk://du5/VideoObject/b.mp4",
+	  "agent": "wolk://commenter",
+	  "result": "wow great vid -signed, commenter",
+	  "dateCreated": "2019-07-22 09:00:00"
+	}' --waitfortx
+	*/
+  global $appdir, $port, $wcloudloc;
+	$metadata = '{
+	  "identifier": "'.$agent.'/Action/'.$actionKey.'",
+	  "@type": "'.$actionType.'",
+	  "object": "'.$object.'",
+	  "agent": "wolk://'.$agent.'",
+	  "result": "'.$actionResult.'",
+	  "dateCreated": "2019-07-22 09:00:00"
+	}';
+	$hp = "--httpport=$port --server=c0.wolk.com";
+	$cmds = array();
+	$cmds[] = $wcloudloc."wcloud $hp --server=c0.wolk.com put '$actionResult' wolk://$agent/Action/$actionKey --metadata='$metadata' --waitfortx ";
+	return $cmds;
+}
+
+$randSuffix = rand(10,1000);
+echo "\nSTARTING - suffix: $randSuffix\n";
+$owners = array("global", "uploader$randSuffix", "commenter$randSuffix");
+print_r($owners);
+foreach ($owners as $owner) {
+	echo "creating owner: $owner\n";
+	$cmds = createAccount($owner); //Creates Account and Default Dirs
+	exec_cmds($cmds, true);
+}
+$videoKey = "testvid.mp4";
+$videoDesc = "A test description for $videoKey";
+$expectedVideoUrl = "wolk://".$owners[1]."/VideoObject/".$videoKey;
+$cmds = uploadVideo($owners[1], $videoKey);
+exec_cmds($cmds, true);
+$videoComment = "wolk://".$owners[2]." comments on ".$expectedVideoUrl;
+$videoCommentKey = "testCommentKey".rand(10,1000);
+$cmds = commentOnVideo($owners[2],$videoCommentKey, $videoComment, $expectedVideoUrl);
+exec_cmds($cmds, true);
+$likeVideoDetails = "wolk://".$owners[2]." Like +1 on ".$expectedVideoUrl;
+$cmds = likeVideo($owners[2],"testLikeKey".rand(10,1000), $likeVideoDetails, $expectedVideoUrl);
+exec_cmds($cmds, true);
+$videoCommentUrl = "wolk://".$owners[2]."/Action/".$videoCommentKey;
+$likeCommentDetails = "wolk://".$owners[1]." Like +1 on ".$videoCommentUrl;
+$cmds = createAction("LikeAction", $owners[1],"testLikeCommentKey".rand(10,1000), $likeCommentDetails, $videoCommentUrl);
+exec_cmds($cmds, true);
+?>

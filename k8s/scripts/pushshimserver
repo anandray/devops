@@ -1,0 +1,32 @@
+#!/usr/bin/php
+<?php
+include "storage.php";
+error_reporting(E_ERROR);
+define('MAX_PROCESS_NUM', 100);
+define('TIMEOUT',120);
+
+$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+$servers = array("c7.wolk.com");
+
+foreach ($servers as $server) {
+  $cmds = array();
+	$src_binary = "$maindir/build/bin/shimserver";
+	$dst_binary = "$maindir/build/bin/shimserver";
+
+	if ( ! file_exists($src_binary) ) {
+			echo "$src_binary does not exist! Terminating...\n";
+	} else {
+			$cmds[] = "scp $src_binary $server:$dst_binary";
+			//$cmds[] = "rsync -avz --timeout=20 $src_binary $server:$dst_binary";
+	}
+
+	$logfile = "/var/log/shimserver.log";
+	$fullcmd = "$maindir/build/bin/shimserver ";
+	$cmds[] = "ssh $server '$fullcmd >> $logfile 2>&1 &'";
+  foreach ($cmds as $c) {
+      sleep(1);
+      echo "$c\n";
+      exec($c, $arr);
+  }
+}
+?>

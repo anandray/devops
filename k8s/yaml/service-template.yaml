@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  labels:
+    app: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+spec:
+  _LBIP
+  type: LoadBalancer
+  selector:
+    app: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
+  ports:
+    - name: https-stage_STAGE
+      protocol: TCP
+      port: _HTTPPORT
+      targetPort: _HTTPPORT
+    - name: p2p-stage_STAGE
+      protocol: TCP
+      port: _P2PPORT
+      targetPort: _P2PPORT

@@ -1,0 +1,23 @@
+# build new binary, new image and push to GCR
+docker build --force-rm  -t gcr.io/us-west1-wlk/wolkinc/cloudstore:v27 .
+gcloud docker -- push gcr.io/us-west1-wlk/wolkinc/cloudstore:v27
+
+# create cloudstore pod 
+kubectl create -f cloudstore.yaml
+kubectl get pods --namespace rook-ceph
+kubectl exec -n rook-ceph -it `kubectl -n rook-ceph get pods | grep cloud | awk '{print$1}'` -- bash
+kubectl delete -f cloudstore.yaml
+
+# create service 
+kubectl create -f service.yaml
+kubectl get service
+kubectl delete service cloudstore 
+kubectl delete -f cloudstore.yaml
+
+# (if stuck)
+gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+docker build --force-rm  -t wolkinc/cloudstore .
+docker tag wolkinc/cloudstore gcr.io/us-west1-wlk/wolkinc/cloudstore:v27
+gcloud docker -- push gcr.io/us-west1-wlk/wolkinc/cloudstore:v27
+kubectl expose deployment -n rook-ceph cloudstore --type=LoadBalancer --port 39303 --target-port 39303
+

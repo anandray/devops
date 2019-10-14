@@ -1,0 +1,45 @@
+{
+	"networkID": 1565809380,
+	"seed": "2jmj7l5rSw0yVb/vlWAYkK/YBwkZfOC7RLvTkIWURv8=",
+	"deltaPos": 1,
+	"deltaNeg": 2,
+	"storageBeta": 30,
+	"bandwidthBeta": 40,
+	"q": 3,
+	"gamma": 100,
+	"accounts": {
+		"0x545DF6FD6811dc32397eAe8d218fc4b29681Eb62": {
+			"balance": 200003,
+			"quota":   3000000000
+		},
+		"0x8520F2Be32A14fd8EBA2773A23EcD1eBd2290b99": {
+			"balance": 100000,
+			"quota":   100000000
+		},
+		"0x103618B5e39bF6B7FD9aE71960414b4a1f5e6571": {
+			"balance": 100000,
+			"quota":   10000000
+		},
+		"0xdCe6c2b9C28389Ad654570bd5A0FD351Fb1027d6": {
+			"balance": 100000,
+			"quota":   1000000
+		},
+		"0xF18A8ca22d01899FA255F55C349d5974C64D7Ef6": {
+			"balance": 100000,
+			"quota":   10000
+		},
+		"0x70A6D3bb949839867a5DcED66d66746be69D9a34": {
+			"balance": 100000,
+			"quota":   10000
+		},
+		"0xFA24467CABd1820694969904b91E336C92761D34": {
+			"balance": 100000,
+			"quota":   10000
+		},
+		"0xC30Ad35a90aB3F39805900125705D1d40E7A961c": {
+			"balance": 100000,
+			"quota":   10000
+		}
+	},
+	"nodes": [{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2080,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z0.wolk.com","storageip":"z0.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2081,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z1.wolk.com","storageip":"z1.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2082,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z2.wolk.com","storageip":"z2.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2083,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z3.wolk.com","storageip":"z3.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2084,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z4.wolk.com","storageip":"z4.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2085,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z5.wolk.com","storageip":"z5.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2086,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z6.wolk.com","storageip":"z6.wolk.com"},{"owner":"0xC30Ad35a90aB3F39805900125705D1d40E7A961c","valueInt":10000,"httpport":2087,"region":1,"pubkey":"02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01","consensusip":"z7.wolk.com","storageip":"z7.wolk.com"}]
+}

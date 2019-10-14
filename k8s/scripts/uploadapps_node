@@ -1,0 +1,101 @@
+#!/usr/bin/php
+<?php
+
+$wcloudloc = "/root/go/src/github.com/wolkdb/wolkjs/";
+$appdir = "/root/go/src/github.com/wolkdb/wolkjs/apps";
+
+function checkPendingTxCount() {
+	global $appdir, $port, $wcloudloc;
+	$hp = "--httpport=$port --server=c0.wolk.com";
+	$pendingTxCmd = $wcloudloc."wcloud pendingtxcount $hp";
+	echo "\n$pendingTxCmd";
+	//$pendingTxCmd = "/Users/rodneywitcher/src/github.com/wolkdb/wolkjs/wcloud pendingtxcount $hp";
+	$output = array();
+	exec($pendingTxCmd, $output);
+	if( count($output) > 0 ) {
+		$count = $output[0];
+		return $count;
+	} else {
+		return -1; //todo: verify this case
+	}
+}
+
+function myexec($cmd, $run) {
+	echo "$cmd\n";
+	if ( $run ) {
+		$output = array();
+		exec($cmd, $output);
+		if ( count($output) > 0 ) {
+			print_r($output);
+		}
+	}
+}
+
+function exec_cmds($cmds, $run = false) {
+	foreach ($cmds as $cmd) {
+    echo "$cmd\n";
+		if( $run ) {
+		  myexec($cmd, $run);
+		}
+	}
+}
+
+function setup($owner = "app")
+{
+  global $appdir, $port, $wcloudloc;
+  $hp = "--httpport=$port --server=c0.wolk.com";
+  $cmds = array();
+  $cmds[] = $wcloudloc."wcloud createaccount $hp --waitfortx --nonce $owner";
+  //$cmds[] = $wcloudloc."wcloud setdefault $hp $owner";
+  $cmds[] = $wcloudloc."wcloud mkdir $hp --waitfortx --nonce wolk://$owner/js";
+  $cmds[] = $wcloudloc."wcloud put $hp $appdir/wolk.js wolk://$owner/js/wolk.js";
+  return $cmds;
+}
+
+function uploadapps($owner = "app", $app = "explorer", $files = null)
+{
+  global $appdir, $port, $wcloudloc;
+  $hp = "--httpport=$port --server=c0.wolk.com";
+  $cmds = array();
+  $cmds[] = $wcloudloc."wcloud mkdir $hp --waitfortx --nonce wolk://$owner/$app";
+  foreach ($files as $i => $fn) {
+    $cmds[] = $wcloudloc."wcloud put $hp $appdir/$app/$fn wolk://$owner/$app/$fn";
+  }
+  return $cmds;
+}
+
+$owner = "app06";
+$ports = array(443, 81, 82, 83, 84, 85);
+$ports = array(83);
+$apps = array("css", "help", "schemas", "example", "explorer", "nosql", "proof", "sql", "bucket_explorer", "webfonts", "releases", "home", "video"); // => array("home.html", "navbar.html", "txns.html", "block.html", "footer.html"));
+$apps = array("css", "explorer", "nosql");
+echo "\nSTARTING\n";
+foreach ($ports as $port) {
+  echo "processing port: $port\n";
+	$pendingtxcount = checkPendingTxCount();
+	echo "pendingtxcount =".$pendingtxcount."\n";
+	if( $pendingtxcount > 250 ) {
+		echo "\nPending transaction count = ".$pendingtxcount." exceeds limit.  EXITING ...\n";
+		exit;
+	}
+  $cmds = setup($owner);
+  exec_cmds($cmds, true);
+  /*$cmds = setup("wolkadmin");
+  exec_cmds($cmds, true);
+  foreach ($apps as $app => $files) {
+    $cmds = uploadapps($owner, $app, $files);
+    exec_cmds($cmds);
+  }*/
+  foreach ($apps as $app) {
+    $files = array();
+    exec("ls -1 $appdir/$app", $files);
+	//TODO: make it recursive
+    if( $app == "schemas" ) { $owner = "wolkadmin"; } else { $owner = "app"; }
+    $cmds = uploadapps($owner, $app, $files);
+    exec_cmds($cmds, true);
+  }
+
+	$hp = "--httpport=$port --server=c0.wolk.com";
+	$cmds_bin = array();
+}
+?>
