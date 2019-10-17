@@ -17,10 +17,9 @@ th { font-size: 10pt;}
 .s5 { background-color: #FFCCFF; }
 .infosum { float: left; background: #FFAAAA; margin: 2px; }
 .networkid { float: left; background: #FFEEFF; margin: 2px; }
-.storage { background-color: #EEEEEE; }
 .secondsago { white-space: nowrap; }
 .problem {  color: red; }
-.minter { background-color: #00FF00; padding: 1px; margin: 1px; border: 1px solid black;}
+.cluster { background-color: #AAFFAA; padding: 1px; margin: 1px; border: 1px solid black; font-size: 13pt; }
 </style>
 <script src="https://testnet.wolk.com/nodes.js"></script>
 <script>
@@ -255,8 +254,8 @@ function testnet() {
    str += "</tr>";
    str += "<tr bgcolor='#EECCCC'>";
    str += "<th width=300>Cloudstore Host</th>";
-   str += "<th width=50>Node</th>";
-   str += "<th width=100>Public IP</th>";
+   str += "<th width=50>Ceph</th>";
+   str += "<th width=100>IP</th>";
    for (var i=0; i<nstages; i++) {
      str += "<th width=75><a href='javascript:getlatest(" + i + ");'>BN" + i + "</a></th>";
      str += "<th width=75>Bld/Peers" + i + "</th>";
@@ -267,6 +266,7 @@ function testnet() {
    str += "</tr>";
    for (var j=0; j<registry.length; j++) {
      var r = registry[j];
+     var cluster = r.cluster;
      var publicip = r.publicip;
 
      var cl = "storage";
@@ -283,10 +283,9 @@ function testnet() {
        str += "<span style='float:right'><a href='" + cactiurls[r.nodenumber] + " target='_new'>cacti</a>&nbsp;</span>";
      }
      str += "</td>";
-     str += "<td class='h'>" + r.nodenumber;
-     str += "<br/>" +  r.cloudprovider + "</div>";
+     str += "<td class='h'><span class='cluster'>" + r.cluster  + "</span>";
      str += "</td><td><code>" + publicip + "</code>";
-     str += "<div>" +  r.project + "</div>";
+     str += "<div></div>";
      str += "<div>" +  r.datacenter + "</div>";
      str += "</td>";
      for (var i=0; i<nstages; i++) {
