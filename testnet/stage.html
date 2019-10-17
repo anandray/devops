@@ -74,6 +74,7 @@
       border: 1px dashed black;
     }
 
+.cluster { background-color: #AAFFAA; padding: 1px; margin: 1px; border: 1px solid black; font-size: 13pt; }
         .notfound {
           padding: 5px;
           margin: 5px;
@@ -614,8 +615,8 @@
 	var sshcmd = "javascript:copySSH(\'" + nodename + "\');";
         str += "<td class='h'><a href='" + infourl + "' target='_new'>" + nodename + "</a><span style='float:right'><a href='javascript:reset(" + j + ");'>reset</a>&nbsp;<a href=\"" + sshcmd + "\">ssh</a>&nbsp;</span>";
         str += "</td>";
-        str += "<td class='h'>" + j + "</td><td><code>" + publicip + "</code>";
-        str += "<div>" + r.cloudprovider + "</div>";
+        str += "<td class='h'><span class='cluster'>" + r.cluster + "</span></td><td><code>" + publicip + "</code>";
+        str += "<div></div>";
         str += "<div>" + r.datacenter + "</div>";
         str += "</td>";
         var i = 0;
