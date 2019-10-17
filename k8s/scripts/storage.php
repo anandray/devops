@@ -12,14 +12,14 @@ function get_testnet($stage, $restart = false, $cluster = "z") {
    global $mysqli;
    if ( $restart ) {
      $ts = time();
-     $sql = "update testnet set networkID = '$ts' where stage = '$stage' and cluster = '$cluster'";
+     $sql = "update testnet set networkID = '$ts' where stage = '$stage'";
      if ( $res = $mysqli->query($sql) ) {
        echo "$sql\n";
      } else {
        echo $mysqli->error()."$sql\n";
      }
    }
-   $sql = "select networkID from testnet where stage = '$stage' and cluster = '$cluster'";
+   $sql = "select networkID from testnet where stage = '$stage'";
    if ( $res = $mysqli->query($sql) ) {
         while ( $a = $res->fetch_object() ) {
  		return $a;
@@ -31,11 +31,16 @@ function get_testnet($stage, $restart = false, $cluster = "z") {
    exit(0);
 }
 
-function getCluster() {
-  $cluster = getenv("CEPHCLUSTER");
-  if ( $cluster == "" ) {
-    $cluster = "k";
-  }
-  return $cluster;
+function getCluster($i) {
+   global $mysqli;
+   $sql = "select cluster from servers where nodeNumber = '$i'";
+   if ( $res = $mysqli->query($sql) ) {
+        while ( $a = $res->fetch_object() ) {
+ 	   return $a->cluster;
+	}
+   } else {
+	#echo $mysqli->error();
+   }
+   return $cluster;
 }
 ?>

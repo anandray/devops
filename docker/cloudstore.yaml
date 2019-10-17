@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudstore
+  name: x5-3
   namespace: rook-ceph
   labels:
-    app: cloudstore
+    app: x5-3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cloudstore
+      app: x5-3
   template:
     metadata:
       labels:
-        app: cloudstore
+        app: x5-3
     spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: cloudstore
-        image: gcr.io/us-west1-wlk/wolkinc/cloudstore:v5
+      - name: x5-3
+        image: gcr.io/europe-west3-wlk/wolkinc/cloudstore:v4
         command: ["/tini"]
         args: ["-g", "--", "/usr/local/bin/toolbox.sh"]
         imagePullPolicy: IfNotPresent
@@ -29,8 +29,10 @@ spec:
                 name: rook-ceph-mon
                 key: admin-secret
         ports:
-        - containerPort: 80
-          name: cloudstore
+        - name: https-stage3
+          containerPort: 83
+        - name: p2p-stage3
+          containerPort: 33305
         securityContext:
           privileged: true
         volumeMounts:
