@@ -130,7 +130,10 @@ function updateinfo(stage, i, r) {
 	domain = "wolk.com";
     }
     var url = scheme + "://" + r.dns + "." + domain + ":" + port + "/wolk/info";
-
+	    if ( r.dns == "c5" || r.dns == "c4" ) {
+              var altport = 80 + 1000 * stage + i;
+              url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+            }
     var bl_id = "bl-" + stage + "-" + i;
     var peers_id = "peers-" + stage + "-" + i;
     var mem_id = "mem-" + stage + "-" + i;
@@ -148,6 +151,10 @@ function updateinfo(stage, i, r) {
                 document.getElementById(peers_id).innerHTML = "<a target='_new' href=\"" + url + "\">" + info.peers + "</a>";
             }
             var base = scheme + "://" + dns + ":" + port
+	    if ( dns == "c5.wolk.com" || dns == "c4.wolk.com.todo" ) {
+              var altport = 80 + 1000 * stage + i;
+              base = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport;
+            }
       	    var str = "";
       	    var restart = false;
             if ( info.blockNumber != undefined ) {

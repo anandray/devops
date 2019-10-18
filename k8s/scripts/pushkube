@@ -18,15 +18,17 @@ $hpatemplate =   file_get_contents("$maindir/build/yaml/cloudstore-hpa-template.
 echo "cloudstoretemplate: $maindir/build/yaml/cloudstore-template.yaml\n";
 echo "servicetemplate: $maindir/build/yaml/service-template.yaml\n";
 
-$lbips = array( 5 => "35.247.55.106"); 
+$lbips = array( 4 => "unassigned", 
+                5 => "35.246.149.165"); 
 
 foreach ($lbips as $i => $lbip) {
   $cluster = getCluster($i);
   // key value pairs
-  // $lbipstr = "loadBalancerIP: $lbip";
-  // if ( $cluster == "x" || $cluster == "v" ) {
-  $lbipstr = "# no ip specified";
-  // }
+  if ( ( $cluster == "x" || $cluster == "w" ) && ( $lbip != "unassigned" ) ) {
+     $lbipstr = "loadBalancerIP: $lbip";
+  } else {
+     $lbipstr = "# no ip specified";
+  }
   $httpPort = 80 + 1000 * $stage + $i;
   $p2pPort = 30300 + 1000 * $stage + $i;
   $rpcPort = 9900  + 1000 * $stage + $i;
@@ -62,15 +64,17 @@ foreach ($lbips as $i => $lbip) {
   $cmds["createcloudstore"][] = "kubectl create -f $cloudstorefn";
 
   // TODO: QA this new concept
+/*
   $hpafn = "$maindir/build/yaml/$cluster$i-$stage-cloudstore-hpa.yml";
   file_put_contents($hpafn, str_replace(array_keys($kv), array_values($kv), $hpatemplate));
   $cmds["deletehpa"][] = "kubectl delete -f $hpafn";
   $cmds["createhpa"][] = "kubectl create -f $hpafn";
+*/
 
   // generate checks
   $cmds["curlcheck"][] = "curl https://$cluster$i.wolk.com:$httpPort/wolk/info";
   $cmds["sshpod"][] = "kubectl exec -it `kubectl get pods | grep $cluster$i-$stage | awk '{print$1}'` -- bash";
-  $cmds["telnetp2p"][] = "telnet $lbip $p2pPort";
+//  $cmds["telnetp2p"][] = "telnet $lbip $p2pPort";
 }
 
 foreach ($cmds as $grp => $cmd) {
