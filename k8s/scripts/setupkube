@@ -22,7 +22,11 @@ $sql = "select servers.hostname, servers.publicip, servers.privateip, servers.da
 $num = 0;
 if ( $res = $mysqli->query($sql) ) {
 	while ( $a = $res->fetch_object() ) {
-	        $httpport = 80 + 1000 * $stage + $num;
+	        if ( $num == 5 ) {
+		  $httpport = 80 + 1000 * $stage + $num;
+                } else {
+		  $httpport = ( $stage == 0 ) ? 443 : 80 + $stage;
+		}
 		$a->nodenumber = $num;
 		$servers[] = $a;
 		$n = new StdClass;
@@ -52,7 +56,7 @@ $genesisdata = str_replace(array( "HTTPPORT", "SEED", "NETWORKID", "NODES", "P2P
 $maindir = "/root/go/src/github.com/wolkdb/cloudstore";
 
 $genesistemplate = "$maindir/build/scripts/genesis-staging.json";
-$genesis = ( $stage == 0 ) ? "$enddir/genesis.json" : "$enddir/genesis$stage.json";
+$genesis = ( $stage == 0 ) ? "$enddir/genesis.json" : "$enddir/genesis.json";
 
 file_put_contents($genesis, $genesisdata);
 echo "Wrote Stage $stage Genesis @ $genesis\n";
