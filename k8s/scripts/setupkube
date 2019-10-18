@@ -4,43 +4,56 @@ include "storage.php";
 error_reporting(E_ERROR);
 
 $stage = isset($argv[1]) ? $argv[1] : 1;
-$restart = isset($argv[2]) ? $argv[2] : ($argv[2]=="restart");
-
-$cluster = getCluster();
 $mysqli = getWolkDatabase(true);
-$testnet = get_testnet($stage, $restart, $cluster);
+
+$testnet = get_testnet($stage);
 $networkid = $testnet->networkID;
 
+
 $maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+$enddir = "/root/go/src/github.com/wolkdb/devops/k8s/conf";
 $genesistemplate = "$maindir/build/scripts/genesis-staging.json";
 $genesis = "$maindir/build/conf/genesis.json";
-$seed_16 = "0x".substr(sha1($testnetid).md5($networkid), 0, 64);
+$seed_16 = "0x".substr(sha1($networkid).md5($networkid), 0, 64);
 $seed_64 = base64_encode(hex2bin(substr($seed_16, 2)));
 
-$sql = "select * from knodes order by nodenumber";
+$sql = "select servers.hostname, servers.publicip, servers.privateip, servers.datacenter, servers.cloudprovider, servers.consensus, servers.dns from servers
+          where pushwolk=1 and servers.projecttable in ( 'project', 'project1' ) order by consensus desc, nodenumber";
 $num = 0;
 if ( $res = $mysqli->query($sql) ) {
-  while ( $a = $res->fetch_object() ) {
-    $a->nodenumber = $num;
-    $httpport = 80 + 1000 * $stage + $num;
-    $servers[] = $a;
-    $n = new StdClass;
-    $n->owner = "0xC30Ad35a90aB3F39805900125705D1d40E7A961c";
-    $n->valueInt = 10000;
-    $n->httpport = $httpport;
-    $n->region = 1;
-    $n->pubkey = "02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01";
-    $n->consensusip = "$cluster$num.wolk.com";
-    $n->storageip = "$cluster$num.wolk.com";
-    $nodes[$num++] = $n;
-  }
+	while ( $a = $res->fetch_object() ) {
+	        $httpport = 80 + 1000 * $stage + $num;
+		$a->nodenumber = $num;
+		$servers[] = $a;
+		$n = new StdClass;
+		$n->owner = "0xC30Ad35a90aB3F39805900125705D1d40E7A961c";
+		$n->valueInt = 10000;
+		$n->httpport = $httpport;
+	        $n->p2pport = 30300 + 1000*$stage + $num;
+		$n->region = 1;
+		$n->pubkey = "02afcb05e7b74b3124443f49044ea8c2d94f06824dee0eda489806b98c62673d01";
+		$n->consensusip = "{$a->dns}.wolk.com";
+		//    $n->consensusip = "$cluster$num.wolk.com";
+		$n->storageip = "{$a->dns}.wolk.com";
+		echo $num . "\t". $a->dns . "\n";
+		$nodes[$num++] = $n;
+	}
 } else {
-  echo $mysqli->error();
-  exit(0);
+	echo $mysqli->error();
+	exit(0);
 }
 
+$useSeed_16 = true;
+$genesisSeed = $seed_16;
+
 $nodes_data = json_encode($nodes);
-$genesisdata = str_replace(array( "SEED", "NETWORKID", "NODES"), array($seed_64, $networkid, $nodes_data), file_get_contents($genesistemplate));
+$genesisdata = str_replace(array( "HTTPPORT", "SEED", "NETWORKID", "NODES", "P2PPORT"), array($httpport, $genesisSeed, $networkid, $nodes_data, $p2pport), file_get_contents($genesistemplate));
+
+$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
+
+$genesistemplate = "$maindir/build/scripts/genesis-staging.json";
+$genesis = ( $stage == 0 ) ? "$enddir/genesis.json" : "$enddir/genesis$stage.json";
+
 file_put_contents($genesis, $genesisdata);
 echo "Wrote Stage $stage Genesis @ $genesis\n";
 ?>

@@ -18,7 +18,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: x5-3
-        image: gcr.io/europe-west3-wlk/wolkinc/cloudstore:v4
+        image: gcr.io/europe-west3-wlk/wolkinc/cloudstore:v5
         command: ["/tini"]
         args: ["-g", "--", "/usr/local/bin/toolbox.sh"]
         imagePullPolicy: IfNotPresent

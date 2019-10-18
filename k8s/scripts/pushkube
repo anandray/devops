@@ -27,7 +27,7 @@ foreach ($lbips as $i => $lbip) {
   // if ( $cluster == "x" || $cluster == "v" ) {
   $lbipstr = "# no ip specified";
   // }
-  $httpPort = 80 + $stage; // 80 + 1000 * $stage + $i;
+  $httpPort = 80 + 1000 * $stage + $i;
   $p2pPort = 30300 + 1000 * $stage + $i;
   $rpcPort = 9900  + 1000 * $stage + $i;
   $cpu = "100m";

@@ -10,16 +10,7 @@ function getWolkDatabase($force = false)
 
 function get_testnet($stage, $restart = false, $cluster = "z") {
    global $mysqli;
-   if ( $restart ) {
-     $ts = time();
-     $sql = "update testnet set networkID = '$ts' where stage = '$stage'";
-     if ( $res = $mysqli->query($sql) ) {
-       echo "$sql\n";
-     } else {
-       echo $mysqli->error()."$sql\n";
-     }
-   }
-   $sql = "select networkID from testnet where stage = '$stage'";
+   $sql = "select networkID from network where stage = '$stage'";
    if ( $res = $mysqli->query($sql) ) {
         while ( $a = $res->fetch_object() ) {
  		return $a;
@@ -27,7 +18,7 @@ function get_testnet($stage, $restart = false, $cluster = "z") {
    } else {
 	#echo $mysqli->error();
    }
-   echo "testnetID not found for stage $stage [$sql]\n";
+   echo "networkID not found for stage $stage [$sql]\n";
    exit(0);
 }
 
