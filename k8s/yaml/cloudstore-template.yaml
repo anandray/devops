@@ -17,7 +17,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: _CEPHCLUSTER_CONSENSUSIDX-_STAGE
-        image: gcr.io/us-west1-wlk/wolkinc/cloudstore_STAGE_CEPHCLUSTER:_BUILD
+        image: gcr.io/europe-west3-wlk/wolkinc/cloudstore_STAGE:_BUILD
         imagePullPolicy: IfNotPresent
         env:
           - name: CONSENSUSIDX

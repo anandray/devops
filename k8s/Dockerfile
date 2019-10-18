@@ -1,10 +1,11 @@
-FROM ubuntu:18.04
+FROM google/cloud-sdk:latest
+#FROM ubuntu:18.04
 #RUN unlink /etc/localtime
-RUN ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+#RUN ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 #RUN yum -y install net-tools wget telnet
 RUN apt-get update && apt-get install -y librados-dev net-tools wget telnet curl
-
 # binary + startup
+RUN  gsutil cp gs://wolk-eu/wolk bin/wolk
 ADD  bin/wolk /usr/local/bin/wolk
 ADD  conf/startup.sh /usr/local/bin/startup.sh
 ADD  conf/curl.sh /usr/local/bin/curl.sh

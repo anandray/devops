@@ -10,13 +10,10 @@ $build = isset($argv[2]) ? $argv[2] : "v2";
 $a = get_testnet($stage, false, $cluster);
 $networkID = $a->networkID;
 
-$maindir = "/root/go/src/github.com/wolkdb/cloudstore";
-$cloudstoretemplate = file_get_contents("$maindir/build/yaml/cloudstore-template.yaml");
-$servicetemplate = file_get_contents("$maindir/build/yaml/service-template.yaml");
-$hpatemplate =   file_get_contents("$maindir/build/yaml/cloudstore-hpa-template.yaml");
-
-echo "cloudstoretemplate: $maindir/build/yaml/cloudstore-template.yaml\n";
-echo "servicetemplate: $maindir/build/yaml/service-template.yaml\n";
+$maindir = "/root/go/src/github.com/wolkdb/devops/k8s";
+$cloudstoretemplate = file_get_contents("$maindir/yaml/cloudstore-template.yaml");
+$servicetemplate = file_get_contents("$maindir/yaml/service-template.yaml");
+$hpatemplate =   file_get_contents("$maindir/yaml/cloudstore-hpa-template.yaml");
 
 $lbips = array( 4 => "unassigned", 
                 5 => "35.246.149.165"); 
@@ -52,27 +49,27 @@ foreach ($lbips as $i => $lbip) {
 	      "_targetCPUUtilizationPercentage" => $targetcpu,
 	      "_LBIP" => $lbipstr);
   // generate service yaml
-  $servicefn = "$maindir/build/yaml/$cluster$i-$stage-service.yml";
+  $servicefn = "$maindir/yaml/$cluster$i-$stage-service.yml";
   file_put_contents($servicefn, str_replace(array_keys($kv), array_values($kv), $servicetemplate));
-  $cmds["deleteservice"][] = "kubectl delete -f $servicefn";
   $cmds["createservice"][] = "kubectl create -f $servicefn";
+  $cmds["deleteservice"][] = "kubectl delete -f $servicefn";
   
   // generate cloudstore yaml
-  $cloudstorefn = "$maindir/build/yaml/$cluster$i-$stage-cloudstore.yml";
+  $cloudstorefn = "$maindir/yaml/$cluster$i-$stage-cloudstore.yml";
   file_put_contents($cloudstorefn, str_replace(array_keys($kv), array_values($kv), $cloudstoretemplate));
-  $cmds["deletecloudstore"][] = "kubectl delete -f $cloudstorefn";
   $cmds["createcloudstore"][] = "kubectl create -f $cloudstorefn";
+  $cmds["deletecloudstore"][] = "kubectl delete -f $cloudstorefn";
 
   // TODO: QA this new concept
 /*
-  $hpafn = "$maindir/build/yaml/$cluster$i-$stage-cloudstore-hpa.yml";
+  $hpafn = "$maindir/yaml/$cluster$i-$stage-cloudstore-hpa.yml";
   file_put_contents($hpafn, str_replace(array_keys($kv), array_values($kv), $hpatemplate));
   $cmds["deletehpa"][] = "kubectl delete -f $hpafn";
   $cmds["createhpa"][] = "kubectl create -f $hpafn";
 */
 
   // generate checks
-  $cmds["curlcheck"][] = "curl https://$cluster$i.wolk.com:$httpPort/wolk/info";
+  $cmds["curlcheck"][] = "curl https://c$i-$stage.wolk.com:$httpPort/wolk/info";
   $cmds["sshpod"][] = "kubectl exec -it `kubectl get pods | grep $cluster$i-$stage | awk '{print$1}'` -- bash";
 //  $cmds["telnetp2p"][] = "telnet $lbip $p2pPort";
 }
