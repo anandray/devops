@@ -338,8 +338,15 @@
 
     function updateinfo(i, r) {
 
+              var params = parseQueryString();
+              var stage = params["stage"];
       var scheme = "https";
       var url = scheme + "://" + r.dns + "." + domain + ":" + activePort + "/wolk/info";
+	    if ( r.dns == "c5" || r.dns == "c4" ) {
+
+              var altport = 80 + 1000 * stage + i;
+              url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+            }
 
       var bl_id = "bl-" + i;
       var lfr_id = "lfr-" + i;
@@ -371,6 +378,11 @@
             document.getElementById(peers_id).innerHTML = info.peers;
           }
           var base = scheme + "://" + dns + ":" + activePort
+	  if ( r.dns == "c5" || r.dns == "c4" ) {
+              var altport = 80 + 1000 * stage + i;
+              url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+          }
+
           var str = "";
           var restart = false;
           if (info.blockNumber != undefined) {

@@ -151,7 +151,7 @@ function updateinfo(stage, i, r) {
                 document.getElementById(peers_id).innerHTML = "<a target='_new' href=\"" + url + "\">" + info.peers + "</a>";
             }
             var base = scheme + "://" + dns + ":" + port
-	    if ( dns == "c5.wolk.com" || dns == "c4.wolk.com.todo" ) {
+	    if ( dns == "c5.wolk.com" || dns == "c4.wolk.com" ) {
               var altport = 80 + 1000 * stage + i;
               base = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport;
             }

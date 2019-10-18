@@ -1,7 +1,7 @@
 FROM google/cloud-sdk:latest
 #FROM ubuntu:18.04
-#RUN unlink /etc/localtime
-#RUN ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+RUN unlink /etc/localtime
+RUN ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 #RUN yum -y install net-tools wget telnet
 RUN apt-get update && apt-get install -y librados-dev net-tools wget telnet curl
 # binary + startup
@@ -15,9 +15,15 @@ ADD  conf/wolk.toml /usr/local/bin/wolk.toml
 ADD  conf/genesis.json /root/go/src/github.com/wolkdb/cloudstore/genesis.json
 ADD  conf/hosts /etc/hosts
 
-# cephx
+# cephx - europe-west Rook-Ceph
 ADD  ceph/cephx/ceph.conf  /etc/ceph/cephx/ceph.conf
 ADD  ceph/cephx/ceph.client.admin.keyring /etc/ceph/cephx/ceph.client.admin.keyring
+# cephy - asia-east 3 node Ceph
+ADD  ceph/cephy/ceph.conf  /etc/ceph/cephy/ceph.conf
+ADD  ceph/cephy/ceph.client.admin.keyring /etc/ceph/cephy/ceph.client.admin.keyring
+# cephz - us-west1  3 node Ceph
+ADD  ceph/cephz/ceph.conf  /etc/ceph/cephz/ceph.conf
+ADD  ceph/cephz/ceph.client.admin.keyring /etc/ceph/cephz/ceph.client.admin.keyring
 
 # ssl
 ADD  ssl/www.wolk.com.crt /etc/ssl/certs/wildcard.wolk.com/www.wolk.com.crt
