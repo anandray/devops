@@ -1,4 +1,0 @@
-SSLCertFile = "/etc/ssl/certs/wildcard.wolk.com/www.wolk.com.crt"
-SSLKeyFile = "/etc/ssl/certs/wildcard.wolk.com/www.wolk.com.key"
-CephCluster = "x"
-NodeType = "consensus"
