@@ -337,16 +337,14 @@
     }
 
     function updateinfo(i, r) {
-
-              var params = parseQueryString();
-              var stage = params["stage"];
+      var params = parseQueryString();
+      var stage = params["stage"];
       var scheme = "https";
       var url = scheme + "://" + r.dns + "." + domain + ":" + activePort + "/wolk/info";
-	    if ( r.dns == "c5" || r.dns == "c4" ) {
-
-              var altport = 80 + 1000 * stage + i;
-              url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
-            }
+      if ( r.knode > 0 ) {
+         var altport = 80 + 1000 * stage + i;
+         url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+      }
 
       var bl_id = "bl-" + i;
       var lfr_id = "lfr-" + i;
@@ -365,6 +363,7 @@
       var buildinfosum_id = "bis-" + i;
       var consensus_id = "con-" + i;
       var networkid_id = "networkid-" + i;
+      var knode = r.knode;
       var dns = r.dns + "." + domain;
       var options = {
         mode: 'no-cors'
@@ -378,9 +377,9 @@
             document.getElementById(peers_id).innerHTML = info.peers;
           }
           var base = scheme + "://" + dns + ":" + activePort
-	  if ( r.dns == "c5" || r.dns == "c4" ) {
+	  if ( knode > 0 ) {
               var altport = 80 + 1000 * stage + i;
-              url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+              url = scheme + "://" + dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
           }
 
           var str = "";
@@ -469,25 +468,7 @@
             cstr = "<code>" + step_to_string(info.step) + "</code>"
             document.getElementById(step_id).innerHTML = cstr;
           }
-/*
-          if (info.isVoting != undefined) {
-            var isv = ( 1 - info.isVoting );
-            var cls = ( info.isVoting > 0 ) ? "green" : "red";
-            document.getElementById(isv_id).innerHTML = "<a class='" + cls + "' href='javascript:isvoting(\"" + r.dns + "\"," + isv + ");'>" + int_to_yn(info.isVoting)  + "</a>";
-          }
-          if (info.isMalicious != undefined) {
-            var ism = ( 1 - info.isMalicious );
-            var cls = ( info.isMalicious > 0 ) ? "red" : "green";
-            document.getElementById(mal_id).innerHTML = "<a class='" + cls + "' href='javascript:ismalicious(\"" + r.dns + "\"," + ism + ");'>" + int_to_yn(info.isMalicious) + "</a>";
-          }
 
-          if (info.networkLatency != undefined) {
-            var inc = 20;
-            var cls = ( info.networkLatency > 0 ) ? "red" : "green";
-            document.getElementById(lat_id).innerHTML = "<a class='" + cls + "' href='javascript:networklatency(\"" + r.dns + "\"," + inc + ");'>" + info.networkLatency + "</a>";
-          }
-
-*/
           if (info.certs != undefined) {
             var bn = info.blockNumber;
             var covered = [ false, false, false, false, false, false, false, false, false, false ];
@@ -594,9 +575,6 @@
       str += "<th width=100>Public IP</th>";
       str += "<th width=75><a href='javascript:getlatest();'>BN</a></th>";
 
-//      str += "<th width=40>Voting</th>";
- //     str += "<th width=40>Malicious</th>";
-  //    str += "<th width=40>Latency</th>";
       str += "<th width=50>LFR</th>";
       str += "<th width=275>Status</th>";
       str += "<th width=100>Step</th>";
@@ -614,7 +592,6 @@
       for (var j = 0; j < registry.length; j++) {
         var r = registry[j];
         var publicip = r.publicip;
-
         var nodename = r.dns + "." + domain;
         var cl = "storage";
         if (r.consensus > 0) {
@@ -635,9 +612,6 @@
 
         str += "<td class='hn s0'><span id='bl-" + j + "'></span></td>";
 
-//        str += "<td class='hn s0'><span id='isv-" + j + "'></span></td>";
- //       str += "<td class='hn s0'><span id='mal-" + j + "'></span></td>";
- //       str += "<td class='hn s0'><span id='lat-" + j + "'></span></td>";
         str += "<td class='hn s0'><span id='lfr-" + j + "'></span></td>";
         str += "<td class='hn s0'><span id='cs-" + j + "'></span></td>";
         str += "<td class='hn s0'><span id='step-" + j + "'></span></td>";

@@ -130,7 +130,7 @@ function updateinfo(stage, i, r) {
 	domain = "wolk.com";
     }
     var url = scheme + "://" + r.dns + "." + domain + ":" + port + "/wolk/info";
-	    if ( r.dns == "c5" || r.dns == "c4" ) {
+	    if ( r.knode > 0 ) {
               var altport = 80 + 1000 * stage + i;
               url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
             }
@@ -142,6 +142,7 @@ function updateinfo(stage, i, r) {
     var buildinfosum_id = "bis-" + stage + "-" + i;
     var networkid_id = "networkid-" + stage + "-" + i;
     var dns = r.dns + "." + domain;
+    var knode = r.knode;
     fetch(url)
         .then(function(response) {
             return response.json();
@@ -151,7 +152,7 @@ function updateinfo(stage, i, r) {
                 document.getElementById(peers_id).innerHTML = "<a target='_new' href=\"" + url + "\">" + info.peers + "</a>";
             }
             var base = scheme + "://" + dns + ":" + port
-	    if ( dns == "c5.wolk.com" || dns == "c4.wolk.com" ) {
+	    if ( knode > 0 ) {
               var altport = 80 + 1000 * stage + i;
               base = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport;
             }
