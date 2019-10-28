@@ -119,8 +119,8 @@
       border: 1px solid black;
     }
   </style>
+  <script src="nodes.js"></script>
   <script>
-  var registry = [];
   var activePort = 81;
   var currentstage = 1;
   var maxblocknumber = 1;
@@ -161,7 +161,7 @@
     function copyToClipboard(text) {
         if (window.clipboardData && window.clipboardData.setData) {
             // IE specific code path to prevent textarea being shown while dialog is visible.
-            return clipboardData.setData("Text", text); 
+            return clipboardData.setData("Text", text);
         } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
             var textarea = document.createElement("textarea");
             textarea.textContent = text;
@@ -270,37 +270,25 @@
    };
 
     function loadDefaultStage() {
-	var params = parseQueryString();
-	var defaultstage = params["stage"];
-	if ( defaultstage == null){
-	    return updateregistry(1);
-	}else{
-	    return updateregistry(parseInt(defaultstage));
-	}
+    	var params = parseQueryString();
+    	var defaultstage = params["stage"];
+    	if ( defaultstage == null){
+    	    return updateregistry(1);
+    	}else{
+    	    return updateregistry(parseInt(defaultstage));
+    	}
     }
 
     function updateregistry(stage) {
       currentstage = stage;
       maxblocknumber = 1;
-      activePort = 80 + stage; 
+      activePort = 80 + stage;
       if ( activePort == 80 ) {
-	  activePort = 443;
+	       activePort = 443;
       }
-      var url = "https://testnet.wolk.com/stage.js";
-      var options = {
-        mode: 'no-cors'
-      };
-      var myRequest = new Request(url, options);
       showstagelist();
-      fetch(myRequest)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(newregistry) {
-          registry = newregistry;
-          testnet()
-          updatestages();
-        })
+      testnet()
+      updatestages();
     }
     function int_to_yn(i) {
       return( i > 0 ? "YES" : "NO");
@@ -417,7 +405,7 @@
             var bgc = "FFFFFF";
 	    var tentativeLen = 999;
 	    var blkclass = "orphan";
-	    var blkstr = "<sup>"+ " -" + "</sup>"; 
+	    var blkstr = "<sup>"+ " -" + "</sup>";
             if ( info.lastFinalizedHash != undefined ){
 	       blkclass = "final";
 	       tentativeLen = info.blockNumber - info.lastFinalizedRound;
@@ -427,7 +415,7 @@
 	       }
                bgc = info.lastFinalizedHash.substring(2, 10);
             }
-	    
+
             var blockurl = base + "/wolk/block/" + info.lastFinalizedRound;
 	    innerHTMLstr = "<span class='" + blkclass + "' style='background: #" + bgc +  "'><code><a href='" + blockurl + "' target='_new'>" + info.lastFinalizedRound + "</a>" + blkstr + "</code></span>";
             document.getElementById(lfr_id).innerHTML = innerHTMLstr;
@@ -497,7 +485,7 @@
 		  certclass = "orphan";
 	        }
 		prevHash = cert.ParentHash;
-		
+
                 var cv = ( cert.CountVotes != undefined ) ? cert.CountVotes : "";
                 certstr += "<sub>" + cv + "</sub>";
 		if ( cert.Empty != undefined && cert.Empty ) {
@@ -637,15 +625,15 @@
 
     function step_to_string(step) {
        switch ( step ) {
-       case 0: return "Proposal"; 
-       case 1: return "Reduction"; 
-       case 2: return "Soft"; 
-       case 3: return "Cert"; 
-       case 4: return "Next"; 
-       case 6: return "Empty"; 
-       }	   
+       case 0: return "Proposal";
+       case 1: return "Reduction";
+       case 2: return "Soft";
+       case 3: return "Cert";
+       case 4: return "Next";
+       case 6: return "Empty";
+       }
        return s;
-    }			   
+    }
     function refreshDisplay() {
       setTimeout(function() {
         getlatest();
