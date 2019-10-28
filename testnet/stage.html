@@ -332,6 +332,7 @@
       if ( r.knode > 0 ) {
          var altport = 80 + 1000 * stage + i;
          url = scheme + "://" + r.dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+         console.log(url);
       }
 
       var bl_id = "bl-" + i;
@@ -365,7 +366,7 @@
             document.getElementById(peers_id).innerHTML = info.peers;
           }
           var base = scheme + "://" + dns + ":" + activePort
-	  if ( knode > 0 ) {
+	         if ( knode > 0 ) {
               var altport = 80 + 1000 * stage + i;
               url = scheme + "://" + dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
           }
@@ -652,7 +653,7 @@ function showstagelist() {
       if ( i == currentstage ) {
 	   str += "<B>stage " + i + "</B>";
       } else {
-	   str += "<a href='javascript:updateregistry(" + i + ")'>stage " + i + "</a>";
+	   str += "<a href='stage.html?stage=" + i + "'>stage " + i + "</a>";
       }
   }
   str += "]";
