@@ -235,7 +235,7 @@
     }
 
     function getlatest() {
-  console.log("getlatest", activePort)
+      console.log("getlatest", activePort)
       for (var i = 0; i < registry.length; i++) {
         updateinfo(i, registry[i]);
       }
@@ -258,20 +258,20 @@
     var domain = "wolk.com";
 
     var parseQueryString = function() {
-	var str = window.location.search;
-	var objURL = {};
-	str.replace(
+	  var str = window.location.search;
+	  var objURL = {};
+	  str.replace(
 	    new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
 	    function( $0, $1, $2, $3 ){
             	objURL[ $1 ] = $3;
 	    }
     	);
        return objURL;
-   };
+    };
 
     function loadDefaultStage() {
     	var params = parseQueryString();
-    	var defaultstage = params["stage"];
+    	var defaultstage = params["stage"] ;
     	if ( defaultstage == null){
     	    return updateregistry(1);
     	}else{
@@ -326,7 +326,13 @@
 
     function updateinfo(i, r) {
       var params = parseQueryString();
-      var stage = params["stage"];
+      var defaultstage = params["stage"] ;
+      if ( defaultstage == null ) {
+        var stage = 1
+      }else{
+        var stage = parseInt(defaultstage);
+      }
+
       var scheme = "https";
       var url = scheme + "://" + r.dns + "." + domain + ":" + activePort + "/wolk/info";
       if ( r.knode > 0 ) {
@@ -374,11 +380,11 @@
           var str = "";
           var restart = false;
           if (info.blockNumber != undefined) {
-            var blockurl = base + "/wolk/block/" + info.blockNumber;
+            var certurl = base + "/wolk/cert/" + info.blockNumber;
             if ( ( i == 0 ) ||  ( info.blockNumber > maxblocknumber )  ) {
               maxblocknumber = info.blockNumber;
             }
-            str = "<a href='" + blockurl + "' target='_new'>" + info.blockNumber + "</a>";
+            str = "<a href='" + certurl + "' target='_new'>" + info.blockNumber + "</a>";
             if (info.isPreemptive != undefined) {
               str += "<BR>" + (info.isPreemptive ? "preemptive" : "")
             }
@@ -417,8 +423,8 @@
                bgc = info.lastFinalizedHash.substring(2, 10);
             }
 
-            var blockurl = base + "/wolk/block/" + info.lastFinalizedRound;
-	    innerHTMLstr = "<span class='" + blkclass + "' style='background: #" + bgc +  "'><code><a href='" + blockurl + "' target='_new'>" + info.lastFinalizedRound + "</a>" + blkstr + "</code></span>";
+            var certurl = base + "/wolk/cert/" + info.lastFinalizedRound;
+	    innerHTMLstr = "<span class='" + blkclass + "' style='background: #" + bgc +  "'><code><a href='" + certurl + "' target='_new'>" + info.lastFinalizedRound + "</a>" + blkstr + "</code></span>";
             document.getElementById(lfr_id).innerHTML = innerHTMLstr;
 	  }
           if (info.consensusStatus != undefined) {
@@ -499,7 +505,7 @@
                   if ( cert.BlockHash != undefined ) {
 		      bgc = cert.BlockHash.substring(2, 10);
 		  }
-		  var u = base + "/wolk/block/" + cert.BlockNumber;
+		  var u = base + "/wolk/cert/" + cert.BlockNumber;
                   elem.innerHTML = link + "<span class='" + certclass  + "' style='background: #" + bgc +  "'><code><a href='" + u + "' target='_new'>" + cert.BlockNumber + "</a>" + certstr + "</code></span>";
 		  covered[diff] = true;
                 }
