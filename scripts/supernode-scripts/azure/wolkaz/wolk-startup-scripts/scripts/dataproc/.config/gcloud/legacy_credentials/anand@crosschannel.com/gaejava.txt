@@ -1,0 +1,3 @@
+oauth2_client_secret: ZmssLNjJy2998hD4CTg2ejr2
+oauth2_client_id: 32555940559.apps.googleusercontent.com
+oauth2_refresh_token: 1/KRDj77lx5gtrBDTh0KFuJBB897QimclglB0uwXqPor4

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: x5-3
+  labels:
+    app: x5-3
+spec:
+  loadBalancerIP: 35.246.149.165
+  type: LoadBalancer
+  selector:
+    app: x5-3
+  ports:
+    - name: https-stage3
+      protocol: TCP
+      port: 3085
+      targetPort: 3085
+    - name: p2p-stage3
+      protocol: TCP
+      port: 33305
+      targetPort: 33305

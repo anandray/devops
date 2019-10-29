@@ -1,0 +1,6 @@
+MAILTO=''
+PATH="/root/sbin:/root/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/go/bin:/root/go/src/github.com/wolkdb/plasma/build/bin:/root/bin"
+GOOGLE_APPLICATION_CREDENTIALS=/root/.google/crosschannel-1307-520dd999e93e.json
+* * * * * /root/scripts/df.sh
+
+*/5 * * * * service ntpd stop;ntpdate -v -u -b pool.ntp.org;service ntpd start

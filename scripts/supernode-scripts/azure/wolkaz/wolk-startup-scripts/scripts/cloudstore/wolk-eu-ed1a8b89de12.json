@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "wolk-eu",
+  "private_key_id": "ed1a8b89de12ab094c68ca41d9ce79a96264d35b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5IXRRLnVGglP2\noLk+OvPtOmuoEg8B1RIClXFrZLv80Z4277zD1ZfkEVbDspbj8tXDO7sePFMHfYfz\nIx7GnAPUE3B1bYfaHWKOKLW5Y0nC9rxGTqjB8JhWkI0FFaeZKOs0qH61C7F97cAp\n50vAA0s0tZEIJSBOc9EzQYpO/DXIBfCkZeLid/LuQ8NPlYt5V5NLYrtcZkXHLDEc\n7hM51IQzobUwleJE25lDOniAjjEewb6SNfeuN+VzNnvJkZPZvDlDUFAgFEo16N9V\n3Zl3OAZg3qA8v6Ak46cCO6YaKnXo72lIBEmb26l68hGSNkhZbmV9sdr8PUduQiZY\nsiv4MGmxAgMBAAECggEACYpeMZBSuiBdhhpUjY7RcwZllabfl900hUZRDuMlNnNR\ng1yBtnhnkFjt5x4pHURujHYDr7xVXY+ULd0fmQXhgyCA1UZgn8aPpYqWyd/iZV4c\niAWF+B+nZB+lKs/JwDB+BYvQ4tDgU+BonKg3LMUmryfTum8aXfylOW5dW7Ju7Zi9\nQn7/UE+dijkfCFVKWBuYJET4dcCMX4jCSbALimQECvc8WL7fN+wK6zcJNS/Y+bgo\n8NwCRSQkcq02eJ25HRZqT2PcgTdHkDfON1DkocfWqsDXS+pHQ3Rkjbqe4KhbyVPE\nxSwd68fnGL57o5QhmciNsgqfNQSIxabRwKEInl2wWQKBgQDrvcvlYiiZaTCnoIPq\ntOcdm4C/X38U2wW5QnqR37M6L7v1udQQwKmDDlHTxREND5ELHMlnbwhTsfaOM6kv\nS9Vhr8JqZjq95skyS06IyRMFAkX3cAoIhBaeXflAVZcLp5F02JGg7nfGMOB1+NM4\nRv7oq/ZDUcwKOwtaar6VhIBvWQKBgQDJCj7H+Tuf/J2Z33XvEy3+coZa3uooHTXX\nIGqZwSyAu9IEQKE/KkKHM+X8prdBrCsNJVPrTEIa1M2TJuez4d/zwn+bm63sf2Ei\nCVjmzq7sufYbDlODscSXUEoyWvrnOTlWNd5XscCi+P8JXDdN0P2hXauxnb8qmKxD\nXQp9DrqaGQKBgEVx8eCu29rle+nFhVbc18CHEJRPo3YXV0ZN6SGTzo5zhWFLzsbo\nmob67uv9f5pjXYzye/o2YTOWl1Uorsw6AK/4QMNrPh63H8nrGUV+RlYRZ18O6EW9\n85PPhx+GlypdwKG1MqE/3pTJzTWziTVo5KrSDYejTwIshpmqHF6bW+JxAoGBAK2g\nA4iBX1VUvmfd7eSEE/zku9RPILt0PsOEY4xWoTCtBTxW9Ouwe7R4xe/lq+8z2hqI\nWmmkepLhpomn2AQq11eWas7hLNxLRoA2wmjTp48bK8lCHi5moPpthSboHDkF2tbx\nvwzNnykhEmHrGnhCPknWtCm5qxgGsv+aoyxORCpBAoGBANTmtoiK7Q9/4d1qjm/W\n38tSABKrel5tJh8BuirnU7H3elWog4fuXw+FEyCle9Ye6xilGDGib/W7jEdigtO9\nF9Yx3LnuwfAg5QE9wonB7NHLa7aAx9GMoP4HgIAEwnXZFDb9aMmgTp4sXIYLUAgc\nFhj1WXUq7xtM8dlLdW0/oQnI\n-----END PRIVATE KEY-----\n",
+  "client_email": "wolk-eu@wolk-eu.iam.gserviceaccount.com",
+  "client_id": "102559527823963497280",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/wolk-eu%40wolk-eu.iam.gserviceaccount.com"
+}

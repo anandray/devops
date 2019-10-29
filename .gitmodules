@@ -1,0 +1,18 @@
+[submodule "vendor/github.com/opentracing/opentracing-go"]	
+	path = vendor/github.com/opentracing/opentracing-go
+	   url = https://github.com/opentracing/opentracing-go.git	
+[submodule "vendor/github.com/uber/jaeger-client-go"]			
+	path = vendor/github.com/uber/jaeger-client-go
+	   url = https://github.com/jaegertracing/jaeger-client-go	
+[submodule "vendor/github.com/pkg/errors"]			
+	path = vendor/github.com/pkg/errors
+	   url = https://github.com/pkg/errors
+[submodule "vendor/github.com/uber/jaeger-lib"]
+	path = vendor/github.com/uber/jaeger-lib
+	   url = https://github.com/uber/jaeger-lib
+[submodule "vendor/github.com/gogo/protobuf"]
+	path = vendor/github.com/gogo/protobuf
+	   url = https://github.com/gogo/protobuf
+[submodule "vendor/github.com/tendermint/go-amino"]
+	path = vendor/github.com/tendermint/go-amino
+	   url = https://github.com/tendermint/go-amino

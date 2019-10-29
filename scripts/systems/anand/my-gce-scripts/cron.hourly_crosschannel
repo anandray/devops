@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/sbin/logrotate -v -f /etc/logrotate.d/crosschannel &>> /var/log/crosschannel_clean.log

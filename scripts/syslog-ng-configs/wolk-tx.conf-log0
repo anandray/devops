@@ -1,0 +1,47 @@
+filter f_tx0 { match("wolk-tx0" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tx0 {
+        file("/disk1/log0/$YEAR/$MONTH/$DAY/$HOUR$MIN.tx"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tx0); destination(d_tx0); };
+
+filter f_tx1 { match("wolk-tx1" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tx1 {
+        file("/disk1/log1/$YEAR/$MONTH/$DAY/$HOUR$MIN.tx"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tx1); destination(d_tx1); };
+
+filter f_tx2 { match("wolk-tx2" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tx2 {
+        file("/disk1/log2/$YEAR/$MONTH/$DAY/$HOUR$MIN.tx"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tx2); destination(d_tx2); };
+
+filter f_tx3 { match("wolk-tx3" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tx3 {
+        file("/disk1/log3/$YEAR/$MONTH/$DAY/$HOUR$MIN.tx"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tx3); destination(d_tx3); };
+
+filter f_tx4 { match("wolk-tx4" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tx4 {
+        file("/disk1/log4/$YEAR/$MONTH/$DAY/$HOUR$MIN.tx"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tx4); destination(d_tx4); };
+
+filter f_tx5 { match("wolk-tx5" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tx5 {
+        file("/disk1/log5/$YEAR/$MONTH/$DAY/$HOUR$MIN.tx"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tx5); destination(d_tx5); };

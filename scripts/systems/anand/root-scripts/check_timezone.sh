@@ -1,0 +1,15 @@
+ssh -q ha6-anand-m hostname -s && ssh -q ha6-anand-m date
+ssh -q ha6-anand-sw-0cuy hostname -s && ssh -q ha6-anand-sw-0cuy date
+ssh -q ha6-anand-sw-80ey hostname -s && ssh -q ha6-anand-sw-80ey date
+ssh -q ha6-anand-sw-aa5x hostname -s && ssh -q ha6-anand-sw-aa5x date
+ssh -q ha6-anand-sw-balu hostname -s && ssh -q ha6-anand-sw-balu date
+ssh -q ha6-anand-sw-jxd4 hostname -s && ssh -q ha6-anand-sw-jxd4 date
+ssh -q ha6-anand-sw-kge5 hostname -s && ssh -q ha6-anand-sw-kge5 date
+ssh -q ha6-anand-sw-qqqj hostname -s && ssh -q ha6-anand-sw-qqqj date
+ssh -q ha6-anand-sw-r1kr hostname -s && ssh -q ha6-anand-sw-r1kr date
+ssh -q ha6-anand-sw-rje0 hostname -s && ssh -q ha6-anand-sw-rje0 date
+ssh -q ha6-anand-sw-ys9w hostname -s && ssh -q ha6-anand-sw-ys9w date
+ssh -q ha6-anand-w-0 hostname -s && ssh -q ha6-anand-w-0 date
+ssh -q ha6-anand-w-1 hostname -s && ssh -q ha6-anand-w-1 date
+ssh -q ha6-anand-w-2 hostname -s && ssh -q ha6-anand-w-2 date
+ssh -q ha6-anand-w-3 hostname -s && ssh -q ha6-anand-w-3 date

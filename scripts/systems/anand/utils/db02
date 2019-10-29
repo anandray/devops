@@ -1,0 +1,2 @@
+#!/bin/sh
+mysql -A -h db02 -udb  -p1wasb0rn2 mdotm

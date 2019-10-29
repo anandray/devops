@@ -1,0 +1,5 @@
+wolk/algorand/algorand
+wolk/tests/*
+wolk/tests
+wolk/testowner*
+scripts/supernode-scripts/azure/wolkaz/wolk-startup-scripts/scripts/go1.12.1.linux-amd64.tar.gz

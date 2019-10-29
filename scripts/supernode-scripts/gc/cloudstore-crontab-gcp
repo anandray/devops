@@ -1,0 +1,8 @@
+MAILTO=''
+PATH="/root/sbin:/root/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/go/bin:/root/go/src/github.com/wolkdb/cloudstore/build/bin:/root/bin:/root/.local/bin"
+
+* * * * * /root/go/src/github.com/wolkdb/cloudstore/build/scripts/clean-log.sh &> /var/log/clean-log.log
+*/5 * * * * service ntpd stop;ntpdate -v -u -b pool.ntp.org;service ntpd start
+*/5 * * * * /root/scripts/cloudstore-git-update.sh &> /var/log/cloudstore-git-update.log
+
+* * * * * /root/go/src/github.com/wolkdb/cloudstore/build/scripts/syslog-ng-chk.sh &> /var/log/syslog-ng-chk.log

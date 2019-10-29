@@ -1,0 +1,19 @@
+{
+  "name": "blockchain-nodescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethereumjs-tx": "^1.3.7",
+    "ethereumjs-util": "^6.0.0",
+    "request": "^2.88.0",
+    "rlp": "^2.1.0",
+    "wolkjs": "0.0.3",
+    "web3": "^0.20.7"
+  }
+}

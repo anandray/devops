@@ -1,0 +1,12 @@
+ssh -q 18.130.136.122 pkill -9 plasma 2>&1 &
+ssh -q 47.74.252.13 pkill -9 plasma 2>&1 &
+ssh -q 40.74.65.156 pkill -9 plasma 2>&1 &
+ssh -q 54.64.176.94 pkill -9 plasma 2>&1 &
+ssh -q 65.52.166.152 pkill -9 plasma 2>&1 &
+ssh -q 13.125.119.66 pkill -9 plasma 2>&1 &
+ssh -q 52.47.189.22 pkill -9 plasma 2>&1 &
+ssh -q 104.211.221.190 pkill -9 plasma 2>&1 &
+ssh -q 47.254.214.76 pkill -9 plasma 2>&1 &
+ssh -q 13.211.61.227 pkill -9 plasma 2>&1 &
+ssh -q 120.77.46.213 pkill -9 plasma 2>&1 &
+ssh -q 185.22.174.203 pkill -9 plasma 2>&1 &

@@ -1,0 +1,7 @@
+FROM centos
+COPY sql /root/sql
+COPY sql-start.sh /
+COPY genesis.json /root/sql/qdata/dd/
+
+ENTRYPOINT ["/sql-start.sh"]
+CMD []

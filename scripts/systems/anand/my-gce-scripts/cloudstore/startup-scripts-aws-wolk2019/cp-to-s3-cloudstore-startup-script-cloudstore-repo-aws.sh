@@ -1,0 +1,16 @@
+aws s3 cp startup-script-cloudstore-repo-aws-ap-south-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-eu-west-3.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-eu-north-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-eu-west-2.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-eu-west-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-ap-northeast-2.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-ap-northeast-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-sa-east-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-ca-central-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-ap-southeast-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-ap-southeast-2.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-eu-central-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-us-east-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-us-east-2.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-us-west-1.sh s3://wolk-startup-scripts/scripts/cloudstore/
+aws s3 cp startup-script-cloudstore-repo-aws-us-west-2.sh s3://wolk-startup-scripts/scripts/cloudstore/

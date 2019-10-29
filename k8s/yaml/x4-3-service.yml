@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: x4-3
+  labels:
+    app: x4-3
+spec:
+  # no ip specified
+  type: LoadBalancer
+  selector:
+    app: x4-3
+  ports:
+    - name: https-stage3
+      protocol: TCP
+      port: 3084
+      targetPort: 3084
+    - name: p2p-stage3
+      protocol: TCP
+      port: 33304
+      targetPort: 33304

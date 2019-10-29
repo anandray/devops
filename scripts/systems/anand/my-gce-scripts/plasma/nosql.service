@@ -1,0 +1,18 @@
+[Unit]
+Description=Plasma NOSQL Chain
+Requires=network.target
+
+[Service]
+;Type=forking
+;EnvironmentFile=/etc/sysconfig/nosql
+LimitNOFILE=1000000
+User=root
+ExecStart=/bin/bash -c 'exec /root/nosql/bin/nosql --datadir /root/nosql/qdata/dd --nodiscover --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,nosql,raft --emitcheckpoints --raftport 50403 --rpcport 22002 --port 21002 --rpccorsdomain=* --rpcvhosts=* --plasmaaddr sanmateo.wolk.com --plasmaport 32003 --unlock 0 --verbosity 6 --raft 2>> /root/nosql/qdata/nosql.log'
+ExecReload=/bin/kill -HUP $MAINPID
+StandardOutput=null
+StandardError=null
+;Restart=always
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

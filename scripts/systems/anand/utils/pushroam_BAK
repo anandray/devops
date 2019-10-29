@@ -1,0 +1,57 @@
+#!/usr/bin/php
+<?
+include "storage.php";
+include "www-servers.php";
+include_once "communications.php";
+
+$storage = new Storage;
+$storage->getMdotmDatabase();
+
+//$sql = "select hostname, publicip from servers where (hostname like 'www8%' or hostname like 'www2%' or hostname like 'www9%' or hostname like 'wwwa%' or hostname like 'www6%' or hostname like 'log%' or hostname like 'ha%') and status = 'RUNNING' and length(publicip) > 0";
+//$sql = "select hostname, privateip, publicip from servers where (hostname like 'www8%' or hostname like 'www2%' or hostname like 'wwwa%' or hostname like 'www6%' or hostname like 'ha%') and status = 'RUNNING' and length(publicip) and length(privateip) > 0";
+/*
+pushcode code was here
+*/
+
+echo "ColorfulNotion pushroam\n";
+echo "git update log6b-> /var/www/vhosts/colorfulnotion.com\n\n";
+$c = "ssh -q log6b 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n"; 
+
+echo "ColorfulNotion pushroam\n";
+echo "git update log6c-> /var/www/vhosts/colorfulnotion.com\n\n";
+$c = "ssh -q log6c 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n";
+
+echo "ColorfulNotion pushroam\n";
+echo "git update api-colorfulnotion-com-3t4c-> /var/www/vhosts/colorfulnotion.com\n\n";
+$c = "ssh -q api-colorfulnotion-com-3t4c 'sh /var/www/vhosts/mdotm.com/scripts/utils/git_for_colorfulnotion.com.sh 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+echo "$c\n";
+$output = array();
+exec($c, $output);
+print_r($output);  
+echo "\n"; 
+
+for ($i=0; $i<3; $i++) {
+  sleep(1);
+  echo "[$i]";
+}
+
+$today = date("F j, Y, g:i a T"); 
+$mail_subject = "CODE PUSH colorfulnotion.com (" . $name . ") - $today";
+$mail_body = "Code was pushed using pushroam to log6b + log6c + api-colorfulnotion-com-3t4c at " . $today . " to " . $cluster . ".  Details below:\n\n";
+$mail_body .= "Pushed by: " . $name . "\n";
+$mail_body .= "QA by: " . $qa . "\n";
+$mail_body .= "Reason: " . $reason . "\n\n";
+  
+$mail_return = crosschannel_mail("adops@crosschannel.com", "engineering@crosschannel.com", $mail_subject, $mail_body);
+if ($mail_return) echo("Message successfully sent!!\n");
+?>

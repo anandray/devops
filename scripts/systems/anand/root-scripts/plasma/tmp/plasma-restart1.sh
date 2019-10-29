@@ -1,0 +1,12 @@
+ssh -q 18.130.136.122 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 47.74.252.13 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 40.74.65.156 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 54.64.176.94 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 65.52.166.152 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 13.125.119.66 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 52.47.189.22 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 104.211.221.190 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 47.254.214.76 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 13.211.61.227 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 120.77.46.213 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &
+ssh -q 185.22.174.203 /root/scripts/plasma-start.sh &> /dev/null 2>&1 &

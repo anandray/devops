@@ -1,0 +1,19 @@
+#!/bin/bash
+# THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES
+#
+# It is highly advisable to create own systemd services or udev rules
+# to run scripts during boot instead of using this file.
+#
+# In contrast to previous versions due to parallel execution during boot
+# this script will NOT be run after all other services.
+#
+# Please note that you must run 'chmod +x /etc/rc.d/rc.local' to ensure
+# that this script will be executed during boot.
+
+touch /var/lock/subsys/local
+
+/root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk1 --verbosity=6 --datadir /usr/local/wolk1 --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 9901 --port 31300 --httpport 81 --wolklog nothing --config /root/go/src/github.com/wolkdb/cloudstore/wolk1.toml >> /var/log/wolk1.log 2>&1  &
+/root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk2 --verbosity=6 --datadir /usr/local/wolk2 --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 9902 --port 32300 --httpport 82 --wolklog http,handler --config /root/go/src/github.com/wolkdb/cloudstore/wolk2.toml &>> /var/log/wolk2.log &
+/root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk3 --verbosity=6 --datadir /usr/local/wolk3 --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 9903 --port 33300 --httpport 83 --wolklog http,handler --config /root/go/src/github.com/wolkdb/cloudstore/wolk3.toml &> /var/log/wolk3.log &
+/root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk4 --verbosity=6 --datadir /usr/local/wolk4 --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 9904 --port 34300 --httpport 84 --wolklog backend --config /root/go/src/github.com/wolkdb/cloudstore/wolk4.toml &> /var/log/wolk4.log &
+/root/go/src/github.com/wolkdb/cloudstore/build/bin/wolk5 --verbosity=6 --datadir /usr/local/wolk5 --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 9905 --port 35300 --httpport 85 --wolklog nothing --config /root/go/src/github.com/wolkdb/cloudstore/wolk5.toml &> /var/log/wolk5.log &

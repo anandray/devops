@@ -1,0 +1,108 @@
+# build docker
+docker build --force-rm  -t wolkinc/cloudstore .
+docker tag wolkinc/cloudstore gcr.io/europe-west3-wlk/wolkinc/cloudstore:v4
+gcloud docker -- push gcr.io/europe-west3-wlk/wolkinc/cloudstore:v4
+docker images
+gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+docker login
+
+# create ceph client using image
+kubectl create -f cloudstore.yaml
+
+# check pod creation, ssh into pod
+kubectl get pods --namespace rook-ceph
+kubectl exec --namespace rook-ceph -it x5-3-756888877f-bnjbj -- /bin/sh
+
+# run it manually
+/usr/local/bin/wolk3 --datadir /usr/local/bin --rpc --rpcaddr 0.0.0.0 --rpccorsdomain=* --rpcvhosts=* --rpcport 9902 --port 33305 --httpport 83 --config /usr/local/bin/wolk.toml
+kubectl exec --namespace rook-ceph -it x5-3-cd8bbbd44-7qqpw  -- /bin/sh
+
+
+# see what's wrong or delete
+kubectl describe pods  --namespace rook-ceph cloudstore-757f6f9698-bgc6m
+kubectl delete -f cloudstore.yaml
+kubectl delete service cloudstore
+
+# deploy service
+kubectl expose deployment -n rook-ceph wolk-storage --type=LoadBalancer --port 80 --target-port 80
+kubectl get service -n rook-ceph
+
+yum install curl
+curl -k "https://localhost:83/wolk/info"
+
+[root@d5 k8s]# kubectl get services
+NAME         TYPE           CLUSTER-IP   EXTERNAL-IP      PORT(S)                        AGE
+kubernetes   ClusterIP      10.0.0.1     <none>           443/TCP                        167m
+x5-3         LoadBalancer   10.0.8.106   35.246.246.184   83:32732/TCP,33305:31507/TCP   32m
+[root@d5 k8s]# kubectl create -f /root/go/src/github.com/wolkdb/cloudstore/build/yaml/x5-3-cloudstore.yml
+deployment.apps/x5-3 created
+[root@d5 k8s]# cat /root/go/src/github.com/wolkdb/cloudstore/build/yaml/x5-3-cloudstore.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: x5-3
+  labels:
+    app: x5-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: x5-3
+  template:
+    metadata:
+      labels:
+        app: x5-3
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: x5-3
+        image: gcr.io/europe-west3-wlk/wolkinc/cloudstore:v2
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: CONSENSUSIDX
+            value: "5"
+          - name: NETWORKID
+            value: "1565891445"
+          - name: CEPHCLUSTER
+            value: "x"
+          - name: HTTPPORT
+            value: "83"
+          - name: P2PPORT
+            value: "33305"
+          - name: RPCPORT
+            value: "12905"
+        ports:
+        - name: https-stage3
+          containerPort: 83
+        - name: p2p-stage3
+          containerPort: 33305
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        securityContext:
+          privileged: true
+      # if hostNetwork: false, the "rbd map" command hangs, see https://github.com/rook/rook/issues/2021
+      hostNetwork: true
+
+[root@d5 docker]# cat /root/go/src/github.com/wolkdb/cloudstore/build/yaml/x5-3-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: x5-3
+  labels:
+    app: x5-3
+spec:
+  # no ip specified
+  type: LoadBalancer
+  selector:
+    app: x5-3
+  ports:
+    - name: https-stage3
+      protocol: TCP
+      port: 83
+      targetPort: 83
+    - name: p2p-stage3
+      protocol: TCP
+      port: 33305
+      targetPort: 33305

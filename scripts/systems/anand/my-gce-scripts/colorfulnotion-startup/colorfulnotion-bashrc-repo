@@ -1,0 +1,26 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+
+alias bashrc='vi ~/.bashrc'
+alias sourcebashrc='source ~/.bashrc'
+alias watch='watch '
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+export PATH=/root/sbin:/root/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/bin
+
+export GOPATH=/root
+export GOROOT=/home/goracing/go
+
+# google auth credentials for datastore access
+#export GOOGLE_APPLICATION_CREDENTIALS="/root/scripts/api-prd-colorfulnotion-2018-bigtable.json"

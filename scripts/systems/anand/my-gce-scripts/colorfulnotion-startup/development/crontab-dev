@@ -1,0 +1,8 @@
+MAILTO=''
+SHELL=/bin/bash
+BASH_ENV=/root/scripts/cron_env.bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib64/google-cloud-sdk/bin:/usr/local/go/bin
+YEAR=`date +%Y`
+
+* * * * * /root/scripts/goracing-dev-restart.sh &> /var/log/goracing-dev-restart.log
+#* * * * * /usr/bin/flock -w 0 /var/run/goracing-dev-restart.lock /root/scripts/goracing-dev-restart.sh &> /var/log/goracing-dev-restart.log

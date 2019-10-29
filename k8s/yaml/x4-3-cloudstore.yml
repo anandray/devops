@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: x4-3
+  labels:
+    app: x4-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: x4-3
+  template:
+    metadata:
+      labels:
+        app: x4-3
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: x4-3
+        image: gcr.io/europe-west3-wlk/wolkinc/cloudstore3:201910181400
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: CONSENSUSIDX
+            value: "4"
+          - name: NETWORKID
+            value: "1571432068"
+          - name: CEPHCLUSTER
+            value: "x"
+          - name: HTTPPORT
+            value: "3084"
+          - name: P2PPORT
+            value: "33304"
+          - name: RPCPORT
+            value: "12904"
+        ports:
+        - name: https-stage3
+          containerPort: 3084
+        - name: p2p-stage3
+          containerPort: 33304
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        securityContext:
+          privileged: true
+      # if hostNetwork: false, the "rbd map" command hangs, see https://github.com/rook/rook/issues/2021
+      hostNetwork: true

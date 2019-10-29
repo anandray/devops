@@ -1,0 +1,51 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+alias plasmastart='vi /usr/local/swarmdb/scripts/plasma-start.sh'
+alias startup='vi /usr/local/swarmdb/scripts/startup.sh'
+alias adminpeers='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc --exec admin.peers'
+alias remoteAddress='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc --exec admin.peers | grep remoteAddress'
+alias peercount='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc --exec net.peerCount'
+alias nodeinfo='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc --exec admin.nodeInfo'
+alias blocknumber='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc --exec eth.blockNumber'
+alias eth.getbalance='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc --exec eth.getBalance\(eth.coinbase\)'
+alias swarmdb.account='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb --datadir /usr/local/swarmdb/data account list 2> /dev/null | awk "{print$3}" | cut -d "{" -f2 | cut -d "}" -f1'
+alias swarmdbinit='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb --datadir /usr/local/swarmdb/data init /usr/local/swarmdb/data/genesis.json'
+alias removedb='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb removedb --datadir /usr/local/swarmdb/data'
+alias swarmdb.attach='/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb attach /usr/local/swarmdb/data/swarmdb.ipc'
+alias bashrc='vi ~/.bashrc'
+alias sourcebashrc='source ~/.bashrc'
+alias watch='watch '
+
+if [ -f /usr/sbin/ifconfig ]; then
+eth=`ifconfig eth0 | grep inet | awk '{print$2}'`
+fi
+
+acct=`/usr/local/go/src/github.com/wolkdb/plasma/build/bin/swarmdb --datadir /usr/local/swarmdb/data account list 2> /dev/null | awk '{print$3}' | cut -d "{" -f2 | cut -d "}" -f1`
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/src/github.com/wolkdb/plasma/build/bin
+
+export GOPATH=/root/go:/usr/local/go
+export GOROOT=/usr/local/go
+
+if [ -d /usr/local/swarmdb/data ]; then
+export DATADIR=/usr/local/swarmdb/data
+fi
+
+if [ -d /usr/local/swarmdb/data ]; then
+cd /usr/local/swarmdb/data
+fi
+
+set -o ignoreeof

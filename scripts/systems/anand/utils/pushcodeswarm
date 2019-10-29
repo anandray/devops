@@ -1,0 +1,128 @@
+#!/usr/bin/php
+<?
+include "storage.php";
+include "www-servers.php";
+include_once "communications.php";
+
+$storage = new Storage;
+$storage->getMdotmDatabase();
+
+$sql = "select hostname, privateip, publicip from servers where (hostname like 'swarm%') and status = 'RUNNING' and length(publicip) and length(privateip) > 0";
+
+if ( $res = mysql_query($sql) ) {
+  while ( $a = mysql_fetch_object($res) ) {
+    $servers[] = $a->privateip;
+    $hostname[$a->privateip] = $a->hostname;
+  }
+}
+
+function readin($prompt = ''){
+    echo $prompt;
+    return rtrim( fgets( STDIN ), "\n" );
+}
+
+function get_service() 
+{
+  $number = readin("\nSelect a number:
+                                      1 - just git files update (no restart swarm)
+                                      2 - git files update and restart swarm                         
+                                      ");
+  if(empty($number)){
+    echo "\n\nI need to know which Service to run!";
+    get_service();
+  } else {
+        $service = "";  
+        switch ($number) {
+            case 1:
+                $service = "";
+                break;        
+            case 2:
+                $service = "swarm";
+                break;                
+            default:
+                echo "$number is not a valid option.\n\n";
+                exit(0);
+        }
+        return $service;
+    }
+}
+
+function get_name() 
+{
+  $name = readin("Who are you? ");
+  if(empty($name)){
+    echo "\nI need to know who you are!\n";
+    get_name();
+  } else
+    return $name;
+}
+
+function get_qa() 
+{
+  $qa = readin("Who QA? ");
+  if(empty($qa)){
+    echo "\nI need to know who QA!\n";
+    get_qa();
+  } else
+    return $qa;
+}
+
+function get_reason() {
+  $reason = readin("Why are you pushing? ");
+  if(empty($reason)){
+    echo "\nPlease supply a reason.\n";
+    get_reason();
+  } else
+    return $reason;
+}
+
+if ( isset($argv[1]) && ( strlen($argv[1]) > 15 ) ) {
+  $instanceGroup = $argv[1];
+} else {
+  echo "\nI need to know the Instance Group to pushcode to!\nMust be more the 15 char to prevent pushcode to all the servers.\n\n";
+  exit(0);
+}
+
+$service = get_service();    
+$name = get_name();
+$qa = get_qa();
+$reason = get_reason();
+
+echo "swarm pushcode\n";
+foreach ($servers as $server) {
+  if (strstr($hostname[$server], $instanceGroup)) { echo "\n$hostname[$server] $instanceGroup\n";
+    $restart_swarm = "";    
+    if ($service == "swarm" ) {
+      // restart swarm               
+      //     kill -9 `ps aux | grep swarm | grep -v grep | awk '{print$2}'`
+      $cmd = "ssh $server kill -9 $(ps aux | grep swarm | grep -v grep | awk '{print$2}')";
+      echo "$cmd\n";
+      //exec($cmd, $output);   
+        
+      $restart_swarm = " && sh /root/scripts/swarm-start-with-changed-ip.sh ";
+      //echo "$restart_swarm\n";
+        
+    }          
+           
+    $c = "ssh $server 'cd /var/www/vhosts/swarm.wolk.com && git fetch upstream && git merge upstream/master   $restart_swarm 2> /var/log/git.err  > /var/log/git.log' > /dev/null 2>&1 &";
+    echo "$c\n";
+    $output = array();
+//    exec($c, $output);  
+    echo "\n";
+  }
+}
+for ($i=0; $i<3; $i++) {
+  sleep(1);
+  echo "[$i]";
+}
+
+$today = date("F j, Y, g:i a T"); 
+$mail_subject = "CODE PUSH swarm to instanceGroup $instanceGroup(" . $name . ") - $today";
+$mail_body = "Code was pushed at " . $today . " to " . $instanceGroup . ".  Details below:\n\n";
+$mail_body .= "Pushed by: " . $name . "\n";
+$mail_body .= "QA by: " . $qa . "\n";
+$mail_body .= "Reason: " . $reason . "\n\n";
+  
+$mail_return = crosschannel_mail("adops@crosschannel.com", "engineering@crosschannel.com", $mail_subject, $mail_body);
+if ($mail_return) echo("\nMessage successfully sent!!\n");
+?>

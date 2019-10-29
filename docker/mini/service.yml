@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mini
+  labels:
+    app: mini
+spec:
+  loadBalancerIP: 13.88.12.145
+  type: LoadBalancer
+  selector:
+    app: mini
+  ports:
+    - name: k7-2
+      protocol: TCP
+      port: 2087
+      targetPort: 2087
+    - name: k7-2-p2p
+      protocol: TCP
+      port: 32007
+      targetPort: 32007

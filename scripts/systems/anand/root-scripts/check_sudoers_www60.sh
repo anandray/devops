@@ -1,0 +1,10 @@
+ssh -q www60-12061656-1z0n hostname && ssh -q www60-12061656-1z0n grep apache /etc/sudoers
+ssh -q www60-12061656-cch0 hostname && ssh -q www60-12061656-cch0 grep apache /etc/sudoers
+ssh -q www60-12061656-ktvz hostname && ssh -q www60-12061656-ktvz grep apache /etc/sudoers
+ssh -q www60-12061656-l2pn hostname && ssh -q www60-12061656-l2pn grep apache /etc/sudoers
+ssh -q www60-12061656-mlrm hostname && ssh -q www60-12061656-mlrm grep apache /etc/sudoers
+ssh -q www60-12061656-nqm7 hostname && ssh -q www60-12061656-nqm7 grep apache /etc/sudoers
+ssh -q www60-12061656-p6c8 hostname && ssh -q www60-12061656-p6c8 grep apache /etc/sudoers
+ssh -q www60-12061656-qlzj hostname && ssh -q www60-12061656-qlzj grep apache /etc/sudoers
+ssh -q www60-12061656-r9f6 hostname && ssh -q www60-12061656-r9f6 grep apache /etc/sudoers
+ssh -q www60-12061656-zk6g hostname && ssh -q www60-12061656-zk6g grep apache /etc/sudoers

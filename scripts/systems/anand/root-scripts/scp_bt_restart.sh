@@ -1,0 +1,10 @@
+scp bt_restart.sh www21-rubicon-11041136-jxg4:/root/scripts/ 2>&1 &
+scp bt_restart.sh www21-spotx-11071055-5gor:/root/scripts/ 2>&1 &
+scp bt_restart.sh www21-spotx-11071055-zzr6:/root/scripts/ 2>&1 &
+scp bt_restart.sh www61-adx-11221651-3p7d:/root/scripts/ 2>&1 &
+scp bt_restart.sh www61-adx-11221651-g6cn:/root/scripts/ 2>&1 &
+scp bt_restart.sh www61-adx-11221651-o9nk:/root/scripts/ 2>&1 &
+scp bt_restart.sh www61-adx-11221651-om4x:/root/scripts/ 2>&1 &
+scp bt_restart.sh www81-spotx-09080600-38fe:/root/scripts/ 2>&1 &
+scp bt_restart.sh wwwa1-rubicon-11031820-wais:/root/scripts/ 2>&1 &
+scp bt_restart.sh wwwa1-spotx-09081000-3q1p:/root/scripts/ 2>&1 &

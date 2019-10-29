@@ -1,0 +1,244 @@
+@version:3.2
+
+# syslog-ng configuration file.
+#
+# This should behave pretty much like the original syslog on RedHat. But
+# it could be configured a lot smarter.
+#
+# See syslog-ng(8) and syslog-ng.conf(5) for more information.
+#
+
+#options {
+#	flush_lines (0);
+#	time_reopen (10);
+#	log_fifo_size (1000);
+#	long_hostnames (off);
+#	use_dns (no);
+#	use_fqdn (no);
+#	create_dirs (no);
+#	keep_hostname (yes);
+#};
+
+options {
+        flush_lines (0);
+        time_reopen (10);
+#        log_fifo_size (100000000000);
+#        log_iw_size (5000000000);
+#        log_fetch_limit (10000000);
+        log_fifo_size (1000000000);
+        log_iw_size (50000000);
+        log_fetch_limit (100000);
+        long_hostnames (off);
+        use_dns (no);
+        use_fqdn (no);
+        create_dirs (yes);
+        keep_hostname (yes);
+#       use_time_recvd (yes);
+#        keep_timestamp(no);
+};
+
+#source s_sys {
+#	file ("/proc/kmsg" program_override("kernel: "));
+#	unix-stream ("/dev/log");
+#	internal();
+#        tcp(ip(0.0.0.0) port(5000));
+#};
+
+source s_sys {
+#       file ("/proc/kmsg" log_prefix("kernel: "));
+        file ("/proc/kmsg" program_override("kernel: "));
+        unix-stream ("/dev/log");
+        internal();
+#       udp(ip(0.0.0.0) port(514));
+};
+
+# trap incoming logs on tcp port 5000                                                                                                                                                                      
+source s_tcp_net {
+        tcp(ip(0.0.0.0) port(5000) max-connections(5000));
+};
+
+
+
+#destination d_cons { file("/dev/console"); };
+#destination d_mesg { file("/var/log/messages"); };
+#destination d_mail { file("/var/log/maillog" flush_lines(10)); };
+#destination d_spol { file("/var/log/spooler"); };
+#destination d_boot { file("/var/log/boot.log"); };
+#destination d_kern { file("/var/log/kern"); };
+#destination d_mlal { usertty("*"); };
+
+destination d_auth { file("/var/log/secure"); };
+destination d_cron { file("/var/log/cron"); };
+
+#filter f_kernel     { facility(kern); };
+#filter f_default    { level(info..emerg) and
+#                        not (facility(mail)
+#                        or facility(authpriv) 
+#                        or facility(cron)); };
+#filter f_mail       { facility(mail); };
+#filter f_emergency  { level(emerg); };
+#filter f_news       { facility(uucp) or
+#                        (facility(news) 
+#                        and level(crit..emerg)); };
+#filter f_boot   { facility(local7); };
+
+filter f_auth       { facility(authpriv); };
+filter f_cron   { facility(cron); };
+
+#log { source(s_tcp_net); filter(f_kernel); destination(d_cons); };
+#log { source(s_tcp_net); filter(f_kernel); destination(d_kern); };
+#log { source(s_tcp_net); filter(f_default); destination(d_mesg); };
+#log { source(s_tcp_net); filter(f_auth); destination(d_auth); };
+#log { source(s_tcp_net); filter(f_mail); destination(d_mail); };
+#log { source(s_tcp_net); filter(f_emergency); destination(d_mlal); };
+#log { source(s_tcp_net); filter(f_news); destination(d_spol); };
+#log { source(s_tcp_net); filter(f_boot); destination(d_boot); };
+#log { source(s_tcp_net); filter(f_cron); destination(d_cron); };
+
+#log { source(s_sys); filter(f_kernel); destination(d_cons); };
+#log { source(s_sys); filter(f_kernel); destination(d_kern); };
+#log { source(s_sys); filter(f_default); destination(d_mesg); };
+#log { source(s_sys); filter(f_mail); destination(d_mail); };
+#log { source(s_sys); filter(f_emergency); destination(d_mlal); };
+#log { source(s_sys); filter(f_news); destination(d_spol); };
+#log { source(s_sys); filter(f_boot); destination(d_boot); };
+
+log { source(s_sys); filter(f_auth); destination(d_auth); };
+log { source(s_sys); filter(f_cron); destination(d_cron); };
+
+# cc-ccdata + cc-roam logging to log6
+filter f_log { match("cc-roam" value("PROGRAM")) or match("cc-ccdata" value("PROGRAM")); };
+destination log_local {        tcp("log6" port (5000));};
+log { source(s_sys); filter(f_log); destination(log_local); };
+
+### LOG02 + LOG04 CONFIG BELOW ###
+
+# log02 + log04
+filter f_imp { match("www-imp" value("PROGRAM")); };
+destination d_imp_log {
+        file("/disk1/log/log/$YEAR/$MONTH/$DAY/$HOUR$MIN.log"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_imp); destination(d_imp_log); };
+
+filter f_conversion { match("www-conversion" value("PROGRAM")); };
+destination d_conversion_log {
+        file("/disk1/log/conversion/$YEAR/$MONTH/$DAY/$HOUR$MIN.conversion"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_conversion); destination(d_conversion_log); };
+
+filter f_track { match("www-track" value("PROGRAM")); };
+destination d_track_log {
+        file("/disk1/log/track/$YEAR/$MONTH/$DAY/$HOUR$MIN.track"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_track); destination(d_track_log); };
+
+### END OF LOG02 + LOG04 CONFIG ###
+
+### LOG6 CONFIG BELOW ###
+
+filter f_rtf { match("cc-rtf" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_rtf {
+	    file("/disk2/log/rtf/$YEAR/$MONTH/$DAY/$HOUR$MIN.rtf"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_rtf); destination(d_rtf); };
+
+filter f_track { match("cc-track" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_track {
+	    file("/disk2/log/track/$YEAR/$MONTH/$DAY/$HOUR$MIN.track"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_track); destination(d_track); };
+
+
+filter f_conversion { match("cc-conversion" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_conversion {
+	    file("/disk2/log/conversion/$YEAR/$MONTH/$DAY/$HOUR$MIN.conversion"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_conversion); destination(d_conversion); };
+
+filter f_log { match("cc-log" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_log {
+	    file("/disk2/log/log/$YEAR/$MONTH/$DAY/$HOUR$MIN.log"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_log); destination(d_log); };
+
+#filter f_pico { match("cc-pico" value("PROGRAM") value("MSG") value("MSGHDR")); };
+#destination d_pico {
+#	    file("/disk2/log/pico/$YEAR/$MONTH/$DAY/$HOUR$MIN.pico"
+#	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+#        template ( "$MESSAGE\n" ) );
+#};
+#log { source(s_tcp_net); filter(f_pico); destination(d_pico); };
+
+filter f_campaign { match("cc-campaign" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_campaign {
+	    file("/disk2/log/campaign/$YEAR/$MONTH/$DAY/$HOUR$MIN.campaign"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_campaign); destination(d_campaign); };
+
+filter f_job { match("cc-job" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_job {
+	    file("/disk2/log/job/$YEAR/$MONTH/$DAY/$HOUR$MIN.job"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_job); destination(d_job); };
+
+filter f_video { match("cc-video" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_video {
+	    file("/disk2/log/video/$YEAR/$MONTH/$DAY/$HOUR$MIN.video"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_video); destination(d_video); };
+
+filter f_probe { match("cc-probe" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_probe {
+	    file("/disk2/log/probe/$YEAR/$MONTH/$DAY/$HOUR$MIN.probe"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_probe); destination(d_probe); };
+
+
+filter f_tv { match("cc-tv" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_tv {
+	    file("/disk2/log/tv/$YEAR/$MONTH/$DAY/$HOUR$MIN.tv"
+	    owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_tv); destination(d_tv); };
+
+filter f_ccdata { match("cc-ccdata" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_ccdata {
+        file("/disk1/log/ccdata/$YEAR/$MONTH/$DAY/$HOUR$MIN.ccdata"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+log { source(s_tcp_net); filter(f_ccdata); destination(d_ccdata); };
+
+filter f_roam { match("cc-roam" value("PROGRAM") value("MSG") value("MSGHDR")); };
+destination d_roam {
+        file("/disk1/log/roam/$YEAR/$MONTH/$DAY/$HOUR$MIN.roam"
+        owner( root ) group( root ) perm ( 0777 ) dir_perm( 0777 ) create_dirs ( yes )
+        template ( "$MESSAGE\n" ) );
+};
+
+### END OF LOG6 CONFIG ###
+
+# vim:ft=syslog-ng:ai:si:ts=4:sw=4:et:

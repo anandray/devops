@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{SERVER_PORT} 80
+RewriteCond %{REQUEST_URI} nagios
+RewriteRule ^(.*)$ https://nagios.wolk.com/nagios/$1 [R,L]
+</IfModule>

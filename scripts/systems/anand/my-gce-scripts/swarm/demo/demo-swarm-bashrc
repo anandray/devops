@@ -1,0 +1,17 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/usr/local/share/google/google-cloud-sdk/bin:/var/www/vhosts/demo-swarm.wolk.com/src/github.com/ethereum/go-ethereum/build/bin/
+export GOPATH=/var/www/vhosts/demo-swarm.wolk.com
+export GOROOT=/usr/local/go

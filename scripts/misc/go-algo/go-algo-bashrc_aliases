@@ -1,0 +1,106 @@
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='/usr/bin/vim'
+alias ll='ls -lt'
+alias db03='mysql -A -udb -p1wasb0rn2! -hdb03 wolk'
+
+alias bashrc='vi ~/.bashrc'
+alias bashrc_aliases='vi /root/.bashrc_aliases'
+alias sourcebashrc='source ~/.bashrc'
+alias watch='watch '
+
+alias c0='ssh -q c0.wolk.com'
+alias c1='ssh -q c1.wolk.com'
+alias c2='ssh -q c2.wolk.com'
+alias c3='ssh -q c3.wolk.com'
+alias c4='ssh -q c4.wolk.com'
+alias c5='ssh -q c5.wolk.com'
+alias c6='ssh -q c6.wolk.com'
+alias c7='ssh -q c7.wolk.com'
+alias c8='ssh -q c8.wolk.com'
+alias c9='ssh -q c9.wolk.com'
+alias c10='ssh -q c10.wolk.com'
+alias c11='ssh -q c11.wolk.com'
+alias d0='ssh -q d0.wolk.com'
+alias d1='ssh -q d1.wolk.com'
+alias d2='ssh -q d2.wolk.com'
+alias d3='ssh -q d3.wolk.com'
+alias d4='ssh -q d4.wolk.com'
+alias d5='ssh -q d5.wolk.com'
+alias d6='ssh -q d6.wolk.com'
+alias d7='ssh -q d7.wolk.com'
+
+alias go-algo='cd ~/go/src/github.com/wolkdb/go-algo'
+
+alias gitsubmodule='git submodule update --init --recursive'
+alias gitupdate='git fetch origin && git merge origin/master'
+alias makewolk='cd /root/go/src/github.com/wolkdb/go-algo; git fetch origin && git merge origin/master; make wolk; cd -'
+alias makewcloud='cd /root/go/src/github.com/wolkdb/go-algo; git fetch origin && git merge origin/master; make wcloud; cd -'
+
+# Michael
+# error flagging
+#trap 'PREVIOUS_COMMAND=$THIS_COMMAND; THIS_COMMAND=$BASH_COMMAND' DEBUG
+#read -r -d '' PROMPT_COMMAND << 'END'
+#    if [ $? = 0 -o $? == 130 -o "$PREVIOUS_COMMAND" = ": noop" ]; then
+#        PS1="\\[\033[38;5;103m\]\t \\[\033[38;5;0m\]\u\\[\033[38;5;0m\]@\\[\033[38;5;0m\]\h \\[\033[38;5;0m\]\W~\\$ \[$(tput sgr0)\]"
+#    else
+#        PS1="\\[\033[38;31;1m\]ERROR\n\\[\033[m\\[\033[38;5;103m\]\t \\[\033[38;5;0m\]\u\\[\033[38;5;0m\]@\\[\033[38;5;0m\]\h \\[\033[38;5;0m\]\W~\\$ \[$(tput sgr0)\]"
+#    fi
+#    : noop
+#END
+
+_getll() {
+find ${1:-$PWD}  -maxdepth ${3:-1}  -type f | xargs stat --format '%Y %s %n %y' 2>/dev/null | rev | cut -d'.' -f1  --complement | rev |  sort -${2:-nr} |
+awk 'function human(x) {
+         s=" B   KBB MBB GBB TBB EBB PBB YBB ZBB"
+         while (x>=1024 && length(s)>1) 
+               {x/=1024; s=substr(s,5)}
+         s=substr(s,1,3)
+         xf=(s==" B ")?"   %4d":"%7.2f"
+         return sprintf( xf"%s", x, s)
+      }
+      { print human($2) " " "\[" $4 " "$5 "\]" " " $3}' 2>/dev/null
+}
+alias ld='_getll'
+
+_getls() {
+find ${1:-*} -maxdepth ${3:-1} -type f | xargs stat --format '%n %Y %s %y' 2>/dev/null | rev | cut -d'.' -f1  --complement | rev | sort -${2:-f} | awk 'function human(x) {
+         s=" B   KBB MBB GBB TBB EBB PBB YBB ZBB"
+         while (x>=1024 && length(s)>1) 
+               {x/=1024; s=substr(s,5)}
+         s=substr(s,1,3)
+         xf=(s==" B ")?"   %4d":"%7.2f"
+         return sprintf( xf"%s", x, s)
+      }
+      { print human($3) " " "\[" $4 " "$5 "\]" " " $1}' 2>/dev/null
+}
+alias l='_getls'
+
+_gitCommit() {
+git commit -m "Michael: ${1:-fix}"
+}
+alias gcommit='_gitCommit'
+
+alias showpath='echo -e ${PATH//:/\\n}'
+
+# Alina
+function repo_modified {
+if [[ -z `git status | grep -o "nothing to commit"` ]]; then
+echo "*"
+fi
+}
+
+function parse_git_branch {
+ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+echo "("${ref#refs/heads/}`repo_modified`")"
+}
+
+#PS1="[\h:\W \D{%d.%T} \$(parse_git_branch)] "
+
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+alias lsall='ls -Fha'

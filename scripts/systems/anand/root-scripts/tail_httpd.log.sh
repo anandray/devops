@@ -1,0 +1,15 @@
+ssh -q www60-12061656-26wp hostname && ssh -q www60-12061656-26wp grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-4gdf hostname && ssh -q www60-12061656-4gdf grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-57rm hostname && ssh -q www60-12061656-57rm grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-dkq9 hostname && ssh -q www60-12061656-dkq9 grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-g4v3 hostname && ssh -q www60-12061656-g4v3 grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-hvw4 hostname && ssh -q www60-12061656-hvw4 grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-hxgm hostname && ssh -q www60-12061656-hxgm grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-mgwf hostname && ssh -q www60-12061656-mgwf grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-ndn5 hostname && ssh -q www60-12061656-ndn5 grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-nq9v hostname && ssh -q www60-12061656-nq9v grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-ns0r hostname && ssh -q www60-12061656-ns0r grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-q5qc hostname && ssh -q www60-12061656-q5qc grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-v37q hostname && ssh -q www60-12061656-v37q grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-w1pt hostname && ssh -q www60-12061656-w1pt grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10
+ssh -q www60-12061656-zbc2 hostname && ssh -q www60-12061656-zbc2 grep 'php\" 404 ' /var/log/httpd/mdotm.com-access_log  | grep -v healthcheck | head -n10

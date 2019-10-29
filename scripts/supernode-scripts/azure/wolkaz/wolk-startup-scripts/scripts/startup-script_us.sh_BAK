@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# git clone
+sudo rm -rf /var/www/vhosts/mdotm.com*
+sudo mkdir -p /var/www/vhosts
+cd /var/www/vhosts
+sudo git clone git@github.com:sourabhniyogi/mdotm.com.git
+cd /var/www/vhosts/mdotm.com
+sudo git remote add upstream git@github.com:sourabhniyogi/mdotm.com.git
+sudo git fetch upstream && git merge upstream/master
+sudo git config core.filemode false
+sudo git config user.email "sourabh@mdotm.com"
+sudo git config user.name "Sourabh Niyogi"
+sudo cp -rf /root/scripts/shortcircuit.php /var/www/vhosts/mdotm.com/include/
+sudo cp -rf /root/scripts/index.* /var/www/vhosts/mdotm.com/httpdocs/
+
+# populate httpd.conf
+sudo cp -rf /etc/httpd/conf/httpd1.conf /etc/httpd/conf/httpd.conf;
+echo '
+LogFormat "%D %{%s}t \"%U\" %>s %O \"%{HTTP_X_FORWARDED_FOR}e\"" smcommon' >> /etc/httpd/conf/httpd.conf;
+
+echo "
+
+NameVirtualHost `ifconfig eth0| grep 'inet addr:' | cut -d: -f2| awk '{print$1}'`:80
+
+<VirtualHost `ifconfig eth0| grep 'inet addr:' | cut -d: -f2| awk '{print$1}'`:80>
+  ServerName `hostname`
+  ServerAlias rtb-adx-west.mdotm.com rtb-adx-east.mdotm.com rtb-adx-east.mdotm.co www.mdotm.com ads.mdotm.com secure.mdotm.com
+  DocumentRoot /var/www/vhosts/mdotm.com/httpdocs
+  ErrorLog logs/mdotm.com-error_log
+  CustomLog logs/mdotm.com-access_log smcommon
+</VirtualHost>
+
+SetEnv mach `hostname -s`
+SetEnv sj true
+SetEnv wdc true
+SetEnv wdc2 true
+SetEnv as true
+SetEnv eu true
+SetEnv adx true
+SetEnv rtb true
+
+<Directory />
+ Options All
+    AllowOverride All
+</Directory>
+
+ExtendedStatus On
+
+<Location /server-status>
+    SetHandler server-status
+    Order Deny,Allow
+#    Deny from all
+    Allow from all
+</Location>
+ServerName `hostname`:80" >> /etc/httpd/conf/httpd.conf;
+service httpd restart;
