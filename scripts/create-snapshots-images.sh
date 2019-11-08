@@ -1,12 +1,15 @@
 #!/bin/bash
+
+## Usage: ./create-snapshots-images.sh d5 --> will first create 
+## a sinapshot named 'd5-date' and then use that snapshot to 
+## create an image named 'd5-date'. The script will delete the
+## snapshot it created once the image creation is complete.
+## First run "screen -mS image" to enter screen mode and then run the script.
+
 date=`date +%m%d%Y`
 echo "date=`date +%m%d%Y`" > /tmp/snapshot-$1.sh
 echo "date=`date +%m%d%Y`" > /tmp/image-$1.sh
 echo "date=`date +%m%d%Y`" > /tmp/snapshot-delete-$1.sh
-
-#gcloud beta compute --project=crosschannel-1307 disks snapshot d1 --zone=us-central1-c --snapshot-names=d1-$date --storage-location=us
-#gcloud compute --project=crosschannel-1307 images create --source-snapshot=d1-$date d1-$date
-#gcloud -q compute snapshots --project=crosschannel-1307 delete d1-$date
 
 # Create snapshots to be used to create images
 gcloud compute instances --project=us-west1-wlk list | grep RUNNING | grep $1 | awk '{print"gcloud beta compute --project=us-west1-wlk disks snapshot",$1,"--zone="$2,"--snapshot-names="$1"-\$date","--storage-location=us --verbosity info --format=json;"}' >> /tmp/snapshot-$1.sh && sh /tmp/snapshot-$1.sh
