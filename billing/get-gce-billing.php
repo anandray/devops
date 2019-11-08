@@ -4,7 +4,7 @@ error_reporting('E_WARN');
 getWolkDatabase();
 date_default_timezone_set('America/Los_Angeles');
 
-for ($i=1; $i<3; $i++) {
+for ($i=1; $i<7; $i++) {
   $logts = time()-86400*$i;
   $logDT = date("Y-m-d", $logts);
   $fn = "wlk-$logDT.json";

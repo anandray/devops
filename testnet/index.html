@@ -183,7 +183,7 @@ function updateinfo(stage, i, r) {
                 document.getElementById(bl_id).innerHTML = str;
             }
       	    if (restart) {
-      	      str += "&nbsp;<a href='javascript:restartwolk(" + stage + ", \"" + dns + "\")'>restart</a>";
+      	      str += "&nbsp;<a href='javascript:restartwolk(" + stage + ", " + i + ")'>restart</a>";
       	    }
             document.getElementById(bl_id).innerHTML = str;
             if ( info.alloc != undefined ) {
@@ -225,12 +225,12 @@ function updateinfo(stage, i, r) {
             }
         })
         .catch(function(err) {
-            document.getElementById(peers_id).innerHTML = "<a href='javascript:restartwolk(" + stage + ", \"" + dns + "\")'>unk</a>";
+            document.getElementById(peers_id).innerHTML = "<a href='javascript:restartwolk(" + stage + ", " + i + ")'>unk</a>";
         });
 }
 
-function restartwolk(stage, dns) {
-	alert("restartwolk " + dns + " " + stage);
+function restartwolk(stage, idx) {
+	alert("restartwolk " + idx + " " + stage);
 }
 
 function updatestages(nstages) {

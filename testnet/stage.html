@@ -371,10 +371,11 @@
           if (info.peers != undefined) {
             document.getElementById(peers_id).innerHTML = info.peers;
           }
-          var base = scheme + "://" + dns + ":" + activePort
-	         if ( knode > 0 ) {
+          var base = scheme + "://" + dns + ":" + activePort;
+	  if ( knode > 0 ) {
               var altport = 80 + 1000 * stage + i;
-              url = scheme + "://" + dns + "-" + stage + "." + domain + ":" + altport + "/wolk/info";
+              base = scheme + "://c" + i + "-" + stage + "." + domain + ":" + altport;
+              url = base + "/wolk/info";
           }
 
           var str = "";
@@ -593,7 +594,13 @@
           cl = "consensus";
         }
 	var nodeName = nodename
-        var infourl = "https://" + nodename + ":" + activePort + "/wolk/info";
+
+
+	var infourl = "https://" + nodename + ":" + activePort + "/wolk/info";
+	if ( r.knode > 0 ) {
+            var altport = 80 + 1000 * currentstage + j;
+	    infourl = "https://c" + j + "-" + currentstage + "." + domain +":" + altport + "/wolk/info";
+        }
         var consensusurl = "https://" + nodename + ":" + activePort + "/wolk/consensus";
         str += "<tr class='h " + cl + "'>";
 	var sshcmd = "javascript:copySSH(\'" + nodename + "\');";
