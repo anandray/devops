@@ -3,7 +3,6 @@
 ## Local Development 
 * [Wolk Local Development - Go, Github Desktop and Atom](https://docs.google.com/document/d/1LRcjYV_Qu0-c5g3p_ka1WqhYY48-bRjss2RgP5GSoZc/edit)
 
-
 ## GoLang
 * [Wolk Golang notes](https://docs.google.com/document/d/1RACPpdKeq3SAMqB1a4-z6qFRPvbfWbnw2yzYIR4WcwA/edit#heading=h.lavyprn7v642)
 
