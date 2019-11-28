@@ -1,22 +1,18 @@
-# build new binary, new image and push to GCR
 docker build --force-rm  -t wolkinc/cloudstore .
-docker tag wolkinc/cloudstore gcr.io/us-west1-wlk/wolkinc/cloudstore:v4
-docker images
-gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
-gcloud docker -- push gcr.io/us-west1-wlk/wolkinc/cloudstore:v4
+docker ps
 
-# create ceph client using image
-kubectl create -f cloudstore.yaml
+# Attach to the Docker Container shell:
+docker exec -it <container_id> /bin/bash
+# Exit the Docker Container shell without killing the container with ctrl + d (or simply type exit and Enter)
 
-# check pod creation, ssh into pod
-kubectl get pods --namespace rook-ceph
-kubectl --namespace rook-ceph exec -it cloudstore-78b597b6d4-4t7rc   bash
+# To clean/delete a container:
+docker stop <container_id>;docker rm -f <container_id>
+# Obtain docker image id and delete (once the container/s have been deleted):
+docker images; docker rmi <image_id>
 
+# To pull docker from docker hub:
+docker pull wolkinc/cloudstore
 
-# deploy service
-kubectl expose deployment -n rook-ceph wolk-storage --type=LoadBalancer --port 80 --target-port 80
-kubectl get service -n rook-ceph
+To create container off of the image wolkinc/cloudstore:
+docker run --name=cloudstore --rm -dit -p xxxx:80 wolkinc/cloudstore
 
-# delete service
-kubectl delete -f cloudstore.yaml
-kubectl delete service cloudstore

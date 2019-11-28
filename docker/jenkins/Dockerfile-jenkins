@@ -1,0 +1,23 @@
+FROM jenkins/jenkins:lts
+# if we want to install via apt
+USER root
+
+#Install dev-tools - make/gcc/vim
+RUN apt-get update && apt-get install -y telnet make apt-utils build-essential vim
+
+#Set timezone to PST/PDT
+RUN unlink /etc/localtime
+RUN ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+
+#COPY go /usr/local/go
+#Using: -v /Users/anand/go/src/github.com/anandray/devops/docker/jenkins/go:/usr/local/go
+
+ENV GOPATH=/var/jenkins_home/go 
+ENV GOBIN=/usr/local/go/bin
+ENV GOROOT=/usr/local/go
+ENV PATH=/usr/local/openjdk-8/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin
+
+WORKDIR /var/jenkins_home/go/src/github.com/wolkdb
+
+# drop back to the regular jenkins user - good practice
+USER jenkins
