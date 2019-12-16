@@ -58,7 +58,7 @@ GEM
     kitchen-vagrant (0.18.0)
       test-kitchen (~> 1.4)
     mini_portile2 (2.4.0)
-    minitar (0.6)
+    minitar (0.9)
     mixlib-authentication (1.3.0)
       mixlib-log
     mixlib-log (1.6.0)
