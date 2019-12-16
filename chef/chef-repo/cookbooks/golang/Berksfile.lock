@@ -1,0 +1,15 @@
+DEPENDENCIES
+  golang
+    path: .
+    metadata: true
+  golang_test
+    path: test/cookbooks/golang_test
+  minitest-handler
+
+GRAPH
+  chef_handler (1.2.0)
+  golang (1.7.0)
+  golang_test (0.1.0)
+    golang (>= 0.0.0)
+  minitest-handler (1.4.0)
+    chef_handler (>= 0.0.0)
