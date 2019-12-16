@@ -37,11 +37,11 @@ GEM
     dep-selector-libgecode (1.0.2)
     dep_selector (1.0.3)
       dep-selector-libgecode (~> 1.0)
-      ffi (~> 1.9)
+      ffi (~> 1.9.24)
     erubis (2.7.0)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.8)
+    ffi (1.9.24)
     foodcritic (5.0.0)
       erubis
       gherkin (~> 2.11)
