@@ -1,0 +1,36 @@
+---
+- name: install the puppet rpm from a remote repo
+  gather_facts: Yes
+  hosts: all
+
+  tasks:
+    - name: install the puppet rpm from a remote repo
+      yum:
+#        name: https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
+        name: https://yum.puppet.com/puppet5-release-el-7.noarch.rpm
+        state: present
+
+#    - name: Set puppetlabs.repo's puppetlabs-devel section enabled to 1
+#      ini_file:
+#        path: /etc/yum.repos.d/puppet6.repo
+#        section: puppetlabs-devel
+#        option: enabled
+#        value: 1
+#        create: no
+#        backup: no
+
+    - name: Install puppet
+      yum:
+        name: "{{ item }}"
+      with_items:
+        - puppet-agent
+
+    - name: Start puppet
+      systemd:
+        name: puppet
+        state: started
+
+    - name: Enable puppet
+      systemd:
+        name: puppet
+        enabled: yes

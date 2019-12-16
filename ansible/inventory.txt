@@ -1,0 +1,15 @@
+#sql_db2 ansible_host=sql02.xyz.com ansible_connection=ssh ansible_user=root ansible_ssh_pass=Lin$Pass
+#web_node1 ansible_host=web01.xyz.com ansible_connection=winrm ansible_user=administrator ansible_password=Win$Pass
+
+target1 ansible_host=192.168.0.110
+target2 ansible_host=192.168.0.111
+
+[web_servers]
+target1
+
+[db_servers]
+target2
+
+[all_servers:children]
+web_servers
+db_servers
