@@ -4,3 +4,4 @@ terraform.tfvars
 */terraform.tfstate.backup
 */.terraform
 */mykey*
+*/*.out
