@@ -5,3 +5,4 @@ terraform.tfvars
 */.terraform
 */*mykey*
 */*.out
+*/private_ips*
