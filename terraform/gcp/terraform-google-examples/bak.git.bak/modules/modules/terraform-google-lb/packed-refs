@@ -1,0 +1,12 @@
+# pack-refs with: peeled fully-peeled sorted 
+028dd3dc09ae1bf47e107ab435310c0a57b1674c refs/remotes/origin/aaron-lane-0.12
+4e983052d433d5193779c8cbe1fce9c33994e35d refs/remotes/origin/master
+1152a12b14d35d46a50fd5478b2565296cf13587 refs/tags/1.0.0
+^38b6a78f8a19a0fae86c98aae56d69c2d50218f3
+7b0d3c67a3ac7f52889ddb6cae90d0b682e20519 refs/tags/1.0.1
+^702ab8d8a218de7b492fc26d8c5a8cbe2c376f7b
+c61b280b99dd77c2656a6d4673df866feda9b49d refs/tags/1.0.2
+a88a375fb91d3559a1554978cdc7700b72de3f10 refs/tags/1.0.3
+6213509717190348bf4538aa2258b031193b6f0e refs/tags/v2.0.0
+01a164c9eccfc654b54fe31f75915e25df557b23 refs/tags/v2.1.0
+52bc76f1974a8d7f53c4b70a9d9fa0d85730ee56 refs/tags/v2.2.0

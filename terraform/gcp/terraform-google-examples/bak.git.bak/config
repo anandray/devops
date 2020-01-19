@@ -1,0 +1,31 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[submodule]
+	active = .
+[remote "origin"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-examples
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[submodule "modules/terraform-google-k8s-gce"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-k8s-gce
+[submodule "modules/terraform-google-lb"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-lb
+[submodule "modules/terraform-google-lb-http"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-lb-http
+[submodule "modules/terraform-google-lb-internal"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-lb-internal
+[submodule "modules/terraform-google-managed-instance-group"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-managed-instance-group
+[submodule "modules/terraform-google-nat-gateway"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-nat-gateway
+[submodule "modules/terraform-google-sql-db"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-sql-db
+[submodule "modules/terraform-google-vault"]
+	url = https://github.com/GoogleCloudPlatform/terraform-google-vault
