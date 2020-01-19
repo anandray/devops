@@ -1,0 +1,19 @@
+variable "project_name" {
+ default="devops-112019"
+}
+variable "billing_account" {
+ description = "01AAFE-340C42-AFE42E"
+}
+
+variable "org_id" {
+ description = "166764207190"
+}
+
+variable "region" {
+#  default="us-west1"
+}
+
+variable "credentials_file_path" {
+  description = "Location of the credentials to use."
+  default     = "/Users/anand/.gcloud/Terraform.json"
+}
