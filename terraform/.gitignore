@@ -6,3 +6,13 @@ terraform.tfvars
 */*mykey*
 */*.out
 */private_ips*
+*/*.json
+gcp/terraform.tfvars
+gcp/*/terraform.tfvars
+gcp/*/terraform.tfstate
+gcp/*/terraform.tfstate.backup
+gcp/*/.terraform
+gcp/*/*mykey*
+gcp/*/*.out
+gcp/*/private_ips*
+gcp/*/*.json
