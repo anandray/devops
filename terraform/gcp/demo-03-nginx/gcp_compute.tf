@@ -28,6 +28,9 @@ resource "google_compute_instance" "gcp-vm" {
   name         = "gcp-vm-${var.gcp_region}"
   machine_type = var.gcp_instance_type
   zone         = data.google_compute_zones.available.names[0]
+  description = "Nginx Virtual Machine"
+
+  tags = ["allow-http"] #tag defined in firewall.tf
 
   boot_disk {
     initialize_params {
@@ -50,12 +53,12 @@ resource "google_compute_instance" "gcp-vm" {
  }
 }
 
-resource "google_compute_firewall" "default" {
- name    = "nginx-firewall"
- network = "default"
-
- allow {
-   protocol = "tcp"
-   ports    = ["80"]
- }
-}
+#resource "google_compute_firewall" "default" {
+# name    = "nginx-firewall"
+# network = "default"
+#
+# allow {
+#   protocol = "tcp"
+#   ports    = ["80"]
+# }
+#}
