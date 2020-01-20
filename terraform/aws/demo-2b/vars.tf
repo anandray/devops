@@ -5,7 +5,7 @@ variable "AWS_SECRET_KEY" {
 }
 
 variable "AWS_REGION" {
-  default = "eu-west-1"
+  default = "us-west-1"
 }
 
 variable "WIN_AMIS" {
