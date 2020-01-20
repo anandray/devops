@@ -30,7 +30,7 @@ resource "google_compute_instance" "gcp-vm" {
   zone         = data.google_compute_zones.available.names[0]
   description = "Nginx Virtual Machine"
 
-  tags = ["allow-http"] #tag defined in firewall.tf
+  tags = ["allow-http", "allow-https", "allow-ssh"] #tag defined in firewall.tf
 
   boot_disk {
     initialize_params {

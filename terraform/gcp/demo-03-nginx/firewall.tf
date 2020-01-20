@@ -1,5 +1,5 @@
 resource "google_compute_firewall" "allow_http" {
- name    = "nginx-firewall"
+ name    = "allow-http"
  network = "default"
 
  allow {
@@ -8,5 +8,31 @@ resource "google_compute_firewall" "allow_http" {
  }
  
  target_tags = ["allow-http"]
+
+}
+
+resource "google_compute_firewall" "allow_https" {
+ name    = "allow-https"
+ network = "default"
+
+ allow {
+   protocol = "tcp"
+   ports    = ["443"]
+ }
+ 
+ target_tags = ["allow-https"]
+
+}
+
+resource "google_compute_firewall" "allow_ssh" {
+ name    = "allow-ssh"
+ network = "default"
+
+ allow {
+   protocol = "tcp"
+   ports    = ["22"]
+ }
+ 
+ target_tags = ["allow-ssh"]
 
 }
