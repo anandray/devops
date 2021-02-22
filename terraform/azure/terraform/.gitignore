@@ -1,3 +1,4 @@
+.bash_profile
 terraform.tfvars
 */*/terraform.tfvars
 azure/terraform/terraform.tfvars
