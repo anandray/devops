@@ -1,0 +1,13 @@
+# Build Virtual Network
+module "network" {
+    source              = "Azure/network/azurerm"
+    resource_group_name = azurerm_resource_group.network.name
+    address_space       = "10.5.0.0/16"
+    subnet_prefixes     = ["10.5.1.0/24", "10.5.2.0/24", "10.5.3.0/24"]
+    subnet_names        = ["Internal: DevOps core #1a", "Internal: DevOps core #1b", "Internal: DevOps core #1c"]
+
+    tags                = {
+                            owner = "user"
+                            environment = "InfoSec"
+                          }
+}
