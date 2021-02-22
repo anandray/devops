@@ -1,8 +1,15 @@
 terraform.tfvars
-*/terraform.tfvars
+*/*/terraform.tfvars
+azure/terraform/terraform.tfvars
 */terraform.tfstate
 */terraform.tfstate.backup
+azure/terraform/terraform.tfstate
+azure/terraform/terraform.tfstate.backup
 */.terraform
+*/*/.terraform
+*/*/.terraform*
+azure/terraform/.terraform
+azure/terraform/.terraform*
 */*mykey*
 */*.out
 */private_ips*
